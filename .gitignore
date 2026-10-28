@@ -1,0 +1,15 @@
+# Environment files
+.env
+.env.*
+*.env
+API.env
+!.env.example
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Specific local files to ignore
+API KEY 1 .png
+SD NOTES.txt

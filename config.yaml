@@ -1,0 +1,70 @@
+# ==============================================================================
+# The Scholar's Desk - Configuration File
+# Free daily AI research digest running on GitHub Actions
+# ==============================================================================
+
+# Digest topics and their associated search keywords
+topics:
+  - name: "AI tools for non-programmers"
+    description: "Tools, interfaces, and methods enabling non-technical users to build, automate, and interact with AI"
+    keywords:
+      - "non-programmer"
+      - "non-programmers"
+      - "non-technical"
+      - "non-expert"
+      - "non-experts"
+      - "no-code"
+      - "low-code"
+      - "end-user"
+      - "end-users"
+      - "end user"
+      - "end users"
+      - "end-user programming"
+      - "citizen developer"
+      - "accessible AI"
+      - "visual programming"
+      - "gui"
+      - "user interface"
+      - "human-ai interaction"
+      - "human-ai collaboration"
+      - "interactive ai"
+
+  - name: "LLM agents for everyday work"
+    description: "Language model agents, automation workflows, and practical assistants for daily tasks and workplace productivity"
+    keywords:
+      - "llm agent"
+      - "llm agents"
+      - "language model agent"
+      - "language model agents"
+      - "ai agent"
+      - "ai agents"
+      - "autonomous agent"
+      - "autonomous agents"
+      - "agentic"
+      - "workplace"
+      - "workflow automation"
+      - "task automation"
+      - "productivity"
+      - "everyday work"
+      - "office work"
+      - "copilot"
+
+# AI models configuration
+models:
+  gemini: "gemini-3.5-flash-lite" # Free-tier Flash model
+  gemini_fallback: "gemini-flash-lite-latest"
+  groq: "llama-3.3-70b-versatile"
+  groq_fallback: "openai/gpt-oss-120b"
+
+# Data source settings
+settings:
+  arxiv:
+    categories:
+      - "cs.AI"
+      - "cs.CL"
+      - "cs.HC"
+      - "cs.LG"
+    max_results: 500
+    rate_limit_seconds: 3.0
+  huggingface:
+    daily_papers_url: "https://huggingface.co/api/daily_papers"

@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-28",
+  "generated_at": "2026-10-28T16:06:52.109641+00:00",
+  "ai_calls_made": 2,
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "total_selected": 5,
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2610.37482",
+      "title": "From Interaction to Capability: Task Advancement as State and Supervision for GUI Agents",
+      "abstract": "GUI memory should preserve the results of past actions and learn reusable operations. This is difficult in long-horizon workflows, where agents must use information across applications and useful operations are interleaved with failed attempts. We introduce Task Advancement Memory (TAM), which defines task advancement as verified task progress, and supports ongoing task execution and learns reusable operations. During execution, Task Advancement State represents how verified task progress changes the remaining goals, allowing the agent to build on earlier achievements across applications. After each task, advancement supervision identifies and abstracts the interactions that produced a verified local result. The learned operations preserve the relation between required inputs, expected outcomes, and verification conditions. This retains locally successful operations from both successful and failed tasks. On MobileWorld GUI-only tasks, Advancement State alone raises success from 12.0% to 28.2%. Full TAM achieves a 17.6% relative gain in task success over the strongest evaluated baseline and reduces lifecycle tokens per solved task by 38.7%. On SPA-Bench, TAM achieves state-of-the-art task success in the single-app English Level 3 setting.",
+      "authors": [
+        "Ziyang Chen",
+        "Qian Li",
+        "Chengwei Qin"
+      ],
+      "published": "2026-10-27T16:09:25Z",
+      "url": "https://arxiv.org/abs/2610.37482",
+      "pdf_url": "https://arxiv.org/pdf/2610.37482.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper looks at how GUI [graphical user interface, like phone apps and buttons] agents can remember past actions to complete tasks across multiple apps.",
+      "explanation": "This paper introduces a memory system for GUI [graphical user interface, like phone apps and buttons] agents. It saves steps that worked well so the AI can use them again later in different apps.",
+      "why_it_matters": "It teaches you how AI can learn from its past actions instead of starting from scratch every time.",
+      "project_idea": {
+        "title": "App Action Saver",
+        "description": "Write a Python script that saves successful button clicks into a JSON file. Use that file later to replay actions automatically.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets to record a sequence of steps and a tool like Make to trigger them in order."
+      }
+    },
+    {
+      "id": "2610.36874",
+      "title": "AdaGround: Token-Normalized Adaptive Zooming with Verifier-in-the-Loop Refinement for GUI Grounding",
+      "abstract": "GUI grounding on high-resolution screens fails mostly on small targets, and zooming in is a common training-free remedy. However, most existing zooming pipelines do not match the zoom to the target's size, accept the zoomed answer unconditionally and never revisit a wrong answer. To address these issues, we propose AdaGround, a training-free framework with three components: (1) Token-Normalized Adaptive Zooming, which sets the magnification, field of view and zoom depth of each sample from the model's own estimate of the target size; (2) Verifier-in-the-Loop Refinement, which uses one marked-click Yes/No verifier to keep or reject each zoom, choose between zoom chains, trigger re-grounding and, with an existence query, decide when to abstain; and (3) Compositional Structure Grounding, which composes spreadsheet cells from their headers. On Qwen3-VL models, AdaGround surpasses state-of-the-art training-free zooming methods and many trained GUI models, improving accuracy over the backbone by 7.4 to 20.6 points on OSWorld-G and ScreenSpot-Pro, and its gains carry over to held-out UI-Vision. Code is available at https://github.com/bcwang-sjtu/AdaGround",
+      "authors": [
+        "Bingchao Wang",
+        "Yongcheng Jing",
+        "Chengyu Wang",
+        "Jun Huang",
+        "Jie Yang",
+        "Wei Liu",
+        "Dacheng Tao"
+      ],
+      "published": "2026-10-27T09:12:35Z",
+      "url": "https://arxiv.org/abs/2610.36874",
+      "pdf_url": "https://arxiv.org/pdf/2610.36874.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper introduces a method to help AI zoom into small parts of a screen so it can interact with phone and computer apps more accurately.",
+      "explanation": "This paper builds a zooming tool for AI looking at screens. It checks if the AI clicked the right spot and zooms in closer when targets are too small to see clearly.",
+      "why_it_matters": "It shows how to make computer vision models more accurate on tiny icons without retraining them.",
+      "project_idea": {
+        "title": "Smart Screen Zoom",
+        "description": "Write a script that takes a screenshot, crops a small box around a target icon, and feeds the crop back to the vision model.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use an n8n workflow that takes an image input, crops a specific section using coordinates, and sends it to an image recognition API."
+      }
+    },
+    {
+      "id": "2610.36980",
+      "title": "AutoVend: Benchmarking LLM Agents on Long-Horizon Autonomous Vending Operations",
+      "abstract": "Large language model (LLM) agents are extending agent-mediated commerce on the Web from shopping for consumers to operating businesses for sellers. In online-to-offline (O2O) commerce, decisions are issued through Web-based platforms but realized through costly physical execution. Evaluating such agents requires going beyond individual transactions to ask whether decisions made online turn into sustained economic returns. We introduce AutoVend, a benchmark in which one LLM agent manages 20 vending machines across five site types through a Web-based operating interface for 180 simulated days. Its data-grounded simulator combines a shared warehouse, procurement lead times, paid replenishment, inventory expiration, and recurring operating costs. We evaluate five LLM agents against a rule-based inventory-control baseline and diagnose their site coordination, execution, and performance over time. Four of five evaluated LLM agents fall short of this baseline, and returns per dollar of inference cost rank models differently from returns alone. Operational analyses show that gains in individual metrics do not consistently yield stronger economic growth, as inventory and execution costs erode these gains. Trajectory analysis further reveals difficulties in grounding feasible actions, managing inventory commitments, and converting feedback into effective policy revisions.",
+      "authors": [
+        "Qiming Shi",
+        "Yikun Li",
+        "Beidi Luan",
+        "Rui Sun",
+        "Yan Ma",
+        "Jing Li",
+        "Daxin Jiang",
+        "Zuo Bai"
+      ],
+      "published": "2026-10-27T10:33:06Z",
+      "url": "https://arxiv.org/abs/2610.36980",
+      "pdf_url": "https://arxiv.org/pdf/2610.36980.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "llm agent",
+        "llm agents"
+      ],
+      "ranking_reason": "This paper tests how well LLM [large language model, an AI that understands text] agents can run an online business by managing virtual vending machines.",
+      "explanation": "This paper tests LLM [large language model, an AI that understands text] agents on running virtual vending machines over many simulated days. It checks if the AI makes smart business choices about inventory and costs.",
+      "why_it_matters": "It helps you understand how AI handles long tasks where mistakes cost real money over time.",
+      "project_idea": {
+        "title": "Vending Stock Tracker",
+        "description": "Write a script where an LLM checks simulated stock levels and decides when to order more items. Track the virtual money spent over ten runs.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets with an AI extension to check inventory rows and automatically write a restock order when items drop low."
+      }
+    },
+    {
+      "id": "2610.36471",
+      "title": "When to Intervene? An Empirical Study of Errors and Self-Recovery in LLM Agents",
+      "abstract": "LLM agents interact with Web services to perform tasks on users' behalf. Errors during these interactions can disrupt execution and prevent task completion, motivating external intervention. However, agents may self-recover through continued execution, raising the question of when to intervene and when to wait for self-recovery. We present an empirical study of errors and self-recovery in LLM agents. We construct ReInBench, a dataset containing 1,259 agent traces and 1,403 error events across computer-use and Web tasks. Our study examines how often and how quickly agents self-recover, how self-recovery relates to subsequent execution and task completion, and whether self-recovery can be predicted when an error occurs. We find that 725 error events self-recover, often within a few steps, with self-recovery performance differing across Execution LLMs. Self-recovery can also help agents recover from subsequent errors of the same type and support overall task completion. Intervention should therefore prioritize errors unlikely to self-recover, while allowing agents to continue when self-recovery is likely. Building on these empirical findings, we propose ReCoF, a method that predicts whether an error will self-recover to inform whether additional intervention is needed. ReCoF achieves an average relative improvement of 9.02% in Macro-F1 over the strongest baseline on ReInBench. Our code and data can be found at https://method-notes.github.io/ReCoF/.",
+      "authors": [
+        "Chiming Duan",
+        "Tong Jia",
+        "Yingxi Chen",
+        "Minghua He",
+        "Lingzhe Zhang",
+        "Ying Li"
+      ],
+      "published": "2026-10-27T01:26:53Z",
+      "url": "https://arxiv.org/abs/2610.36471",
+      "pdf_url": "https://arxiv.org/pdf/2610.36471.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "llm agents"
+      ],
+      "ranking_reason": "This paper studies when an AI agent makes a mistake on a website and whether it can fix itself without human help.",
+      "explanation": "This paper studies when web agents make mistakes and whether they can fix those errors on their own. It finds that many errors clear up quickly if the AI just keeps going.",
+      "why_it_matters": "It saves you from writing complex error handling code for every little glitch your AI encounters.",
+      "project_idea": {
+        "title": "Error Retry Watcher",
+        "description": "Write a Python script that catches web request errors and lets the LLM try the same step up to three times before giving up.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Set up an n8n workflow with a built-in error node that retries a failed API call three times before sending an alert."
+      }
+    },
+    {
+      "id": "2610.34491",
+      "title": "What Effort Level Should I Choose? On the Economics of Reasoning Effort in LLM Agents",
+      "abstract": "Generative models increasingly expose a reasoning effort setting that lets users scale inference-time compute, trading higher cost for potentially improved performance. Users must choose an effort level before knowing whether extra reasoning will help, and even a successful run does not reveal whether the effort purchased was necessary. Reasoning effort is therefore a credence good: buyers observe the outcome but cannot assess the marginal value of the computation they paid for. In this work, we measure the counterfactual effect of effort levels on both proprietary and open-weight models on four benchmarks, spanning single-call reasoning and long-horizon agentic tasks. Effort, it turns out, does not consistently preserve tasks that lower effort solves, can overspend, and can change trajectory behavior. First, we find that although higher effort can raise accuracy in aggregate, it frequently fails on tasks that lower effort solved. Second, on the subset of easy tasks that every effort level solves, higher effort is generally more costly, with the highest effort level costing up to 42x as much as the lowest. Lastly, effort changes not only how many tokens are used, but also how agents solve tasks: at higher effort, agents verify their own work more heavily and more often search for solutions than work through problems directly, both of which lengthen trajectories without necessarily altering the outcome. These findings show that naively choosing the highest level is not only cost-inefficient but also offers no guarantee of the best instance-level performance. A simple alternative, starting at the lowest effort and escalating only after a verified failure, matches or improves on fixed top effort across all models and benchmarks at lower cost for most proprietary models.",
+      "authors": [
+        "Kaiser Sun",
+        "Yongchan Kwon",
+        "Zain Hasan",
+        "Shang Zhu",
+        "Kaitlyn Zhou",
+        "Federico Bianchi"
+      ],
+      "published": "2026-10-25T00:00:00.000Z",
+      "url": "https://arxiv.org/abs/2610.34491",
+      "pdf_url": "https://arxiv.org/pdf/2610.34491.pdf",
+      "categories": [],
+      "primary_category": "cs.AI",
+      "sources": [
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 8,
+        "num_comments": 3,
+        "discussion_id": "6ae1277ea5eb0647c2907033"
+      },
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "llm agents",
+        "agentic"
+      ],
+      "ranking_reason": "This paper explores how users can choose the right amount of thinking effort for an AI to save money and time.",
+      "explanation": "This paper looks at the cost of letting LLMs think longer before answering questions. It shows that higher thinking effort does not always mean better answers and can waste money.",
+      "why_it_matters": "It teaches you how to balance API costs and response quality when building real applications.",
+      "project_idea": {
+        "title": "Cost Budget Router",
+        "description": "Write a script that starts with a cheap, fast AI model and only switches to an expensive reasoning model if the first output fails a check.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Build an n8n flow that sends prompts to a low-cost model first, using a conditional check to route difficult outputs to a smarter model."
+      }
+    }
+  ]
+}
