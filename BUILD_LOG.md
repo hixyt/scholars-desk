@@ -1,130 +1,78 @@
-<div align="center">
+# Build log: The Scholar's Desk
 
-# The Scholar's Desk · Build log
+A free robot that reads new AI papers every morning, picks five and suggests a weekend project for each. I'm writing down what I build each day, including what broke.
 
-A free robot that reads new AI papers every morning, picks the 5 worth reading and gives a weekend project for each.
+**So far:** 1 day · about 4 hours · 388 papers read · ₹0 spent
 
-![Day](https://img.shields.io/badge/day-1-7A2620?style=flat-square)
-![Hours](https://img.shields.io/badge/hours-about_4-5E1C17?style=flat-square)
-![Papers read](https://img.shields.io/badge/papers_read-388-1B2A45?style=flat-square)
-![AI calls a day](https://img.shields.io/badge/AI_calls_a_day-3-1E3A2B?style=flat-square)
-![Cost](https://img.shields.io/badge/cost-%E2%82%B90-CFAE6B?style=flat-square)
+## Where things stand
 
-</div>
+- [x] Hero page
+- [x] Fetch new papers from arXiv and Hugging Face
+- [x] Pick the top 5 and explain them
+- [ ] Topic balance and no-code project ideas (testing)
+- [ ] Fact-checker (testing)
+- [ ] Daily email
+- [ ] Run every morning on GitHub Actions
+- [ ] Show the real papers on the website
+- [ ] README and launch
 
-## Progress
+## How it works
 
-`███████░░░░░░░░░░░░` **3 of 9 parts done**
-
-| | Part |
-|:---:|---|
-| ✅ | Hero page (3D seal and books) |
-| ✅ | Fetch new papers |
-| ✅ | Pick top 5 and explain them |
-| 🟡 | Topic balance and no-code project ideas |
-| 🟡 | Fact-checker |
-| ⬜ | Daily email |
-| ⬜ | Runs every morning on its own |
-| ⬜ | Website shows the real papers |
-| ⬜ | README and launch |
-
-## How the robot works
-
-```mermaid
-flowchart LR
-  A[arXiv + Hugging Face] --> B[Keep papers on my topics]
-  B --> C[Gemini picks 5]
-  C --> D[Groq fact-checks]
-  D --> E[digest.json]
-  E --> F[Email]
-  E --> G[Website]
-  classDef done fill:#7A2620,stroke:#CFAE6B,color:#ffffff
-  classDef wip fill:#5E4A1E,stroke:#CFAE6B,color:#ffffff
-  classDef todo fill:#ffffff,stroke:#999999,color:#555555,stroke-dasharray:5 5
-  class A,B,C,E done
-  class D wip
-  class F,G todo
+```
+arXiv + Hugging Face
+  → keep papers that match my topics
+  → Gemini picks 5 and writes the summaries
+  → Groq checks every claim against the abstract
+  → digest.json
+  → email and website (not built yet)
 ```
 
-Solid red = built · brown = in progress · dashed = not built yet
+## Decisions
 
-## Key decisions
-
-| When | I chose | Because |
+| Date | Decision | Why |
 |---|---|---|
-| 28 Oct | One AI call for all papers | The free plan allows only a few calls a day |
-| 28 Oct | Groq as a backup AI | If Gemini fails, the digest still goes out |
-| 28 Oct | Keys only in .env and GitHub Secrets | The repo is public |
-| 28 Oct | At least 1 paper per topic | Before this, all 5 picks came from one topic |
-| 28 Oct | A different AI checks the summaries | One model shouldn't grade its own work |
+| 28 Oct | One AI call for all papers, not one per paper | The free plan only allows a few calls a day |
+| 28 Oct | Groq as a backup | If Gemini is down, the digest still goes out |
+| 28 Oct | Keys only in `.env` and GitHub Secrets | The repo is public |
+| 28 Oct | At least one paper per topic | The first run picked all five from one topic |
+| 28 Oct | A different model checks the summaries | A model checking its own work misses its own mistakes |
 
-## Daily log
+## Log
 
-<details open>
-<summary><b>Day 1 · 28 Oct 2026 · about 4 h</b> · The robot can fetch and pick papers</summary>
+### Day 1 · 28 Oct 2026 · about 4 hours
 
-<br>
+**What I did**
+Designed the hero page, a wax seal with books orbiting it. Wrote `fetch.py`, which pulls yesterday's papers from arXiv and today's from Hugging Face, and `rank.py`, which asks Gemini to pick five and write a short explanation and a weekend project for each.
 
-**🛠 Built**
-- Hero page: a 3D wax seal with books orbiting it
-- `fetch.py`: collects new AI papers every day
-- `rank.py`: picks the best 5 and writes a summary and a weekend project for each
+**What went wrong**
+I shared my API keys by mistake while asking for help, so I deleted them and made new ones. They now live only in `.env` and GitHub Secrets. The first ranking also picked all five papers from one topic, so I added a rule for at least one per topic.
 
-**🔁 How it works**
-arXiv + Hugging Face → match my topics → Gemini picks 5 → save `digest.json`
+**Numbers**
+388 papers fetched, 44 matched my topics, 5 picked, 2 AI calls.
 
-**🧭 Decision**
-One AI call for all 44 papers instead of 44 calls, so it stays free.
+**What I learned**
+How `.env`, `.gitignore` and GitHub Secrets work together to keep keys out of a public repo.
 
-**🧯 Problem → fix**
-- Exposed my API keys by accident → made new ones, moved them to `.env` and GitHub Secrets
-- All 5 picks came from one topic → added a rule: at least 1 paper per topic
+**In one line**
+The robot read 388 papers today and picked five for a student, on two free AI calls.
 
-**📊 Numbers**
-388 fetched · 44 matched · 5 picked
-
-**💡 Learned**
-`.env` keeps keys on my laptop, `.gitignore` keeps them off GitHub, GitHub Secrets keeps them safe online.
-
-**🎤 Say it in one line**
-> My robot read 388 papers today and picked the 5 a student should read, using just 2 free AI calls.
-
-**➡️ Next**
-Finish the fact-checker, then send the digest by email.
-
-</details>
+**Next**
+Finish the fact-checker and test it with planted false sentences. Then the daily email.
 
 <!--
-TEMPLATE: copy this block, paste it above the latest day, change "open" so only the newest day is open.
+Template for a new day. Paste it right under "## Log", above the previous day.
 
-<details open>
-<summary><b>Day N · DD Mon YYYY · X h</b> · one-line headline</summary>
+### Day N · DD Mon YYYY · about X hours
 
-<br>
+**What I did**
 
-**🛠 Built**
--
+**What went wrong**
 
-**🔁 How it works**
+**Numbers**
 
+**What I learned**
 
-**🧭 Decision**
+**In one line**
 
-
-**🧯 Problem → fix**
--
-
-**📊 Numbers**
-
-
-**💡 Learned**
-
-
-**🎤 Say it in one line**
->
-
-**➡️ Next**
-
-
-</details>
+**Next**
 -->
