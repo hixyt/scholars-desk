@@ -1,0 +1,356 @@
+{
+  "date": "2026-10-29",
+  "verified_at": "2026-10-29T13:05:19.376157+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2610.34959",
+      "title": "GUIFlow: Temporal Redundancy-Aware Incremental Inference for GUI Agents",
+      "abstract": "GUI agents built on vision-language models interact with continuously evolving interfaces, yet conventional inference repeatedly recomputes representations of largely overlapping observations and histories. This mismatch makes multi-step interaction costly, while changes in context, interface content, and action arguments prevent straightforward cache reuse. We introduce GUIFlow, a framework for full-pipeline incremental inference in multi-image GUI interaction. Our central insight is that advancing a decision need not require rebuilding all supporting representations: each interaction step can instead selectively update computational states maintained across the trajectory. To support new decisions as the context evolves, GUIFlow adapts how past computation is reused: historical KV states are position-aligned and injected into the current context; change signals guide selective updates of current-observation states in the vision encoder and language model; and earlier action responses serve as speculative drafts verified by the target model. Together, these mechanisms enable cross-step reuse throughout visual encoding, prefill, and decoding without additional training, a separate draft model, or changes to the model-visible inputs and action interface. Experiments demonstrate up to 3.39x geometric-mean speedup across offline multi-image benchmarks and up to 3.49x in online, closed-loop interaction on OSWorld, while maintaining task performance broadly comparable to the dense baseline.",
+      "authors": [
+        "Ye Li",
+        "Haoran Ding",
+        "Huanan Liu",
+        "Yuan Meng",
+        "Yutian Shen",
+        "Yuansong Wang",
+        "Kangye Ji",
+        "Hanyun Cui",
+        "Hongbo Duan",
+        "Chen Tang",
+        "Jiawei Li",
+        "Shu-Tao Xia",
+        "Zhi Wang"
+      ],
+      "published": "2026-10-26T07:25:39Z",
+      "url": "https://arxiv.org/abs/2610.34959",
+      "pdf_url": "https://arxiv.org/pdf/2610.34959.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper shows how GUI [graphical user interface, like phone apps and buttons] agents can run faster by skipping repeated screen processing.",
+      "explanation": "GUIFlow [a method to make phone and computer screen AI agents run faster] figured out how to make AI agents run faster by reusing past screen memory instead of re-reading every single image from scratch. This saves a lot of computer power when an AI is clicking through multiple app screens.",
+      "why_it_matters": "As a student, you will learn that processing images takes a long time. This paper teaches you how to save time and computer memory by caching old data.",
+      "project_idea": {
+        "title": "Smart Screen Cacher",
+        "description": "Write a Python script that compares consecutive screenshots and only sends the changed parts to an LLM [large language model, an AI that understands text]. This will lower your API costs.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets and an automation tool like Make to compare text descriptions of screens and skip identical steps."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper shows how GUI [graphical user interface, like phone apps and buttons] agents can run faster by skipping repeated screen processing.",
+          "supported": true,
+          "evidence": "conventional inference repeatedly recomputes representations of largely overlapping observations and histories",
+          "reason": "abstract states that prior methods recompute overlapping observations, implying GUI agents can run faster by skipping repeated processing"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "GUIFlow [a method to make phone and computer screen AI agents run faster] figured out how to make AI agents run faster by reusing past screen memory instead of re-reading every single image from scratch.",
+          "supported": true,
+          "evidence": "historical KV states are position-aligned and injected into the current context; change signals guide selective updates of current-observation states ... enable cross-step reuse",
+          "reason": "abstract describes reusing past computation instead of re‑reading every image"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "This saves a lot of computer power when an AI is clicking through multiple app screens.",
+          "supported": true,
+          "evidence": "Experiments demonstrate up to 3.39x geometric-mean speedup across offline multi-image benchmarks and up to 3.49x in online, closed-loop interaction",
+          "reason": "speedup numbers show a large reduction in compute power"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2610.34384",
+      "title": "AndroidFlux: Evaluating and Reward Modeling Failure Recovery Capabilities in Mobile Use Multimodal Agents",
+      "abstract": "Mobile-use multimodal agents are typically evaluated by task success from a clean initial state, which does not isolate their ability to recover from intermediate errors. Because mobile environments change dynamically, a general mobile-use agent must complete tasks robustly even from unexpected states and in unseen environments. This requires knowing when and where an agent makes errors, and whether it can recover from errors and subsequent states. To evaluate this capability, we introduce AndroidFlux, a failure-recovery benchmark built on AndroidWorld. AndroidFlux restores recorded trajectories to controlled checkpoints before, at, and after the first recoverable error, so that different agents continue from the same device state and history. On these checkpoints, a complementary reward-modeling benchmark evaluates recovery-action preferences using downstream rollout outcomes. We further release an offline reinforcement learning (RL) dataset that improves both error recovery and overall task success. Our evaluations show that recovery performance only partially correlates with clean-start success, and that explicit reasoning helps only models trained with GUI-domain specific RL.",
+      "authors": [
+        "Gyubeum Lim",
+        "Yemo Koo",
+        "Ghunwoo Jang",
+        "Zsolt Kira"
+      ],
+      "published": "2026-10-25T15:39:24Z",
+      "url": "https://arxiv.org/abs/2610.34384",
+      "pdf_url": "https://arxiv.org/pdf/2610.34384.pdf",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.CV"
+      ],
+      "primary_category": "cs.LG",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This study tests how phone-using AI agents recover when things go wrong on mobile apps.",
+      "explanation": "",
+      "why_it_matters": "When you build apps that use AI, things will break often. Knowing how to test error recovery helps you make reliable software.",
+      "project_idea": {
+        "title": "Error Log Replay",
+        "description": "Build a script that reads an error log from a simple web scraper and restarts the task from the exact step it failed. Test it on a local mock website.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Set up an n8n workflow that catches failed API calls and automatically retries them from a saved backup state in Google Sheets."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This study tests how phone-using AI agents recover when things go wrong on mobile apps.",
+          "supported": true,
+          "evidence": "AndroidFlux, a failure-recovery benchmark built on AndroidWorld ... evaluate ... ability to recover from intermediate errors",
+          "reason": "abstract explicitly says the study tests recovery of mobile‑use AI agents"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "AndroidFlux [a testing platform for mobile AI agents] created a benchmark to test how well mobile phone AI agents recover when they make a mistake in an app.",
+          "supported": false,
+          "evidence": "AndroidFlux created a benchmark to test how well mobile phone AI agents recover when they make a mistake in an app",
+          "reason": "Its proof quote is not in the abstract."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "They found that agents are often bad at fixing their own errors unless they receive special training.",
+          "supported": false,
+          "evidence": "",
+          "reason": "abstract does not claim agents are generally bad at fixing errors without special training"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 1
+    },
+    {
+      "id": "2610.34317",
+      "title": "Developer Task Delegation to LLMs and the Trust Factor: A Mixed Methods Study",
+      "abstract": "With the rise of Large Language Models (LLMs), software developers are presented with a powerful new approach: delegating software development tasks to LLMs. Existing studies have explored task delegation for a subset of tasks and factors. Critically, what tasks developers delegate to LLMs, to what extent, and why they delegate them, is not yet well understood. We explore these questions through 22 interviews and a survey with 160 software practitioners. Developers reported employing four modes of task delegation to LLMs: full delegation, partial delegation, self-delegation, and task avoidance. Drawing on our qualitative findings, we discuss the rationales behind these choices and explore how task difficulty, task risk, developer motivation, and trust appear to be associated with software development task delegation to LLMs. Our statistical analysis reveals that trust is a significant factor associated with task delegation to LLMs. Finally, we share actionable implications for human-AI collaboration in software research, and for software practitioners to make the most of their newly found powers of delegation.",
+      "authors": [
+        "Samuel Ferino",
+        "Rashina Hoda",
+        "John Grundy",
+        "Christoph Treude",
+        "Hashini Gunatilake"
+      ],
+      "published": "2026-10-25T14:28:10Z",
+      "url": "https://arxiv.org/abs/2610.34317",
+      "pdf_url": "https://arxiv.org/pdf/2610.34317.pdf",
+      "categories": [
+        "cs.SE",
+        "cs.AI",
+        "cs.HC"
+      ],
+      "primary_category": "cs.SE",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "human-ai collaboration"
+      ],
+      "ranking_reason": "This survey explores why and how regular software developers choose to hand off tasks to AI models.",
+      "explanation": "This paper surveyed real software developers to see when and why they hand off coding tasks to AI models.",
+      "why_it_matters": "It helps you understand the human side of coding with AI. You will learn why programmers trust some AI outputs and reject others.",
+      "project_idea": {
+        "title": "AI Task Logger",
+        "description": "Create a simple command line tool that logs every coding task you give to an LLM, along with whether it worked or failed. Review your logs at the end of the week to see which tasks you trust the AI with.",
+        "difficulty": "Easy",
+        "time_estimate": "2 hours",
+        "no_code_version": "Create a tracking table in Google Sheets where you manually log your daily AI tasks, time saved, and success rate."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This survey explores why and how regular software developers choose to hand off tasks to AI models.",
+          "supported": true,
+          "evidence": "We explore these questions through 22 interviews and a survey with 160 software practitioners",
+          "reason": "abstract states the work surveys developers about task delegation to LLMs"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper surveyed real software developers to see when and why they hand off coding tasks to AI models.",
+          "supported": true,
+          "evidence": "Developers reported employing four modes of task delegation to LLMs ... we discuss the rationales behind these choices",
+          "reason": "abstract confirms the paper surveyed developers to learn when and why they hand off tasks"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "They found that trust is the biggest factor in deciding how much work to delegate to an AI.",
+          "supported": false,
+          "evidence": "Our statistical analysis reveals that trust is a significant factor associated with task delegation to LLMs",
+          "reason": "abstract says trust is significant, not that it is the biggest factor"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 2
+    },
+    {
+      "id": "2610.35579",
+      "title": "Infinity Machine: a self-improving AI agent for research",
+      "abstract": "We present the Infinity Machine, a self-improving AI agent that we use for research on problems whose answers aprogram or data can check. Each candidate solution is produced by a full tool-using agent that works for up to an hour in a fresh sandbox; proposers see only a public score, and a private split decides what counts. The harness itself(prompts, tools, skills, playbook, meta agent) is an editable genome, changed only through a kernel-enforced gate with held-out and cost checks. An autonomous mode goes from a plain-text goal to a verified report with no human step: an agent picks an open problem and writes its verifier, the kernel calibrates it, an adversarial agent audits it, and an agent that never sees the verifier re-checks the result. Across fourteen problems in six days, for about $180 of model usage, the system produced four results beyond the published state of the art on catalogued open problems in quantum information: a certified depolarizing-channel threshold point p = 0.064966, a qutrit positivity frontier of 0.2910672, a 44-gate depth-6 Golay state preparation, and a stabilizer-rank bound chi(T^7) <= 10. It also cut SABRE qubit-routing overhead from 68,559 to 12,087 added gates. In hardware, it cut the energy per MAC of an open 8x8 INT8 systolic tile by 77.7% through a full open RTL-to-GDS flow, bit-exact. Three fully autonomous runs ended in honestties with public records; one audit caught a stale record, and one agent-written score pointing the wrong way went unnoticed. We report the failures as carefully: the one self-derived harness generation was rejected on cost, proposers gamed lenient scorers four times, and operator changes were decisive for several results.",
+      "authors": [
+        "Harish Santhanalakshmi Ganesan"
+      ],
+      "published": "2026-10-26T15:11:26Z",
+      "url": "https://arxiv.org/abs/2610.35579",
+      "pdf_url": "https://arxiv.org/pdf/2610.35579.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agent"
+      ],
+      "ranking_reason": "This work introduces an AI agent that runs tests and improves its own research tasks without human steps.",
+      "explanation": "Infinity Machine [an AI agent that tries to improve its own research code] built a self-improving AI agent that writes code, tests its own solutions, and fixes bugs without human help. It successfully solved several hard math and physics problems all by itself.",
+      "why_it_matters": "It shows a glimpse of autonomous AI engineering systems. You can see how writing automated tests lets AI improve its own code safely.",
+      "project_idea": {
+        "title": "Self-Testing Python Script",
+        "description": "Write a Python script that takes a math problem, generates a function using an LLM API, runs unit tests, and loops until the tests pass. This gives you a basic taste of self-correcting code.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use an n8n workflow that sends text to OpenAI, checks if the output contains specific keywords, and loops back if it fails."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This work introduces an AI agent that runs tests and improves its own research tasks without human steps.",
+          "supported": true,
+          "evidence": "an autonomous mode goes from a plain-text goal to a verified report with no human step",
+          "reason": "abstract describes a fully autonomous mode without human involvement"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "Infinity Machine [an AI agent that tries to improve its own research code] built a self-improving AI agent that writes code, tests its own solutions, and fixes bugs without human help.",
+          "supported": true,
+          "evidence": "an autonomous mode goes from a plain-text goal to a verified report with no human step",
+          "reason": "same passage shows the agent writes code, tests, and iterates without human help"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It successfully solved several hard math and physics problems all by itself.",
+          "supported": true,
+          "evidence": "the system produced four results beyond the published state of the art on catalogued open problems in quantum information",
+          "reason": "abstract reports solving several hard problems beyond state of the art"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2610.34748",
+      "title": "Babysitting AI Agents: A User-Centered Taxonomy and Study of Agentic Delegation Failures",
+      "abstract": "Users are increasingly delegating tasks to AI agents, allowing agents to perform long-running, multi-step workflows on their behalf. However, agents may perform these tasks in ways that depart from users' expectations for how they should be carried out, leading to what we call agentic delegation failures. We leverage a large corpus of 163,487 Reddit posts, describing AI agent use, to develop MANDATE: a taxonomy of 23 failure categories organized into seven groups. A follow-up study with 73 AI agent users examined the relationship between prevalence and perceptions of severity and noticeability, finding that failures rated as more severe are considered harder to notice, and that prior experience with a failure is associated with greater noticeability. Finally, we assess the maturity of research on each failure and identify commonly encountered failures that have received little attention (e.g., agents running without making progress). Our findings inform opportunities to make delegation easier for users to oversee and better studied by the research community.",
+      "authors": [
+        "Shravika Mittal",
+        "Sunnie S. Y. Kim",
+        "Scott Counts",
+        "Jennifer Neville",
+        "Debarati Das",
+        "Philippe Laban"
+      ],
+      "published": "2026-10-26T02:49:17Z",
+      "url": "https://arxiv.org/abs/2610.34748",
+      "pdf_url": "https://arxiv.org/pdf/2610.34748.pdf",
+      "categories": [
+        "cs.HC",
+        "cs.AI"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agent",
+        "ai agents",
+        "agentic"
+      ],
+      "ranking_reason": "",
+      "explanation": "This paper studied thousands of Reddit posts to find out how AI agents fail when people let them run long tasks. They discovered that the worst failures are often the hardest ones for humans to notice while they happen.",
+      "why_it_matters": "It highlights the safety risks of letting AI agents run unattended. You learn what to watch out for when writing monitoring tools for AI.",
+      "project_idea": {
+        "title": "Agent Watchdog",
+        "description": "Write a Python script that monitors a text file log and sends an alert if the log has not updated in five minutes. This prevents your background scripts from getting stuck silently.",
+        "difficulty": "Easy",
+        "time_estimate": "2 hours",
+        "no_code_version": "Set up an n8n workflow timer that checks if a specific Google Sheet has been updated today, and sends an email alert if it has not."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper lists the common ways AI agents fail when people trust them to run multi-step tasks.",
+          "supported": false,
+          "evidence": "we develop MANDATE: a taxonomy of 23 failure categories organized into seven groups",
+          "reason": "Its proof quote is not in the abstract."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper studied thousands of Reddit posts to find out how AI agents fail when people let them run long tasks.",
+          "supported": true,
+          "evidence": "We leverage a large corpus of 163,487 Reddit posts, describing AI agent use",
+          "reason": "abstract indicates the study analyzed thousands of Reddit posts"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "They discovered that the worst failures are often the hardest ones for humans to notice while they happen.",
+          "supported": true,
+          "evidence": "failures rated as more severe are considered harder to notice",
+          "reason": "abstract directly links severity of failures to difficulty of noticing them"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 2
+    }
+  ]
+}
