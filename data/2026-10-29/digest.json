@@ -1,6 +1,6 @@
 {
   "date": "2026-10-29",
-  "verified_at": "2026-10-29T13:05:19.376157+00:00",
+  "verified_at": "2026-10-29T13:10:34.251325+00:00",
   "verifier": "Groq (openai/gpt-oss-120b)",
   "status": "verified",
   "papers": [
@@ -42,7 +42,7 @@
         "gui"
       ],
       "ranking_reason": "This paper shows how GUI [graphical user interface, like phone apps and buttons] agents can run faster by skipping repeated screen processing.",
-      "explanation": "GUIFlow [a method to make phone and computer screen AI agents run faster] figured out how to make AI agents run faster by reusing past screen memory instead of re-reading every single image from scratch. This saves a lot of computer power when an AI is clicking through multiple app screens.",
+      "explanation": "GUIFlow [a method to make phone and computer screen AI agents run faster] figured out how to make AI agents run faster by reusing past screen memory instead of re-reading every single image from scratch.",
       "why_it_matters": "As a student, you will learn that processing images takes a long time. This paper teaches you how to save time and computer memory by caching old data.",
       "project_idea": {
         "title": "Smart Screen Cacher",
@@ -57,28 +57,28 @@
           "source": "reason",
           "claim": "This paper shows how GUI [graphical user interface, like phone apps and buttons] agents can run faster by skipping repeated screen processing.",
           "supported": true,
-          "evidence": "conventional inference repeatedly recomputes representations of largely overlapping observations and histories",
-          "reason": "abstract states that prior methods recompute overlapping observations, implying GUI agents can run faster by skipping repeated processing"
+          "evidence": "Our central insight is that advancing a decision need not require rebuilding all supporting representations: each interaction step can instead selectively update computational states maintained across the trajectory.",
+          "reason": "The abstract states that GUIFlow avoids rebuilding representations, implying faster execution."
         },
         {
           "sentence_id": "s2",
           "source": "explanation",
           "claim": "GUIFlow [a method to make phone and computer screen AI agents run faster] figured out how to make AI agents run faster by reusing past screen memory instead of re-reading every single image from scratch.",
           "supported": true,
-          "evidence": "historical KV states are position-aligned and injected into the current context; change signals guide selective updates of current-observation states ... enable cross-step reuse",
-          "reason": "abstract describes reusing past computation instead of re‑reading every image"
+          "evidence": "To support new decisions as the context evolves, GUIFlow adapts how past computation is reused: historical KV states are position-aligned and injected into the current context; change signals guide selective updates of current-observation states in the vision encoder and language model; and earlier action responses serve as speculative drafts verified by the target model.",
+          "reason": "The abstract describes reusing past screen memory instead of re-reading every image."
         },
         {
           "sentence_id": "s3",
           "source": "explanation",
           "claim": "This saves a lot of computer power when an AI is clicking through multiple app screens.",
-          "supported": true,
-          "evidence": "Experiments demonstrate up to 3.39x geometric-mean speedup across offline multi-image benchmarks and up to 3.49x in online, closed-loop interaction",
-          "reason": "speedup numbers show a large reduction in compute power"
+          "supported": false,
+          "evidence": "",
+          "reason": "The abstract mentions speedup but does not explicitly state that it saves a lot of computer power."
         }
       ],
       "claims_checked": 3,
-      "claims_supported": 3
+      "claims_supported": 2
     },
     {
       "id": "2610.34384",
@@ -111,7 +111,7 @@
         "gui"
       ],
       "ranking_reason": "This study tests how phone-using AI agents recover when things go wrong on mobile apps.",
-      "explanation": "",
+      "explanation": "AndroidFlux [a testing platform for mobile AI agents] created a benchmark to test how well mobile phone AI agents recover when they make a mistake in an app.",
       "why_it_matters": "When you build apps that use AI, things will break often. Knowing how to test error recovery helps you make reliable software.",
       "project_idea": {
         "title": "Error Log Replay",
@@ -126,16 +126,16 @@
           "source": "reason",
           "claim": "This study tests how phone-using AI agents recover when things go wrong on mobile apps.",
           "supported": true,
-          "evidence": "AndroidFlux, a failure-recovery benchmark built on AndroidWorld ... evaluate ... ability to recover from intermediate errors",
-          "reason": "abstract explicitly says the study tests recovery of mobile‑use AI agents"
+          "evidence": "To evaluate this capability, we introduce AndroidFlux, a failure-recovery benchmark built on AndroidWorld.",
+          "reason": "The abstract says the study introduces a benchmark to evaluate recovery of mobile-use agents."
         },
         {
           "sentence_id": "s2",
           "source": "explanation",
           "claim": "AndroidFlux [a testing platform for mobile AI agents] created a benchmark to test how well mobile phone AI agents recover when they make a mistake in an app.",
-          "supported": false,
-          "evidence": "AndroidFlux created a benchmark to test how well mobile phone AI agents recover when they make a mistake in an app",
-          "reason": "Its proof quote is not in the abstract."
+          "supported": true,
+          "evidence": "AndroidFlux restores recorded trajectories to controlled checkpoints before, at, and after the first recoverable error, so that different agents continue from the same device state and history.",
+          "reason": "The abstract explains that AndroidFlux creates a benchmark for testing error recovery of mobile AI agents."
         },
         {
           "sentence_id": "s3",
@@ -143,11 +143,11 @@
           "claim": "They found that agents are often bad at fixing their own errors unless they receive special training.",
           "supported": false,
           "evidence": "",
-          "reason": "abstract does not claim agents are generally bad at fixing errors without special training"
+          "reason": "The abstract reports partial correlation and that explicit reasoning helps only certain models; it does not claim agents are generally bad unless specially trained."
         }
       ],
       "claims_checked": 3,
-      "claims_supported": 1
+      "claims_supported": 2
     },
     {
       "id": "2610.34317",
@@ -195,24 +195,24 @@
           "source": "reason",
           "claim": "This survey explores why and how regular software developers choose to hand off tasks to AI models.",
           "supported": true,
-          "evidence": "We explore these questions through 22 interviews and a survey with 160 software practitioners",
-          "reason": "abstract states the work surveys developers about task delegation to LLMs"
+          "evidence": "We explore these questions through 22 interviews and a survey with 160 software practitioners. Developers reported employing four modes of task delegation to LLMs...",
+          "reason": "The abstract says the study explores why and how developers delegate tasks to LLMs via interviews and a survey."
         },
         {
           "sentence_id": "s2",
           "source": "explanation",
           "claim": "This paper surveyed real software developers to see when and why they hand off coding tasks to AI models.",
           "supported": true,
-          "evidence": "Developers reported employing four modes of task delegation to LLMs ... we discuss the rationales behind these choices",
-          "reason": "abstract confirms the paper surveyed developers to learn when and why they hand off tasks"
+          "evidence": "We explore these questions through 22 interviews and a survey with 160 software practitioners.",
+          "reason": "The abstract confirms a survey of real software developers about when and why they hand off coding tasks to AI."
         },
         {
           "sentence_id": "s3",
           "source": "explanation",
           "claim": "They found that trust is the biggest factor in deciding how much work to delegate to an AI.",
           "supported": false,
-          "evidence": "Our statistical analysis reveals that trust is a significant factor associated with task delegation to LLMs",
-          "reason": "abstract says trust is significant, not that it is the biggest factor"
+          "evidence": "",
+          "reason": "The abstract states trust is a significant factor, not that it is the biggest factor."
         }
       ],
       "claims_checked": 3,
@@ -258,24 +258,24 @@
           "source": "reason",
           "claim": "This work introduces an AI agent that runs tests and improves its own research tasks without human steps.",
           "supported": true,
-          "evidence": "an autonomous mode goes from a plain-text goal to a verified report with no human step",
-          "reason": "abstract describes a fully autonomous mode without human involvement"
+          "evidence": "An autonomous mode goes from a plain-text goal to a verified report with no human step:",
+          "reason": "The abstract describes an autonomous mode requiring no human intervention."
         },
         {
           "sentence_id": "s2",
           "source": "explanation",
           "claim": "Infinity Machine [an AI agent that tries to improve its own research code] built a self-improving AI agent that writes code, tests its own solutions, and fixes bugs without human help.",
           "supported": true,
-          "evidence": "an autonomous mode goes from a plain-text goal to a verified report with no human step",
-          "reason": "same passage shows the agent writes code, tests, and iterates without human help"
+          "evidence": "An autonomous mode goes from a plain-text goal to a verified report with no human step: an agent picks an open problem and writes its verifier, the kernel calibrates it, an adversarial agent audits it, and an agent that never sees the verifier re-checks the result.",
+          "reason": "The abstract details the agent writing code, testing, and verifying without human help."
         },
         {
           "sentence_id": "s3",
           "source": "explanation",
           "claim": "It successfully solved several hard math and physics problems all by itself.",
           "supported": true,
-          "evidence": "the system produced four results beyond the published state of the art on catalogued open problems in quantum information",
-          "reason": "abstract reports solving several hard problems beyond state of the art"
+          "evidence": "Across fourteen problems in six days... the system produced four results beyond the published state of the art on catalogued open problems in quantum information...",
+          "reason": "The abstract reports solving several hard problems beyond state of the art autonomously."
         }
       ],
       "claims_checked": 3,
@@ -313,7 +313,7 @@
         "ai agents",
         "agentic"
       ],
-      "ranking_reason": "",
+      "ranking_reason": "This paper lists the common ways AI agents fail when people trust them to run multi-step tasks.",
       "explanation": "This paper studied thousands of Reddit posts to find out how AI agents fail when people let them run long tasks. They discovered that the worst failures are often the hardest ones for humans to notice while they happen.",
       "why_it_matters": "It highlights the safety risks of letting AI agents run unattended. You learn what to watch out for when writing monitoring tools for AI.",
       "project_idea": {
@@ -328,29 +328,29 @@
           "sentence_id": "s1",
           "source": "reason",
           "claim": "This paper lists the common ways AI agents fail when people trust them to run multi-step tasks.",
-          "supported": false,
-          "evidence": "we develop MANDATE: a taxonomy of 23 failure categories organized into seven groups",
-          "reason": "Its proof quote is not in the abstract."
+          "supported": true,
+          "evidence": "We leverage a large corpus of 163,487 Reddit posts, describing AI agent use, to develop MANDATE: a taxonomy of 23 failure categories organized into seven groups.",
+          "reason": "The abstract says the paper provides a taxonomy of common AI agent failure modes."
         },
         {
           "sentence_id": "s2",
           "source": "explanation",
           "claim": "This paper studied thousands of Reddit posts to find out how AI agents fail when people let them run long tasks.",
           "supported": true,
-          "evidence": "We leverage a large corpus of 163,487 Reddit posts, describing AI agent use",
-          "reason": "abstract indicates the study analyzed thousands of Reddit posts"
+          "evidence": "We leverage a large corpus of 163,487 Reddit posts, describing AI agent use...",
+          "reason": "The abstract indicates the study analyzed thousands of Reddit posts."
         },
         {
           "sentence_id": "s3",
           "source": "explanation",
           "claim": "They discovered that the worst failures are often the hardest ones for humans to notice while they happen.",
           "supported": true,
-          "evidence": "failures rated as more severe are considered harder to notice",
-          "reason": "abstract directly links severity of failures to difficulty of noticing them"
+          "evidence": "finding that failures rated as more severe are considered harder to notice",
+          "reason": "The abstract reports that more severe failures are harder for humans to notice."
         }
       ],
       "claims_checked": 3,
-      "claims_supported": 2
+      "claims_supported": 3
     }
   ]
 }
