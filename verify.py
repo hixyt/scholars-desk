@@ -277,8 +277,8 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
     prompt = (
         f"Fact-check these 5 papers:\n\n"
         f"{json.dumps(audit_items, indent=2)}\n\n"
-        "Return a JSON array containing exactly 5 objects matching this schema:\n"
-        "[\n"
+        "Return a JSON object with one key, \"papers\", holding exactly 5 objects matching this schema:\n"
+        '{"papers": [\n'
         "  {\n"
         '    "id": "<paper id>",\n'
         '    "claims_checked": <int>,\n'
@@ -294,7 +294,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         '    "verified_ranking_reason": "<grounded 1-line reason, plain words, brackets for technical terms, no hype, no em dashes>",\n'
         '    "verified_explanation": "<grounded 2-3 sentence explanation, plain words, brackets for technical terms, no hype, no em dashes>"\n'
         "  }\n"
-        "]"
+        "]}"
     )
 
     raw_response, provider = call_groq(
@@ -359,17 +359,11 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
             for r in results_list:
                 r_sid = str(r.get("sentence_id", "")).lower()
                 r_claim = str(r.get("claim", "")).lower()
-                r_reason = str(r.get("reason", "")).lower()
 
-                # Check if this result entry corresponds to the injected canary
+                # Find the injected sentence by its id or its exact text only
                 is_canary = (
                     r_sid == str(target_sid).lower() or
-                    fake_sent.lower() in r_claim or
-                    "penguin" in r_claim or "penguin" in r_reason or
-                    "quantum" in r_claim or "quantum" in r_reason or
-                    "alchem" in r_claim or "1342" in r_claim or
-                    "microwave" in r_claim or "underwater" in r_claim or
-                    "bug" in r_claim or "100%" in r_claim
+                    fake_sent.lower() in r_claim
                 )
                 if is_canary:
                     if not r.get("supported", False):

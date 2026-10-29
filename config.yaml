@@ -64,7 +64,9 @@ settings:
       - "cs.CL"
       - "cs.HC"
       - "cs.LG"
-    max_results: 500
+    days_back: 4          # look back 4 days, so late and weekend papers are not missed
+    max_results: 4000     # upper limit of papers per run
+    page_size: 1000       # arXiv sends results in pages of this size
     rate_limit_seconds: 3.0
   huggingface:
     daily_papers_url: "https://huggingface.co/api/daily_papers"

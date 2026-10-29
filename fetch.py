@@ -3,10 +3,18 @@
 The Scholar's Desk - Step 1: Research Paper Fetcher
 ===================================================
 A daily automation script that:
-1. Fetches yesterday's new papers from the arXiv API for cs.AI, cs.CL, cs.HC, and cs.LG.
+1. Fetches papers from the last few days (days_back in config.yaml) from the arXiv API
+   for cs.AI, cs.CL, cs.HC, and cs.LG, page by page.
 2. Fetches today's curated papers from the Hugging Face Daily Papers API.
-3. Deduplicates papers and filters them based on keywords in config.yaml.
-4. Saves matching papers into data/YYYY-MM-DD/raw.json.
+3. Skips any paper already saved on an earlier day, so nothing repeats.
+4. Deduplicates papers and filters them based on keywords in config.yaml.
+5. Saves matching papers into data/YYYY-MM-DD/raw.json.
+
+Why a window of several days and not just "yesterday"?
+arXiv publishes new papers once a day (Sunday to Thursday evening, US time) and
+nothing on Friday or Saturday. A paper submitted late in the day shows up a day
+later, and weekend papers show up on Monday. Asking only for "yesterday" missed
+those papers forever. So we look back a few days and remember what we have seen.
 
 This script uses only free public APIs with no API keys required.
 arXiv rate limit (>= 3 seconds per request) is strictly enforced.
@@ -96,91 +104,121 @@ def normalize_title(title: str) -> str:
     return clean
 
 
-def fetch_arxiv_papers(target_date: datetime, categories: list, max_results: int = 500, rate_limit_seconds: float = 3.0) -> list:
-    """
-    Fetch papers submitted to arXiv on target_date for the specified categories.
-    Respects arXiv's mandatory >= 3.0s request interval.
-    """
-    logger.info(f"Respecting arXiv rate limit (waiting {rate_limit_seconds}s before request)...")
-    time.sleep(rate_limit_seconds)
+def parse_arxiv_entry(entry, ns: dict) -> dict:
+    """Turn one <entry> from arXiv's XML reply into a clean paper dictionary."""
+    raw_id = entry.find("atom:id", ns)
+    raw_id_text = raw_id.text.strip() if raw_id is not None else ""
+    clean_id = normalize_arxiv_id(raw_id_text)
 
-    start_str = target_date.strftime("%Y%m%d0000")
-    end_str = target_date.strftime("%Y%m%d2359")
+    title_el = entry.find("atom:title", ns)
+    title = " ".join(title_el.text.strip().split()) if title_el is not None else "Untitled"
+
+    summary_el = entry.find("atom:summary", ns)
+    abstract = " ".join(summary_el.text.strip().split()) if summary_el is not None else ""
+
+    published_el = entry.find("atom:published", ns)
+    published = published_el.text.strip() if published_el is not None else ""
+
+    # Extract authors
+    authors = []
+    for author_el in entry.findall("atom:author", ns):
+        name_el = author_el.find("atom:name", ns)
+        if name_el is not None and name_el.text:
+            authors.append(name_el.text.strip())
+
+    # Extract categories
+    cats = []
+    for cat_el in entry.findall("atom:category", ns):
+        term = cat_el.attrib.get("term")
+        if term and term not in cats:
+            cats.append(term)
+
+    # Primary category
+    prim_cat_el = entry.find("arxiv:primary_category", ns)
+    primary_cat = prim_cat_el.attrib.get("term") if prim_cat_el is not None else (cats[0] if cats else "cs.AI")
+
+    return {
+        "id": clean_id,
+        "title": title,
+        "abstract": abstract,
+        "authors": authors,
+        "published": published,
+        "url": f"https://arxiv.org/abs/{clean_id}" if clean_id else raw_id_text,
+        "pdf_url": f"https://arxiv.org/pdf/{clean_id}.pdf" if clean_id else "",
+        "categories": cats,
+        "primary_category": primary_cat,
+        "sources": ["arxiv"],
+        "huggingface": None
+    }
+
+
+def fetch_arxiv_papers(start_date: datetime, end_date: datetime, categories: list,
+                       max_results: int = 4000, page_size: int = 1000,
+                       rate_limit_seconds: float = 3.0) -> list:
+    """
+    Fetch papers submitted to arXiv between start_date and end_date (both days included).
+    arXiv sends results in pages, so we ask for one page at a time.
+    Respects arXiv's mandatory >= 3.0s wait before every request.
+    """
+    start_str = start_date.strftime("%Y%m%d0000")
+    end_str = end_date.strftime("%Y%m%d2359")
 
     cat_query = " OR ".join([f"cat:{cat}" for cat in categories])
     query = f"({cat_query}) AND submittedDate:[{start_str} TO {end_str}]"
 
     url = "http://export.arxiv.org/api/query"
-    params = {
-        "search_query": query,
-        "sortBy": "submittedDate",
-        "sortOrder": "descending",
-        "max_results": max_results
+    ns = {
+        "atom": "http://www.w3.org/2005/Atom",
+        "arxiv": "http://arxiv.org/schemas/atom",
+        "opensearch": "http://a9.com/-/spec/opensearch/1.1/"
     }
 
-    logger.info(f"Querying arXiv API for date {target_date.strftime('%Y-%m-%d')} across categories {categories}...")
-    try:
-        response = requests.get(url, params=params, headers={"User-Agent": ARXIV_USER_AGENT}, timeout=30)
-        response.raise_for_status()
-    except Exception as e:
-        logger.error(f"Error fetching from arXiv API: {e}")
-        return []
-
-    # Parse Atom XML
-    root = ET.fromstring(response.text)
-    ns = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
-
-    entries = root.findall("atom:entry", ns)
-    logger.info(f"arXiv returned {len(entries)} candidate papers for {target_date.strftime('%Y-%m-%d')}.")
+    logger.info(f"Querying arXiv for {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')} "
+                f"across categories {categories}...")
 
     papers = []
-    for entry in entries:
-        raw_id = entry.find("atom:id", ns)
-        raw_id_text = raw_id.text.strip() if raw_id is not None else ""
-        clean_id = normalize_arxiv_id(raw_id_text)
+    offset = 0              # how many papers we have already received
+    retried_empty_page = False
 
-        title_el = entry.find("atom:title", ns)
-        title = " ".join(title_el.text.strip().split()) if title_el is not None else "Untitled"
+    while offset < max_results:
+        logger.info(f"Respecting arXiv rate limit (waiting {rate_limit_seconds}s before request)...")
+        time.sleep(rate_limit_seconds)
 
-        summary_el = entry.find("atom:summary", ns)
-        abstract = " ".join(summary_el.text.strip().split()) if summary_el is not None else ""
-
-        published_el = entry.find("atom:published", ns)
-        published = published_el.text.strip() if published_el is not None else ""
-
-        # Extract authors
-        authors = []
-        for author_el in entry.findall("atom:author", ns):
-            name_el = author_el.find("atom:name", ns)
-            if name_el is not None and name_el.text:
-                authors.append(name_el.text.strip())
-
-        # Extract categories
-        cats = []
-        for cat_el in entry.findall("atom:category", ns):
-            term = cat_el.attrib.get("term")
-            if term and term not in cats:
-                cats.append(term)
-
-        # Primary category
-        prim_cat_el = entry.find("arxiv:primary_category", ns)
-        primary_cat = prim_cat_el.attrib.get("term") if prim_cat_el is not None else (cats[0] if cats else "cs.AI")
-
-        paper = {
-            "id": clean_id,
-            "title": title,
-            "abstract": abstract,
-            "authors": authors,
-            "published": published,
-            "url": f"https://arxiv.org/abs/{clean_id}" if clean_id else raw_id_text,
-            "pdf_url": f"https://arxiv.org/pdf/{clean_id}.pdf" if clean_id else "",
-            "categories": cats,
-            "primary_category": primary_cat,
-            "sources": ["arxiv"],
-            "huggingface": None
+        params = {
+            "search_query": query,
+            "sortBy": "submittedDate",
+            "sortOrder": "descending",
+            "start": offset,
+            "max_results": min(page_size, max_results - offset)
         }
-        papers.append(paper)
+        try:
+            response = requests.get(url, params=params, headers={"User-Agent": ARXIV_USER_AGENT}, timeout=60)
+            response.raise_for_status()
+            root = ET.fromstring(response.text)
+        except Exception as e:
+            logger.error(f"Error fetching from arXiv API (page starting at {offset}): {e}")
+            break
 
+        total_el = root.find("opensearch:totalResults", ns)
+        total = int(total_el.text) if total_el is not None and total_el.text else 0
+        entries = root.findall("atom:entry", ns)
+        logger.info(f"arXiv page {offset // page_size + 1}: {len(entries)} papers (total available: {total}).")
+
+        # arXiv sometimes sends an empty page by mistake. Try that page once more.
+        if not entries and offset < total and not retried_empty_page:
+            retried_empty_page = True
+            continue
+        if not entries:
+            break
+
+        for entry in entries:
+            papers.append(parse_arxiv_entry(entry, ns))
+
+        offset += len(entries)
+        if offset >= total:
+            break
+
+    logger.info(f"arXiv returned {len(papers)} candidate papers in total.")
     return papers
 
 
@@ -287,6 +325,48 @@ def match_topics(paper: dict, topics_dict: dict) -> tuple:
     return matched_topics, unique_kws
 
 
+def load_seen_papers(output_root: str, today_str: str) -> tuple:
+    """
+    Collect the IDs and titles of every paper saved on an EARLIER day
+    (data/<earlier date>/raw.json), so the same paper is never shown twice.
+    Today's folder is ignored, so running the script again today gives the same result.
+    """
+    seen_ids = set()
+    seen_titles = set()
+    root = Path(output_root)
+    if not root.exists():
+        return seen_ids, seen_titles
+
+    for raw_file in sorted(root.glob("*/raw.json")):
+        if raw_file.parent.name >= today_str:
+            continue  # skip today and any later folder
+        try:
+            with open(raw_file, "r", encoding="utf-8") as f:
+                for p in json.load(f):
+                    if p.get("id"):
+                        seen_ids.add(p["id"])
+                    norm = normalize_title(p.get("title", ""))
+                    if norm:
+                        seen_titles.add(norm)
+        except Exception as e:
+            logger.warning(f"Could not read {raw_file}: {e}")
+
+    logger.info(f"Loaded {len(seen_ids)} paper IDs seen on earlier days.")
+    return seen_ids, seen_titles
+
+
+def remove_seen_papers(papers: list, seen_ids: set, seen_titles: set) -> list:
+    """Keep only papers we have NOT saved on an earlier day."""
+    fresh = []
+    for p in papers:
+        if p.get("id") in seen_ids:
+            continue
+        if normalize_title(p.get("title", "")) in seen_titles:
+            continue
+        fresh.append(p)
+    return fresh
+
+
 def deduplicate_and_filter_papers(papers_list: list, topics_dict: dict) -> list:
     """
     1. Filters papers that match at least one keyword in config.yaml.
@@ -382,17 +462,6 @@ def main():
     else:
         today_date = datetime.now(timezone.utc)
 
-    # Yesterday's date for arXiv
-    yesterday_date = today_date - timedelta(days=1)
-    today_str = today_date.strftime("%Y-%m-%d")
-    yesterday_str = yesterday_date.strftime("%Y-%m-%d")
-
-    print("=" * 70)
-    print("  The Scholar's Desk - Daily Research Paper Fetcher")
-    print(f"  Target Run Date  : {today_str} (UTC)")
-    print(f"  arXiv Date (New) : {yesterday_str}")
-    print("=" * 70)
-
     # 1. Load config
     config = load_config(args.config)
     topics = config["topics"]
@@ -400,8 +469,21 @@ def main():
 
     arxiv_settings = settings.get("arxiv", {})
     categories = arxiv_settings.get("categories", ["cs.AI", "cs.CL", "cs.HC", "cs.LG"])
-    max_results = arxiv_settings.get("max_results", 500)
+    days_back = arxiv_settings.get("days_back", 4)
+    max_results = arxiv_settings.get("max_results", 4000)
+    page_size = arxiv_settings.get("page_size", 1000)
     rate_limit = arxiv_settings.get("rate_limit_seconds", 3.0)
+
+    # arXiv window: the last few days up to today (see the note at the top of this file)
+    window_start = today_date - timedelta(days=days_back)
+    today_str = today_date.strftime("%Y-%m-%d")
+    window_str = f"{window_start.strftime('%Y-%m-%d')} to {today_str}"
+
+    print("=" * 70)
+    print("  The Scholar's Desk - Daily Research Paper Fetcher")
+    print(f"  Target Run Date  : {today_str} (UTC)")
+    print(f"  arXiv Window     : {window_str}")
+    print("=" * 70)
 
     hf_settings = settings.get("huggingface", {})
     hf_url = hf_settings.get("daily_papers_url", "https://huggingface.co/api/daily_papers")
@@ -413,9 +495,11 @@ def main():
     # 2. Fetch from arXiv
     print("\n--- 1. Fetching from arXiv API ---")
     arxiv_papers = fetch_arxiv_papers(
-        target_date=yesterday_date,
+        start_date=window_start,
+        end_date=today_date,
         categories=categories,
         max_results=max_results,
+        page_size=page_size,
         rate_limit_seconds=rate_limit
     )
     print(f"-> Fetched {len(arxiv_papers)} papers from arXiv.")
@@ -425,21 +509,29 @@ def main():
     hf_papers = fetch_huggingface_papers(today_date=today_date, api_url=hf_url)
     print(f"-> Fetched {len(hf_papers)} papers from Hugging Face.")
 
-    # 4. Combine, filter by keywords, and deduplicate
-    print("\n--- 3. Matching Keywords & Deduplicating ---")
+    # 4. Skip papers we already saved on an earlier day
+    print("\n--- 3. Skipping Papers Seen on Earlier Days ---")
     all_papers = arxiv_papers + hf_papers
-    final_papers = deduplicate_and_filter_papers(all_papers, topics)
+    seen_ids, seen_titles = load_seen_papers(args.output_dir, today_str)
+    fresh_papers = remove_seen_papers(all_papers, seen_ids, seen_titles)
+    skipped = len(all_papers) - len(fresh_papers)
+    print(f"-> Skipped {skipped} already-seen papers. {len(fresh_papers)} are new.")
 
-    # 5. Save to data/YYYY-MM-DD/raw.json
-    print("\n--- 4. Saving Output ---")
+    # 5. Filter by keywords and deduplicate
+    print("\n--- 4. Matching Keywords & Deduplicating ---")
+    final_papers = deduplicate_and_filter_papers(fresh_papers, topics)
+
+    # 6. Save to data/YYYY-MM-DD/raw.json
+    print("\n--- 5. Saving Output ---")
     saved_path = save_raw_papers(final_papers, today_str, output_root=args.output_dir)
 
     print("\n" + "=" * 70)
     print("  Summary of Results")
     print("=" * 70)
     print(f"  Total Candidate Papers Fetched : {len(all_papers)}")
-    print(f"    - From arXiv ({yesterday_str})  : {len(arxiv_papers)}")
+    print(f"    - From arXiv ({window_str}): {len(arxiv_papers)}")
     print(f"    - From Hugging Face ({today_str}): {len(hf_papers)}")
+    print(f"  Skipped (seen on earlier days) : {skipped}")
     print(f"  Final Matched & Deduplicated   : {len(final_papers)}")
     print(f"  Saved File Location            : {saved_path}")
     print("=" * 70 + "\n")
