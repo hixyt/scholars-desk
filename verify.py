@@ -178,12 +178,21 @@ def evidence_in_abstract(evidence: str, abstract: str, min_words: int = 4) -> bo
 
 
 def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key: str,
-              fallback_model: Optional[str] = None, json_schema: Optional[dict] = None) -> Tuple[str, str]:
+              fallback_model: Optional[str] = None, json_schema: Optional[dict] = None,
+              max_tokens: int = 4000, reasoning_effort: str = "low") -> Tuple[str, str]:
     """
     Call Groq API with model fallback.
     If json_schema is given, we use Groq's "Structured Outputs" in strict mode:
     Groq forces the model to follow our exact JSON shape, so the reply can't be broken JSON.
+
+    Token budget (Groq free plan allows 8,000 tokens per minute per model):
+    - Our prompt is about 3,500 tokens. max_tokens caps the reply (thinking + answer).
+    - Groq's default reply cap for gpt-oss is only 1,024 tokens, too small for 20 verdicts,
+      so the model ran out of room before writing any JSON. We set 4,000.
+    - reasoning_effort "low" keeps the model's hidden thinking short, so the answer fits.
     """
+    import time
+
     url = "https://api.groq.com/openai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -211,22 +220,35 @@ def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key:
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": prompt}
             ],
-            "temperature": 0.1,  # Low temperature for strict factual verification
+            # Groq recommends 0.5 to 0.7 for gpt-oss. Strictness comes from our rules
+            # and the proof check in our code, not from a very low temperature.
+            "temperature": 0.6,
+            "max_completion_tokens": max_tokens,
             "response_format": response_format
         }
+        if m.startswith("openai/gpt-oss"):
+            payload["reasoning_effort"] = reasoning_effort
+
         for attempt in (1, 2):
             try:
                 resp = requests.post(url, headers=headers, json=payload, timeout=120)
                 if resp.status_code == 200:
                     data = resp.json()
-                    content = data["choices"][0]["message"]["content"]
-                    return content, f"Groq ({m})"
+                    choice = data["choices"][0]
+                    usage = data.get("usage") or {}
+                    reasoning_used = (usage.get("completion_tokens_details") or {}).get("reasoning_tokens", "?")
+                    logger.info(f"Groq '{m}' used {usage.get('prompt_tokens', '?')} prompt tokens, "
+                                f"{usage.get('completion_tokens', '?')} reply tokens "
+                                f"({reasoning_used} of them thinking). Finish reason: {choice.get('finish_reason')}")
+                    return choice["message"]["content"], f"Groq ({m})"
                 elif resp.status_code == 429 and attempt == 1:
-                    logger.warning(f"Groq rate limit reached (429). Waiting 14s before retry...")
-                    import time
-                    time.sleep(14)
-                elif resp.status_code == 400 and "json_validate_failed" in resp.text and attempt == 1:
-                    logger.warning(f"Groq model '{m}' wrote invalid JSON. Trying the same model once more...")
+                    # Groq tells us how long to wait in the "retry-after" header
+                    try:
+                        wait = min(int(float(resp.headers.get("retry-after", "20"))) + 1, 65)
+                    except ValueError:
+                        wait = 20
+                    logger.warning(f"Groq rate limit reached (429). Waiting {wait}s before retry...")
+                    time.sleep(wait)
                 else:
                     last_err = RuntimeError(f"Groq HTTP {resp.status_code}: {resp.text}")
                     logger.warning(f"Groq model '{m}' returned status {resp.status_code}: {resp.text}")
@@ -305,7 +327,7 @@ def build_checker_prompt(audit_items: List[dict]) -> str:
     return (
         f"Fact-check these {len(audit_items)} papers. There are {total} sentences in total, "
         f"so the results lists must contain {total} verdicts altogether, one for every sentence_id.\n\n"
-        f"{json.dumps(audit_items, indent=2)}\n\n"
+        f"{json.dumps(audit_items, ensure_ascii=False)}\n\n"
         f"Return a JSON object with one key, \"papers\", holding exactly {len(audit_items)} objects matching this schema:\n"
         '{"papers": [\n'
         "  {\n"
