@@ -16,6 +16,7 @@ import json
 import random
 import re
 from datetime import datetime, timezone
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from common import call_groq, load_config, load_keys, log, parse_json_list
@@ -38,10 +39,12 @@ CHECKER_RULES = (
     "3. A sentence is supported ONLY if the abstract clearly and directly says it. If it adds any detail "
     "the abstract does not mention (a number, date, place, tool, test or result), it is NOT supported, "
     "even if the rest sounds right.\n"
-    "4. For each sentence give, in this order:\n"
+    "4. Words in [square brackets] explain a technical term for beginners. They only need to be a correct "
+    "general definition; judge the rest of the sentence against the abstract.\n"
+    "5. For each sentence give, in this order:\n"
     "   - sentence_id: the id from the input\n"
-    "   - evidence: the exact words from the abstract that prove it, copied without changes. "
-    "If nothing in the abstract proves it, write \"\".\n"
+    "   - evidence: the exact words from the ABSTRACT that prove it, copied without changes. "
+    "Never copy the student's sentence as evidence. If nothing in the abstract proves it, write \"\".\n"
     "   - reason: one short sentence on why it is or isn't supported\n"
     "   - supported: true or false. If evidence is empty, supported must be false."
 )
@@ -79,13 +82,21 @@ def split_sentences(text):
 
 
 def quote_in_abstract(quote, abstract):
-    """Our own check that the checker's proof really is in the abstract (case and punctuation ignored)."""
-    norm = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()
-    parts = [norm(p) for p in re.split(r"\.\.\.|…", quote) if norm(p)]
-    if sum(len(p.split()) for p in parts) < 4:  # a quote of 1-3 words proves nothing
+    """
+    Our own check that the checker's proof really comes from the abstract.
+    Case and punctuation are ignored, and a word or two may differ (the AI once wrote
+    "we develop" where the abstract says "to develop"). But at least 80% of the quote
+    must match the abstract in runs of 3 or more words in a row, and every number
+    in the quote must be in the abstract exactly.
+    """
+    words = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).split()
+    q, a = words(quote), words(abstract)
+    if len(q) < 4:  # a quote of 1-3 words proves nothing
         return False
-    abstract = norm(abstract)
-    return all(p in abstract for p in parts)
+    if any(w.isdigit() and w not in a for w in q):
+        return False
+    blocks = SequenceMatcher(None, q, a, autojunk=False).get_matching_blocks()
+    return sum(b.size for b in blocks if b.size >= 3) / len(q) >= 0.8
 
 
 def ask_checker(items, config, groq_key):
