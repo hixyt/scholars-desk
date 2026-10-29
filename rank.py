@@ -101,8 +101,8 @@ def load_config(config_path: str = "config.yaml") -> dict:
             "models": {
                 "gemini": "gemini-3.5-flash-lite",
                 "gemini_fallback": "gemini-flash-lite-latest",
-                "groq": "llama-3.3-70b-versatile",
-                "groq_fallback": "openai/gpt-oss-120b"
+                "groq": "openai/gpt-oss-120b",
+                "groq_fallback": "openai/gpt-oss-20b"
             }
         }
     with open(path, "r", encoding="utf-8") as f:
@@ -215,8 +215,8 @@ def execute_ai_call_with_fallback(
     models_cfg = config.get("models", {})
     gemini_model = models_cfg.get("gemini", "gemini-3.5-flash-lite")
     gemini_fallback = models_cfg.get("gemini_fallback", "gemini-flash-lite-latest")
-    groq_model = models_cfg.get("groq", "llama-3.3-70b-versatile")
-    groq_fallback = models_cfg.get("groq_fallback", "openai/gpt-oss-120b")
+    groq_model = models_cfg.get("groq", "openai/gpt-oss-120b")
+    groq_fallback = models_cfg.get("groq_fallback", "openai/gpt-oss-20b")
 
     raw_response = None
     used_provider = None

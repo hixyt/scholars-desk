@@ -53,8 +53,8 @@ topics:
 models:
   gemini: "gemini-3.5-flash-lite" # Free-tier Flash model
   gemini_fallback: "gemini-flash-lite-latest"
-  groq: "llama-3.3-70b-versatile"
-  groq_fallback: "openai/gpt-oss-120b"
+  groq: "openai/gpt-oss-120b"     # llama-3.3-70b was shut down by Groq on 16 Aug 2026
+  groq_fallback: "openai/gpt-oss-20b"
 
 # Data source settings
 settings:

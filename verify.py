@@ -20,13 +20,14 @@ The Scholar's Desk - Step 3: Strict Fact-Checking & Verification
    - Does NOT save canary results to digest.json.
 5. Saves checked results to data/YYYY-MM-DD/digest.json (keeping digest_draft.json).
 
-Total AI calls in this script: Exactly 1.
+Total AI calls in this script: 1, plus 1 small follow-up only if the checker skipped sentences.
 """
 
 import argparse
 import json
 import logging
 import os
+import random
 import re
 import sys
 from datetime import datetime, timezone
@@ -110,8 +111,8 @@ def load_config(config_path: str = "config.yaml") -> dict:
     if not path.exists():
         return {
             "models": {
-                "groq": "llama-3.3-70b-versatile",
-                "groq_fallback": "openai/gpt-oss-120b"
+                "groq": "openai/gpt-oss-120b",
+                "groq_fallback": "openai/gpt-oss-20b"
             }
         }
     with open(path, "r", encoding="utf-8") as f:
@@ -223,16 +224,118 @@ def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key:
     raise last_err if last_err else RuntimeError("Groq failed on all models.")
 
 
+CHECKER_INSTRUCTION = (
+    "You are an impartial, strict scientific fact-checker and undergraduate mentor.\n"
+    "A student wrote short summaries of research papers based on their abstracts.\n"
+    "You are given each paper's abstract along with the exact sentences written by the student in 'sentences_to_verify'.\n\n"
+    "CRITICAL RULES:\n"
+    "1. ONLY evaluate the specific sentences provided in 'sentences_to_verify'. DO NOT invent or extract any other claims from the abstract.\n"
+    "2. Give a verdict for EVERY sentence, including sentences that look wrong or silly. Never skip or drop a sentence. "
+    "A wrong sentence gets supported: false, it is not removed.\n"
+    "3. STRICT CHECK: A claim is supported (true) ONLY IF the abstract clearly and directly states it. If the abstract does not clearly say it, mark supported: false.\n"
+    "   Judge every sentence on its own. If a sentence adds ANY detail the abstract does not mention (a number, date, place, tool, test or result), it is NOT supported, even if the rest sounds right.\n"
+    "4. For each sentence in sentences_to_verify, output:\n"
+    "   - sentence_id: exact id matching input\n"
+    "   - claim: exact sentence text\n"
+    "   - supported: true or false (JSON boolean, not text)\n"
+    "   - evidence: the exact words copied from the abstract that prove the sentence. Copy them without changing anything. If no words in the abstract prove it, write \"\" and set supported: false.\n"
+    "   - reason: 1 brief sentence explaining why it is supported or unsupported according to the abstract.\n"
+    "5. Final Verified Text:\n"
+    "   - verified_ranking_reason: the verified reason sentence. If unsupported, rewrite it so it is 100% grounded in the abstract.\n"
+    "   - verified_explanation: the verified explanation sentences combined (2-3 sentences). Leave out or correct any unsupported claims HERE, but still list every sentence in results.\n"
+    "   - Writing style: Friendly senior talking to a 2nd-year student who has never read a research paper. Short sentences. Explain any technical term in brackets [like this] the first time (e.g. GUI [graphical user interface, like phone buttons and screens]). NO em dashes. NO hype words."
+)
+
+
+def build_checker_prompt(audit_items: List[dict]) -> str:
+    """Write the message for the checker. It says exactly how many verdicts we expect."""
+    total = sum(len(item["sentences_to_verify"]) for item in audit_items)
+    return (
+        f"Fact-check these {len(audit_items)} papers. There are {total} sentences in total, "
+        f"so the results lists must contain {total} verdicts altogether, one for every sentence_id.\n\n"
+        f"{json.dumps(audit_items, indent=2)}\n\n"
+        f"Return a JSON object with one key, \"papers\", holding exactly {len(audit_items)} objects matching this schema:\n"
+        '{"papers": [\n'
+        "  {\n"
+        '    "id": "<paper id, copied exactly>",\n'
+        '    "results": [\n'
+        "      {\n"
+        '        "sentence_id": "<s1, s2, etc>",\n'
+        '        "claim": "<exact sentence text>",\n'
+        '        "supported": true or false,\n'
+        '        "evidence": "<exact words copied from the abstract, or empty>",\n'
+        '        "reason": "<why supported or unsupported>"\n'
+        "      }\n"
+        "    ],\n"
+        '    "verified_ranking_reason": "<grounded 1-line reason, plain words, brackets for technical terms, no hype, no em dashes>",\n'
+        '    "verified_explanation": "<grounded 2-3 sentence explanation, plain words, brackets for technical terms, no hype, no em dashes>"\n'
+        "  }\n"
+        "]}"
+    )
+
+
+def parse_checker_reply(raw_response: str, asked_ids: List[str]) -> Tuple[Dict[str, list], Dict[str, str], Dict[str, str]]:
+    """
+    Read the checker's JSON reply and sort the verdicts by paper.
+    The AI may write the paper id a little differently (e.g. "2610.12345v1"),
+    so we also accept an id that contains ours, and finally fall back to the order we asked in.
+    """
+    parsed = extract_json_from_text(raw_response)
+    if isinstance(parsed, dict):
+        for val in parsed.values():
+            if isinstance(val, list):
+                parsed = val
+                break
+    if not isinstance(parsed, list):
+        raise ValueError(f"Expected JSON list from Groq verification, got {type(parsed)}")
+
+    results = {pid: [] for pid in asked_ids}
+    reasons, explanations = {}, {}
+    for position, item in enumerate(parsed):
+        if not isinstance(item, dict):
+            continue
+        returned_id = str(item.get("id", "")).strip()
+        pid = next((d for d in asked_ids if d == returned_id), None)
+        if pid is None:
+            pid = next((d for d in asked_ids if d and d in returned_id), None)
+        if pid is None and position < len(asked_ids):
+            pid = asked_ids[position]
+        if pid is None:
+            continue
+
+        if isinstance(item.get("results"), list):
+            results[pid].extend(r for r in item["results"] if isinstance(r, dict))
+            if item.get("verified_ranking_reason"):
+                reasons[pid] = item["verified_ranking_reason"]
+            if item.get("verified_explanation"):
+                explanations[pid] = item["verified_explanation"]
+        elif "sentence_id" in item:
+            results[pid].append(item)
+    return results, reasons, explanations
+
+
+def find_missing(audit_items: List[dict], results: Dict[str, list]) -> List[dict]:
+    """Return audit items holding only the sentences the checker gave no verdict for."""
+    missing_items = []
+    for item in audit_items:
+        got = {str(r.get("sentence_id", "")).strip().lower() for r in results.get(item["id"], [])}
+        missing = [s for s in item["sentences_to_verify"] if s["sentence_id"].lower() not in got]
+        if missing:
+            missing_items.append(dict(item, sentences_to_verify=missing))
+    return missing_items
+
+
 def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_mode: bool = False) -> Tuple[List[dict], str, Optional[Dict[str, Any]]]:
     """
-    Executes exactly ONE AI call with Groq to strictly cross-check explanations against paper abstracts.
-    Evaluates ONLY our own sentences (one claim per sentence).
+    Uses Groq to strictly cross-check our sentences against the paper abstracts.
+    Normally ONE AI call. If the checker skips any sentence, we ask once more,
+    only about the skipped sentences (a second, smaller call).
     """
-    logger.info("--- Verification Call 1/1: Strictly fact-checking draft against original abstracts via Groq ---")
+    logger.info("--- Verification: Strictly fact-checking draft against original abstracts via Groq ---")
 
     models_cfg = config.get("models", {})
-    groq_primary = models_cfg.get("groq", "llama-3.3-70b-versatile")
-    groq_fallback = models_cfg.get("groq_fallback", "openai/gpt-oss-120b")
+    groq_primary = models_cfg.get("groq", "openai/gpt-oss-120b")
+    groq_fallback = models_cfg.get("groq_fallback", "openai/gpt-oss-20b")
 
     # Prepare sentence-by-sentence audit payload
     audit_items = []
@@ -247,11 +350,12 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         reason_sentences = split_into_sentences(reason)
         exp_sentences = split_into_sentences(explanation)
 
-        # In canary mode, inject one clearly false sentence into each paper
+        # In canary mode, hide one clearly false sentence in each paper.
+        # Its place is random, so the checker can't learn "the last sentence is the trap".
         canary_sentence = None
         if canary_mode:
             canary_sentence = CANARY_SENTENCES[idx % len(CANARY_SENTENCES)]
-            exp_sentences.append(canary_sentence)
+            exp_sentences.insert(random.randint(0, len(exp_sentences)), canary_sentence)
 
         sentences_to_verify = []
         s_count = 1
@@ -286,99 +390,46 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
             "sentences_to_verify": sentences_to_verify
         })
 
-    system_instruction = (
-        "You are an impartial, strict scientific fact-checker and undergraduate mentor.\n"
-        "A student wrote short summaries of 5 research papers based on their abstracts.\n"
-        "You are given each paper's abstract along with the exact sentences written by the student in 'sentences_to_verify'.\n\n"
-        "CRITICAL RULES:\n"
-        "1. ONLY evaluate the specific sentences provided in 'sentences_to_verify'. DO NOT invent or extract any other claims from the abstract.\n"
-        "2. STRICT CHECK: A claim is supported (true) ONLY IF the abstract clearly and directly states it. If the abstract does not clearly say it, mark supported: false.\n"
-        "   Judge every sentence on its own. If a sentence adds ANY detail the abstract does not mention (a number, date, place, tool, test or result), it is NOT supported, even if the rest sounds right.\n"
-        "3. For each sentence in sentences_to_verify, output:\n"
-        "   - sentence_id: exact id matching input\n"
-        "   - claim: exact sentence text\n"
-        "   - supported: true or false (JSON boolean, not text)\n"
-        "   - evidence: the exact words copied from the abstract that prove the sentence. Copy them without changing anything. If no words in the abstract prove it, write \"\" and set supported: false.\n"
-        "   - reason: 1 brief sentence explaining why it is supported or unsupported according to the abstract.\n"
-        "4. Output claims_checked (total count of sentences evaluated) and claims_supported (count of sentences where supported == true).\n"
-        "5. Final Verified Text:\n"
-        "   - verified_ranking_reason: the verified reason sentence. If unsupported, rewrite it so it is 100% grounded in the abstract.\n"
-        "   - verified_explanation: the verified explanation sentences combined (2-3 sentences). Exclude or correct any unsupported claims.\n"
-        "   - Writing style: Friendly senior talking to a 2nd-year student who has never read a research paper. Short sentences. Explain any technical term in brackets [like this] the first time (e.g. GUI [graphical user interface, like phone buttons and screens]). NO em dashes (—). NO hype words."
-    )
+    draft_ids = [p["id"] for p in draft_papers]
+    total_sentences = sum(len(s) for s in sentences_by_paper.values())
 
-    prompt = (
-        f"Fact-check these 5 papers:\n\n"
-        f"{json.dumps(audit_items, indent=2)}\n\n"
-        "Return a JSON object with one key, \"papers\", holding exactly 5 objects matching this schema:\n"
-        '{"papers": [\n'
-        "  {\n"
-        '    "id": "<paper id, copied exactly>",\n'
-        '    "claims_checked": <int>,\n'
-        '    "claims_supported": <int>,\n'
-        '    "results": [\n'
-        "      {\n"
-        '        "sentence_id": "<s1, s2, etc>",\n'
-        '        "claim": "<exact sentence text>",\n'
-        '        "supported": true or false,\n'
-        '        "evidence": "<exact words copied from the abstract, or empty>",\n'
-        '        "reason": "<why supported or unsupported>"\n'
-        "      }\n"
-        "    ],\n"
-        '    "verified_ranking_reason": "<grounded 1-line reason, plain words, brackets for technical terms, no hype, no em dashes>",\n'
-        '    "verified_explanation": "<grounded 2-3 sentence explanation, plain words, brackets for technical terms, no hype, no em dashes>"\n'
-        "  }\n"
-        "]}"
-    )
-
+    # Call 1: check every sentence
     raw_response, provider = call_groq(
-        prompt=prompt,
-        system_instruction=system_instruction,
+        prompt=build_checker_prompt(audit_items),
+        system_instruction=CHECKER_INSTRUCTION,
         primary_model=groq_primary,
         api_key=groq_key,
         fallback_model=groq_fallback
     )
+    paper_results, paper_reasons, paper_exps = parse_checker_reply(raw_response, draft_ids)
 
-    parsed = extract_json_from_text(raw_response)
-    if isinstance(parsed, dict):
-        for val in parsed.values():
-            if isinstance(val, list):
-                parsed = val
-                break
+    missing_items = find_missing(audit_items, paper_results)
+    missing_count = sum(len(i["sentences_to_verify"]) for i in missing_items)
+    logger.info(f"Checker gave verdicts for {total_sentences - missing_count} of {total_sentences} sentences.")
 
-    if not isinstance(parsed, list):
-        raise ValueError(f"Expected JSON list from Groq verification, got {type(parsed)}")
+    # Call 2 (only if needed): ask again, only about the skipped sentences
+    if missing_items:
+        logger.info(f"Asking the checker once more about the {missing_count} skipped sentences...")
+        try:
+            raw_retry, retry_provider = call_groq(
+                prompt=build_checker_prompt(missing_items),
+                system_instruction=CHECKER_INSTRUCTION,
+                primary_model=groq_primary,
+                api_key=groq_key,
+                fallback_model=groq_fallback
+            )
+            retry_results, _, _ = parse_checker_reply(raw_retry, [i["id"] for i in missing_items])
+            for pid, extra in retry_results.items():
+                paper_results[pid].extend(extra)
+            if retry_provider != provider:
+                provider = f"{provider} + {retry_provider}"
+            still_missing = sum(len(i["sentences_to_verify"]) for i in find_missing(audit_items, paper_results))
+            logger.info(f"After asking again: verdicts for {total_sentences - still_missing} of {total_sentences} sentences.")
+        except Exception as e:
+            logger.warning(f"Second checker call failed: {e}. Skipped sentences will count as not supported.")
 
-    # Collect the checker's answers for each paper.
-    # The AI may write the paper id a little differently (e.g. "2610.12345v1"),
-    # so we also accept an id that contains ours, and finally fall back to the order.
-    draft_ids = [p["id"] for p in draft_papers]
-    paper_results = {pid: [] for pid in draft_ids}
-    paper_reasons = {}
-    paper_exps = {}
-
-    for position, item in enumerate(parsed):
-        if not isinstance(item, dict):
-            continue
-        returned_id = str(item.get("id", "")).strip()
-        pid = next((d for d in draft_ids if d == returned_id), None)
-        if pid is None:
-            pid = next((d for d in draft_ids if d and d in returned_id), None)
-        if pid is None and position < len(draft_ids):
-            pid = draft_ids[position]
-        if pid is None:
-            continue
-
-        if isinstance(item.get("results"), list):
-            paper_results[pid].extend(r for r in item["results"] if isinstance(r, dict))
-            if item.get("verified_ranking_reason"):
-                paper_reasons[pid] = item["verified_ranking_reason"]
-            if item.get("verified_explanation"):
-                paper_exps[pid] = item["verified_explanation"]
-        elif "sentence_id" in item:
-            paper_results[pid].append(item)
-
-    canary_results = {"caught": 0, "no_verdict": 0, "total": len(canary_tracking), "details": []} if canary_mode else None
+    canary_results = {"caught": 0, "no_verdict": 0, "total": len(canary_tracking), "details": [],
+                      "sentences": total_sentences, "verdicts": 0} if canary_mode else None
 
     verified_papers = []
     for p in draft_papers:
@@ -436,6 +487,8 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
 
         claims_checked = len(checked)
         claims_supported = sum(1 for c in checked if c["supported"])
+        if canary_mode:
+            canary_results["verdicts"] += sum(1 for c in checked if not c.get("no_verdict"))
 
         verified_exp = clean_plain_language(paper_exps.get(pid) or p.get("explanation", ""))
         verified_reason = clean_plain_language(paper_reasons.get(pid) or p.get("ranking_reason", ""))
@@ -533,6 +586,7 @@ def main():
         total = canary_results["total"]
         score_pct = (caught / total) * 100 if total > 0 else 0
         print(f"  Checked by  : {verifier}")
+        print(f"  Verdicts    : {canary_results['verdicts']} of {canary_results['sentences']} sentences answered by the checker")
         print(f"  Canary Score: {caught} / {total} false sentences caught ({score_pct:.0f}%)")
         if canary_results["no_verdict"]:
             print(f"  ({canary_results['no_verdict']} of these got no verdict from the checker and were blocked by our code)")
