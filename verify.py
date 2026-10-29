@@ -5,6 +5,9 @@ The Scholar's Desk - Step 3: Strict Fact-Checking & Verification
 1. Extracts claims ONLY from our text (why_picked / ranking_reason and explanation),
    one claim per sentence. Never adds claims from the abstract that we didn't write.
 2. Strict verification: if the abstract does not clearly say it, marks it unsupported.
+   The checker must also copy the exact words from the abstract that prove each sentence,
+   and our code confirms those words really are there. No proof, no "supported".
+   Any sentence the checker skips counts as not supported.
 3. Writing style:
    - Plain language for a 2nd-year student who has never read a research paper.
    - Short sentences.
@@ -147,6 +150,32 @@ def split_into_sentences(text: str) -> List[str]:
     return [p.strip() for p in parts if p.strip()]
 
 
+def to_bool(value: Any) -> bool:
+    """The AI sometimes writes false as text ("false"). Turn any form into a real True/False."""
+    if isinstance(value, str):
+        return value.strip().lower() in ("true", "yes", "supported")
+    return bool(value)
+
+
+def normalize_for_match(text: str) -> str:
+    """Lowercase and keep only letters and numbers, so small punctuation changes don't matter."""
+    return re.sub(r"[^a-z0-9]+", " ", (text or "").lower()).strip()
+
+
+def evidence_in_abstract(evidence: str, abstract: str, min_words: int = 4) -> bool:
+    """
+    The checker must copy the words from the abstract that prove a sentence.
+    Here our own code confirms those words really are in the abstract.
+    A quote with "..." in it is split, and every part must be found.
+    """
+    parts = [normalize_for_match(p) for p in re.split(r"\.\.\.|\u2026", evidence or "")]
+    parts = [p for p in parts if p]
+    if not parts or sum(len(p.split()) for p in parts) < min_words:
+        return False
+    abstract_norm = normalize_for_match(abstract)
+    return all(p in abstract_norm for p in parts)
+
+
 def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key: str, fallback_model: Optional[str] = None) -> Tuple[str, str]:
     """Call Groq API with model fallback."""
     url = "https://api.groq.com/openai/v1/chat/completions"
@@ -208,6 +237,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
     # Prepare sentence-by-sentence audit payload
     audit_items = []
     canary_tracking = {}
+    sentences_by_paper = {}
 
     for idx, p in enumerate(draft_papers):
         paper_id = p["id"]
@@ -247,6 +277,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
 
         if canary_mode and canary_sentence:
             canary_tracking[paper_id] = (canary_sid, canary_sentence)
+        sentences_by_paper[paper_id] = sentences_to_verify
 
         audit_items.append({
             "id": paper_id,
@@ -262,10 +293,12 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         "CRITICAL RULES:\n"
         "1. ONLY evaluate the specific sentences provided in 'sentences_to_verify'. DO NOT invent or extract any other claims from the abstract.\n"
         "2. STRICT CHECK: A claim is supported (true) ONLY IF the abstract clearly and directly states it. If the abstract does not clearly say it, mark supported: false.\n"
+        "   Judge every sentence on its own. If a sentence adds ANY detail the abstract does not mention (a number, date, place, tool, test or result), it is NOT supported, even if the rest sounds right.\n"
         "3. For each sentence in sentences_to_verify, output:\n"
         "   - sentence_id: exact id matching input\n"
         "   - claim: exact sentence text\n"
-        "   - supported: true or false\n"
+        "   - supported: true or false (JSON boolean, not text)\n"
+        "   - evidence: the exact words copied from the abstract that prove the sentence. Copy them without changing anything. If no words in the abstract prove it, write \"\" and set supported: false.\n"
         "   - reason: 1 brief sentence explaining why it is supported or unsupported according to the abstract.\n"
         "4. Output claims_checked (total count of sentences evaluated) and claims_supported (count of sentences where supported == true).\n"
         "5. Final Verified Text:\n"
@@ -280,7 +313,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         "Return a JSON object with one key, \"papers\", holding exactly 5 objects matching this schema:\n"
         '{"papers": [\n'
         "  {\n"
-        '    "id": "<paper id>",\n'
+        '    "id": "<paper id, copied exactly>",\n'
         '    "claims_checked": <int>,\n'
         '    "claims_supported": <int>,\n'
         '    "results": [\n'
@@ -288,6 +321,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         '        "sentence_id": "<s1, s2, etc>",\n'
         '        "claim": "<exact sentence text>",\n'
         '        "supported": true or false,\n'
+        '        "evidence": "<exact words copied from the abstract, or empty>",\n'
         '        "reason": "<why supported or unsupported>"\n'
         "      }\n"
         "    ],\n"
@@ -315,69 +349,93 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
     if not isinstance(parsed, list):
         raise ValueError(f"Expected JSON list from Groq verification, got {type(parsed)}")
 
-    # Handle both nested {"id": ..., "results": [...]} and flat [{"id": ..., "sentence_id": ..., ...}]
-    paper_results = {p["id"]: [] for p in draft_papers}
+    # Collect the checker's answers for each paper.
+    # The AI may write the paper id a little differently (e.g. "2610.12345v1"),
+    # so we also accept an id that contains ours, and finally fall back to the order.
+    draft_ids = [p["id"] for p in draft_papers]
+    paper_results = {pid: [] for pid in draft_ids}
     paper_reasons = {}
     paper_exps = {}
 
-    for item in parsed:
+    for position, item in enumerate(parsed):
         if not isinstance(item, dict):
             continue
-        pid = str(item.get("id", "")).strip()
-        if pid not in paper_results:
+        returned_id = str(item.get("id", "")).strip()
+        pid = next((d for d in draft_ids if d == returned_id), None)
+        if pid is None:
+            pid = next((d for d in draft_ids if d and d in returned_id), None)
+        if pid is None and position < len(draft_ids):
+            pid = draft_ids[position]
+        if pid is None:
             continue
 
-        if "results" in item and isinstance(item["results"], list):
-            for r in item["results"]:
-                paper_results[pid].append(r)
+        if isinstance(item.get("results"), list):
+            paper_results[pid].extend(r for r in item["results"] if isinstance(r, dict))
             if item.get("verified_ranking_reason"):
                 paper_reasons[pid] = item["verified_ranking_reason"]
             if item.get("verified_explanation"):
                 paper_exps[pid] = item["verified_explanation"]
         elif "sentence_id" in item:
-            sup = item.get("supported")
-            if sup is None:
-                sup = item.get("verdict")
-            paper_results[pid].append({
-                "sentence_id": item.get("sentence_id"),
-                "claim": item.get("claim", ""),
-                "supported": bool(sup),
-                "reason": item.get("reason", "")
-            })
+            paper_results[pid].append(item)
 
-    canary_results = {"caught": 0, "total": len(canary_tracking), "details": []} if canary_mode else None
+    canary_results = {"caught": 0, "no_verdict": 0, "total": len(canary_tracking), "details": []} if canary_mode else None
 
     verified_papers = []
-    for idx, p in enumerate(draft_papers):
+    for p in draft_papers:
         pid = p["id"]
-        results_list = paper_results.get(pid, [])
+        returned = {str(r.get("sentence_id", "")).strip().lower(): r for r in paper_results.get(pid, [])}
 
-        # Check canary detection if in canary mode
+        # Go through EVERY sentence we sent, not only the ones the AI sent back.
+        # A sentence is supported only if (1) the AI says so AND (2) its proof quote is really in the abstract.
+        checked = []
+        for s in sentences_by_paper.get(pid, []):
+            r = returned.get(s["sentence_id"].lower())
+            if r is None:
+                checked.append({
+                    "sentence_id": s["sentence_id"],
+                    "claim": s["text"],
+                    "supported": False,
+                    "evidence": "",
+                    "reason": "The checker gave no verdict for this sentence, so it counts as not supported.",
+                    "no_verdict": True
+                })
+                continue
+
+            ai_says_supported = to_bool(r.get("supported", r.get("verdict")))
+            evidence = str(r.get("evidence") or "")
+            proof_found = evidence_in_abstract(evidence, p.get("abstract", ""))
+            reason = str(r.get("reason") or "")
+            if ai_says_supported and not proof_found:
+                reason = "The checker said supported, but its proof quote is not in the abstract. " + reason
+
+            checked.append({
+                "sentence_id": s["sentence_id"],
+                "claim": s["text"],
+                "supported": ai_says_supported and proof_found,
+                "evidence": evidence,
+                "reason": reason.strip()
+            })
+
+        # Canary mode: did the planted false sentence get marked NOT supported?
         if canary_mode and pid in canary_tracking:
             target_sid, fake_sent = canary_tracking[pid]
-            caught_this = False
-            for r in results_list:
-                r_sid = str(r.get("sentence_id", "")).lower()
-                r_claim = str(r.get("claim", "")).lower()
-
-                # Find the injected sentence by its id or its exact text only
-                is_canary = (
-                    r_sid == str(target_sid).lower() or
-                    fake_sent.lower() in r_claim
-                )
-                if is_canary:
-                    if not r.get("supported", False):
-                        caught_this = True
-                    break
-
+            result = next((c for c in checked if c["sentence_id"] == target_sid), None)
+            caught_this = result is not None and not result["supported"]
+            no_verdict = bool(result and result.get("no_verdict"))
             if caught_this:
                 canary_results["caught"] += 1
-                canary_results["details"].append({"id": pid, "caught": True, "sentence": fake_sent})
-            else:
-                canary_results["details"].append({"id": pid, "caught": False, "sentence": fake_sent})
+            if no_verdict:
+                canary_results["no_verdict"] += 1
+            canary_results["details"].append({
+                "id": pid,
+                "caught": caught_this,
+                "no_verdict": no_verdict,
+                "sentence": fake_sent,
+                "reason": result["reason"] if result else ""
+            })
 
-        claims_checked = len(results_list)
-        claims_supported = sum(1 for c in results_list if c.get("supported", False))
+        claims_checked = len(checked)
+        claims_supported = sum(1 for c in checked if c["supported"])
 
         verified_exp = clean_plain_language(paper_exps.get(pid) or p.get("explanation", ""))
         verified_reason = clean_plain_language(paper_reasons.get(pid) or p.get("ranking_reason", ""))
@@ -392,7 +450,7 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         v_paper["explanation"] = verified_exp
         v_paper["claims_checked"] = claims_checked
         v_paper["claims_supported"] = claims_supported
-        v_paper["claims"] = results_list
+        v_paper["claims"] = checked
         v_paper["project_idea"] = proj
         v_paper["verified_by"] = provider
 
@@ -474,14 +532,24 @@ def main():
         caught = canary_results["caught"]
         total = canary_results["total"]
         score_pct = (caught / total) * 100 if total > 0 else 0
+        print(f"  Checked by  : {verifier}")
         print(f"  Canary Score: {caught} / {total} false sentences caught ({score_pct:.0f}%)")
+        if canary_results["no_verdict"]:
+            print(f"  ({canary_results['no_verdict']} of these got no verdict from the checker and were blocked by our code)")
         print("  (Note: Canary results are NOT saved to digest.json)")
         print("=" * 75 + "\n")
 
         for d in canary_results["details"]:
-            status = "CAUGHT (MARKED NOT SUPPORTED)" if d["caught"] else "MISSED (MARKED SUPPORTED)"
+            if d["no_verdict"]:
+                status = "CAUGHT BY OUR CODE (CHECKER GAVE NO VERDICT)"
+            elif d["caught"]:
+                status = "CAUGHT (MARKED NOT SUPPORTED)"
+            else:
+                status = "MISSED (MARKED SUPPORTED)"
             print(f"  [{status}] ID: {d['id']}")
             print(f"    Injected False Sentence: \"{d['sentence']}\"")
+            if d.get("reason"):
+                print(f"    Checker's reason: {d['reason']}")
         print("\n" + "=" * 75 + "\n")
         return
 
