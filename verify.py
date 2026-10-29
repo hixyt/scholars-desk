@@ -177,13 +177,26 @@ def evidence_in_abstract(evidence: str, abstract: str, min_words: int = 4) -> bo
     return all(p in abstract_norm for p in parts)
 
 
-def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key: str, fallback_model: Optional[str] = None) -> Tuple[str, str]:
-    """Call Groq API with model fallback."""
+def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key: str,
+              fallback_model: Optional[str] = None, json_schema: Optional[dict] = None) -> Tuple[str, str]:
+    """
+    Call Groq API with model fallback.
+    If json_schema is given, we use Groq's "Structured Outputs" in strict mode:
+    Groq forces the model to follow our exact JSON shape, so the reply can't be broken JSON.
+    """
     url = "https://api.groq.com/openai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
+
+    if json_schema:
+        response_format = {
+            "type": "json_schema",
+            "json_schema": {"name": "fact_check", "strict": True, "schema": json_schema}
+        }
+    else:
+        response_format = {"type": "json_object"}
 
     models_to_try = [primary_model]
     if fallback_model and fallback_model != primary_model:
@@ -199,11 +212,11 @@ def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key:
                 {"role": "user", "content": prompt}
             ],
             "temperature": 0.1,  # Low temperature for strict factual verification
-            "response_format": {"type": "json_object"}
+            "response_format": response_format
         }
         for attempt in (1, 2):
             try:
-                resp = requests.post(url, headers=headers, json=payload, timeout=60)
+                resp = requests.post(url, headers=headers, json=payload, timeout=120)
                 if resp.status_code == 200:
                     data = resp.json()
                     content = data["choices"][0]["message"]["content"]
@@ -212,6 +225,8 @@ def call_groq(prompt: str, system_instruction: str, primary_model: str, api_key:
                     logger.warning(f"Groq rate limit reached (429). Waiting 14s before retry...")
                     import time
                     time.sleep(14)
+                elif resp.status_code == 400 and "json_validate_failed" in resp.text and attempt == 1:
+                    logger.warning(f"Groq model '{m}' wrote invalid JSON. Trying the same model once more...")
                 else:
                     last_err = RuntimeError(f"Groq HTTP {resp.status_code}: {resp.text}")
                     logger.warning(f"Groq model '{m}' returned status {resp.status_code}: {resp.text}")
@@ -234,17 +249,54 @@ CHECKER_INSTRUCTION = (
     "A wrong sentence gets supported: false, it is not removed.\n"
     "3. STRICT CHECK: A claim is supported (true) ONLY IF the abstract clearly and directly states it. If the abstract does not clearly say it, mark supported: false.\n"
     "   Judge every sentence on its own. If a sentence adds ANY detail the abstract does not mention (a number, date, place, tool, test or result), it is NOT supported, even if the rest sounds right.\n"
-    "4. For each sentence in sentences_to_verify, output:\n"
+    "4. For each sentence in sentences_to_verify, output (in this order):\n"
     "   - sentence_id: exact id matching input\n"
-    "   - claim: exact sentence text\n"
-    "   - supported: true or false (JSON boolean, not text)\n"
-    "   - evidence: the exact words copied from the abstract that prove the sentence. Copy them without changing anything. If no words in the abstract prove it, write \"\" and set supported: false.\n"
+    "   - evidence: the exact words copied from the abstract that prove the sentence. Copy them without changing anything. If no words in the abstract prove it, write \"\".\n"
     "   - reason: 1 brief sentence explaining why it is supported or unsupported according to the abstract.\n"
+    "   - supported: true or false. If evidence is empty, supported must be false.\n"
     "5. Final Verified Text:\n"
     "   - verified_ranking_reason: the verified reason sentence. If unsupported, rewrite it so it is 100% grounded in the abstract.\n"
     "   - verified_explanation: the verified explanation sentences combined (2-3 sentences). Leave out or correct any unsupported claims HERE, but still list every sentence in results.\n"
     "   - Writing style: Friendly senior talking to a 2nd-year student who has never read a research paper. Short sentences. Explain any technical term in brackets [like this] the first time (e.g. GUI [graphical user interface, like phone buttons and screens]). NO em dashes. NO hype words."
 )
+
+
+# The exact JSON shape the checker must return. Groq enforces it (strict mode).
+# Order matters: the model first copies the proof, then explains, and only then decides.
+CHECKER_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "papers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "sentence_id": {"type": "string"},
+                                "evidence": {"type": "string"},
+                                "reason": {"type": "string"},
+                                "supported": {"type": "boolean"}
+                            },
+                            "required": ["sentence_id", "evidence", "reason", "supported"],
+                            "additionalProperties": False
+                        }
+                    },
+                    "verified_ranking_reason": {"type": "string"},
+                    "verified_explanation": {"type": "string"}
+                },
+                "required": ["id", "results", "verified_ranking_reason", "verified_explanation"],
+                "additionalProperties": False
+            }
+        }
+    },
+    "required": ["papers"],
+    "additionalProperties": False
+}
 
 
 def build_checker_prompt(audit_items: List[dict]) -> str:
@@ -261,10 +313,9 @@ def build_checker_prompt(audit_items: List[dict]) -> str:
         '    "results": [\n'
         "      {\n"
         '        "sentence_id": "<s1, s2, etc>",\n'
-        '        "claim": "<exact sentence text>",\n'
-        '        "supported": true or false,\n'
         '        "evidence": "<exact words copied from the abstract, or empty>",\n'
-        '        "reason": "<why supported or unsupported>"\n'
+        '        "reason": "<why supported or unsupported>",\n'
+        '        "supported": true or false\n'
         "      }\n"
         "    ],\n"
         '    "verified_ranking_reason": "<grounded 1-line reason, plain words, brackets for technical terms, no hype, no em dashes>",\n'
@@ -399,7 +450,8 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
         system_instruction=CHECKER_INSTRUCTION,
         primary_model=groq_primary,
         api_key=groq_key,
-        fallback_model=groq_fallback
+        fallback_model=groq_fallback,
+        json_schema=CHECKER_SCHEMA
     )
     paper_results, paper_reasons, paper_exps = parse_checker_reply(raw_response, draft_ids)
 
@@ -416,7 +468,8 @@ def verify_papers(draft_papers: List[dict], config: dict, groq_key: str, canary_
                 system_instruction=CHECKER_INSTRUCTION,
                 primary_model=groq_primary,
                 api_key=groq_key,
-                fallback_model=groq_fallback
+                fallback_model=groq_fallback,
+                json_schema=CHECKER_SCHEMA
             )
             retry_results, _, _ = parse_checker_reply(raw_retry, [i["id"] for i in missing_items])
             for pid, extra in retry_results.items():
