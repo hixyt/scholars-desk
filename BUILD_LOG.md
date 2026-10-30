@@ -9,12 +9,18 @@ A free robot that reads new AI papers daily, picks 5 and suggests a weekend proj
 - [x] Fetch papers
 - [x] Pick top 5
 - [x] Fact-checker
-- [ ] Daily email
+- [x] Daily email
 - [ ] Runs every morning
 - [ ] Website shows real papers
 - [ ] Launch
 
 ## Log
+
+**Day 3 · 30 Oct**
+- Built: send_email.py, a dark academia email with a plain-text copy, sent through Gmail with an App Password; website design draft with a 3D bookcase
+- Broke: the flat CSS bookshelf looked fake, rebuilt it in real 3D; mailto links do nothing on laptops with no mail app, switched to a Gmail link
+- Decided: the email only shows lines that passed the fact-check; email addresses never go in the logs, because Actions logs are public
+- Numbers: 5 papers → 21 KB email → 1 reader · ₹0
 
 **Day 2 · 29 Oct · 1.5h**
 - Built: 4-day arXiv window with a seen list, fact-checker that needs a proof quote, shared common.py
