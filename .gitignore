@@ -11,7 +11,7 @@ __pycache__/
 *$py.class
 
 # Email previews (python send_email.py --preview)
-data/*/email.html
+data/*/email*
 
 # Specific local files to ignore
 API KEY 1 .png
