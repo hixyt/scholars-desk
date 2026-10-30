@@ -1,14 +1,26 @@
-"""Turn the checked digest into the morning email.
+"""Turn the checked digest into the morning email and send it with Gmail.
 
 Run:  python send_email.py --preview    (writes data/<date>/email.html, sends nothing)
+      python send_email.py              (sends today's email)
+
+Needs GMAIL_ADDRESS and GMAIL_APP_PASSWORD in .env (or GitHub Secrets).
+EMAIL_TO is optional; without it the email goes to GMAIL_ADDRESS.
 """
 
 import argparse
 import html
 import json
+import os
 import re
+import smtplib
+import ssl
+import time
 from datetime import datetime, timezone
+from email.message import EmailMessage
+from email.utils import formataddr
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 from common import load_config, log
 
@@ -172,8 +184,39 @@ def build_subject(digest, config):
     return template.format(date=nice_date(digest["date"], "%a %d %b"), count=len(digest["papers"]))
 
 
+def send(subject, text, body_html, config):
+    """Send through Gmail. Returns how many people it went to (addresses stay out of the logs)."""
+    load_dotenv()
+    sender = os.getenv("GMAIL_ADDRESS", "").strip()
+    password = os.getenv("GMAIL_APP_PASSWORD", "").replace(" ", "")  # Google shows it in groups of four
+    to = [a.strip() for a in (os.getenv("EMAIL_TO") or sender).split(",") if a.strip()]
+    if not sender or not password:
+        raise SystemExit("GMAIL_ADDRESS or GMAIL_APP_PASSWORD is missing. Add them to .env (or GitHub Secrets).")
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = formataddr((config.get("email", {}).get("from_name", "The Scholar's Desk"), sender))
+    msg["To"] = sender
+    msg.set_content(text)
+    msg.add_alternative(body_html, subtype="html")
+
+    for attempt in (1, 2):
+        try:
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context(), timeout=30) as smtp:
+                smtp.login(sender, password)
+                smtp.send_message(msg, to_addrs=to)  # everyone else gets a blind copy
+            return len(to)
+        except smtplib.SMTPAuthenticationError:
+            raise SystemExit("Gmail refused the login. GMAIL_APP_PASSWORD must be an App Password, not your normal password.")
+        except (smtplib.SMTPException, OSError) as e:
+            if attempt == 2:
+                raise
+            log.warning(f"Sending failed ({e}), trying again in 15 seconds")
+            time.sleep(15)
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Build the morning email from the checked digest.")
+    parser = argparse.ArgumentParser(description="Build the morning email from the checked digest and send it.")
     parser.add_argument("--date", help="YYYY-MM-DD (default: today in UTC)")
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--config", default="config.yaml")
@@ -193,10 +236,15 @@ def main():
     config = load_config(args.config)
     subject, body_html = build_subject(digest, config), build_html(digest, config)
 
-    out = folder / "email.html"
-    out.write_text(body_html, encoding="utf-8")
     log.info(f"Subject: {subject}")
-    print(f"Preview saved to {out} ({len(body_html.encode('utf-8')) // 1024} KB). Open it in your browser.")
+    if args.preview:
+        out = folder / "email.html"
+        out.write_text(body_html, encoding="utf-8")
+        print(f"Preview saved to {out} ({len(body_html.encode('utf-8')) // 1024} KB). Open it in your browser.")
+        return
+
+    count = send(subject, build_text(digest, config), body_html, config)
+    print(f"Sent the {date} email with {len(digest['papers'])} papers to {count} reader{'s' if count != 1 else ''}.")
 
 
 if __name__ == "__main__":
