@@ -214,6 +214,10 @@ def main():
     folder.mkdir(parents=True, exist_ok=True)
     with open(folder / "raw.json", "w", encoding="utf-8") as f:
         json.dump(matched, f, indent=2, ensure_ascii=False)
+    stats = {"fetched": len(all_papers), "arxiv": len(arxiv_papers), "huggingface": len(hf_papers),
+             "already_seen": len(all_papers) - len(new_papers), "matched": len(matched)}
+    with open(folder / "stats.json", "w", encoding="utf-8") as f:  # the email shows these numbers
+        json.dump(stats, f, indent=2)
 
     print(f"\narXiv ({start:%Y-%m-%d} to {today_str}): {len(arxiv_papers)} papers")
     print(f"Hugging Face: {len(hf_papers)} papers")
