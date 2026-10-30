@@ -70,3 +70,11 @@ settings:
     rate_limit_seconds: 3.0
   huggingface:
     daily_papers_url: "https://huggingface.co/api/daily_papers"
+
+# Morning email (sent with Gmail; the address and app password live in .env / GitHub Secrets)
+email:
+  from_name: "The Scholar's Desk"
+  subject: "The Scholar's Desk · {date} · {count} papers"
+  signed_by: "Himani Dalvi"
+  repo_url: "https://github.com/hixyt/scholars-desk"
+  site_url: ""            # fill in once the website is live
