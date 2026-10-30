@@ -248,7 +248,6 @@ def build_html(digest, config, nums, banner_src=None):
                f'<tr><td align="center" style="padding:0 0 22px;font-family:{DISPLAY};font-size:28px;font-style:italic;color:{PARCHMENT};">{esc(day)}</td></tr>')
 
     signed = esc(em.get("signed_by") or "")
-    sign_name = signed.split()[0] if signed else ""
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">
@@ -273,13 +272,17 @@ Good morning. {count_words(len(papers))} came off the press. Every line on the c
 {contents(papers)}
 {"".join(paper_block(n, p) for n, p in enumerate(papers))}
 {struck_block(struck_lines(digest))}
-<tr><td style="padding:4px 0 26px;"><table {TABLE} style="border:1px solid {GOLD};border-radius:4px;"><tr><td align="center" style="padding:24px 24px 22px;">
-{kicker("Your move", GOLD, 12)}
-<div style="padding:10px 0 0;font-family:{SERIF};font-size:16px;line-height:1.65;color:{PARCHMENT};">Pick one weekend project and build it. Reply to this email with a screenshot of what you made.</div>
-{f'<div style="padding:16px 0 0;font-family:{DISPLAY};font-size:30px;font-style:italic;color:{GOLD_HI};">{sign_name}</div><div style="font-family:{CAPS};font-size:10px;letter-spacing:2px;text-transform:uppercase;color:{DIM};">Maker of the desk</div>' if sign_name else ""}
-</td></tr></table></td></tr>
-<tr><td align="center" style="padding:0 20px;font-family:{SERIF};font-size:13px;line-height:1.7;color:{DIM};">
-Picked and written by Gemini, checked line by line by Groq, sent by a small robot for &#8377;0.<br>{" &middot; ".join(links)}</td></tr>
+<tr><td align="center" style="padding:14px 0 18px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+<td width="90" style="border-top:1px solid {GOLD};font-size:1px;line-height:1px;">&nbsp;</td>
+<td style="padding:0 12px;font-family:{SERIF};font-size:11px;line-height:11px;color:{GOLD};">&#9670;</td>
+<td width="90" style="border-top:1px solid {GOLD};font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+<tr><td align="center" style="padding:0 24px 6px;font-family:{DISPLAY};font-size:20px;font-style:italic;color:{PARCHMENT};">Build one this weekend.</td></tr>
+<tr><td align="center" style="padding:0 24px 26px;font-family:{SERIF};font-size:14.5px;line-height:1.6;font-style:italic;color:{DIM};">Pick a project from today&rsquo;s cards, and reply with a screenshot of what you made.</td></tr>
+<tr><td align="center" style="padding:0 0 18px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+<td width="34" height="34" align="center" valign="middle" style="width:34px;height:34px;border-radius:50%;background:#7A2620;border:2px solid #62201B;font-family:{DISPLAY};font-size:13px;font-style:italic;font-weight:bold;color:{GOLD_HI};">SD</td>
+</tr></table></td></tr>
+<tr><td align="center" style="padding:0 20px;font-family:{SERIF};font-size:12.5px;line-height:1.7;color:{DIM};">
+Picked and written by Gemini, checked line by line by Groq, sent by a small robot for &#8377;0.<br>{" &middot; ".join(x for x in [signed and f"Made by {signed}"] + links if x)}</td></tr>
 <tr><td align="center" style="padding:16px 0 0;font-family:{DISPLAY};font-size:15px;font-style:italic;color:{GOLD};">See you tomorrow morning.</td></tr>
 </table></td></tr></table>
 </body></html>"""
@@ -311,7 +314,7 @@ def build_text(digest, config, nums):
         lines.append("STRUCK IN RED INK (the checker refused these):")
         lines += [f"   - \"{plain(c)}\" ({name}): {plain(r)}" for name, c, r in struck]
         lines.append("")
-    lines += ["Your move: pick one weekend project, build it, and reply with a screenshot.", "",
+    lines += ["Build one this weekend: pick a project and reply with a screenshot of what you made.", "",
               "Picked and written by Gemini, checked line by line by Groq, sent by a small robot for Rs 0."]
     if em.get("repo_url"):
         lines.append(f"Source: {em['repo_url']}")
