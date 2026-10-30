@@ -277,7 +277,7 @@ Good morning. {count_words(len(papers))} came off the press. Every line on the c
 <td style="padding:0 12px;font-family:{SERIF};font-size:11px;line-height:11px;color:{GOLD};">&#9670;</td>
 <td width="90" style="border-top:1px solid {GOLD};font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
 <tr><td align="center" style="padding:0 24px 6px;font-family:{DISPLAY};font-size:20px;font-style:italic;color:{PARCHMENT};">Build one this weekend.</td></tr>
-<tr><td align="center" style="padding:0 24px 26px;font-family:{SERIF};font-size:14.5px;line-height:1.6;font-style:italic;color:{DIM};">Pick a project from today&rsquo;s cards, and reply with a screenshot of what you made.</td></tr>
+<tr><td align="center" style="padding:0 24px 26px;font-family:{SERIF};font-size:14.5px;line-height:1.6;font-style:italic;color:{DIM};">Pick a project from today&rsquo;s cards. Small builds add up.</td></tr>
 <tr><td align="center" style="padding:0 0 18px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
 <td width="34" height="34" align="center" valign="middle" style="width:34px;height:34px;border-radius:50%;background:#7A2620;border:2px solid #62201B;font-family:{DISPLAY};font-size:13px;font-style:italic;font-weight:bold;color:{GOLD_HI};">SD</td>
 </tr></table></td></tr>
@@ -314,7 +314,7 @@ def build_text(digest, config, nums):
         lines.append("STRUCK IN RED INK (the checker refused these):")
         lines += [f"   - \"{plain(c)}\" ({name}): {plain(r)}" for name, c, r in struck]
         lines.append("")
-    lines += ["Build one this weekend: pick a project and reply with a screenshot of what you made.", "",
+    lines += ["Build one this weekend. Pick a project from today's cards. Small builds add up.", "",
               "Picked and written by Gemini, checked line by line by Groq, sent by a small robot for Rs 0."]
     if em.get("repo_url"):
         lines.append(f"Source: {em['repo_url']}")
