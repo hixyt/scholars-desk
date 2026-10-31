@@ -10,11 +10,17 @@ A free robot that reads new AI papers daily, picks 5 and suggests a weekend proj
 - [x] Pick top 5
 - [x] Fact-checker
 - [x] Daily email
-- [ ] Runs every morning
+- [x] Runs every morning
 - [ ] Website shows real papers
 - [ ] Launch
 
 ## Log
+
+**Day 4 · 31 Oct**
+- Built: GitHub Actions runs the whole desk at 6:17 AM every day and saves the day's papers to the repo; errors now show on the run page
+- Broke: the Groq secret had a hidden line break, so every request was refused; the Gmail secret had gone missing; one paper had 0 of 3 lines proven
+- Decided: keys are cleaned before use; a paper with no proven summary stays out of the email; a quiet day with no papers is not an error
+- Numbers: 1,141 papers (1,091 arXiv + 50 Hugging Face) → 45 already seen → 89 matched → 5 picked · 13 of 15 lines proven · run took 40s · ₹0
 
 **Day 3 · 30 Oct**
 - Built: send_email.py, a dark academia email with a plain-text copy, sent through Gmail with an App Password; website design draft with a 3D bookcase
