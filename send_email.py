@@ -59,6 +59,14 @@ def count_words(n):
     return f"{word} new AI paper{'s' if n != 1 else ''}"
 
 
+def left_out_note(digest):
+    n = len(digest.get("left_out") or [])
+    if not n:
+        return ""
+    return (f" {WORDS[n] if n < len(WORDS) else n} more paper{'s were' if n != 1 else ' was'} picked today but left out,"
+            f" because none of {'their' if n != 1 else 'its'} summary could be proven.")
+
+
 def short_title(title):
     return title.split(":")[0].strip()
 
@@ -84,8 +92,8 @@ def day_numbers(digest, folder, data_dir):
     papers = digest["papers"]
     nums = {
         "picked": len(papers),
-        "checked": sum(p.get("claims_checked") or 0 for p in papers),
-        "proven": sum(p.get("claims_supported") or 0 for p in papers),
+        "checked": sum(len(p.get("claims") or []) for p in papers + digest.get("left_out", [])),
+        "proven": sum(sum(1 for c in p.get("claims") or [] if c.get("supported")) for p in papers + digest.get("left_out", [])),
         "issue": sum(1 for d in Path(data_dir).glob("*/digest.json")  # days that had an email
                      if d.parent.name <= digest["date"] and json.loads(d.read_text(encoding="utf-8")).get("papers")),
     }
@@ -100,7 +108,7 @@ def day_numbers(digest, folder, data_dir):
 def struck_lines(digest):
     """Lines the checker refused today, with its reason."""
     out = []
-    for p in digest["papers"]:
+    for p in digest["papers"] + digest.get("left_out", []):
         for c in p.get("claims") or []:
             if not c.get("supported") and not c.get("no_verdict") and c.get("reason"):
                 out.append((spine_label(p["title"]), c["claim"], c["reason"]))
@@ -268,7 +276,7 @@ def build_html(digest, config, nums, banner_src=None):
 {top}
 <tr><td align="center" style="padding:0 0 6px;">{kicker(f"No. {nums['issue']} &nbsp;&middot;&nbsp; {esc(day)}", GOLD, 11)}</td></tr>
 <tr><td align="center" style="padding:6px 16px 24px;font-family:{SERIF};font-size:16px;line-height:1.65;font-style:italic;color:{DIM};">
-Good morning. {count_words(len(papers))} came off the press. Every line on the cards below was checked against the paper&rsquo;s own abstract, and each one comes with a project you can build this weekend.</td></tr>
+Good morning. {count_words(len(papers))} came off the press. The summaries below were checked line by line against each paper&rsquo;s own abstract, and every paper comes with a project you can build this weekend.{left_out_note(digest)}</td></tr>
 {ledger_row(nums)}
 {contents(papers)}
 {"".join(paper_block(n, p) for n, p in enumerate(papers))}
@@ -295,7 +303,8 @@ def build_text(digest, config, nums):
     plain = lambda s: re.sub(r"\s+", " ", s or "").strip()
     head = f"No. {nums['issue']} · {nice_date(digest['date'], '%A, %d %B %Y')}"
     lines = ["THE SCHOLAR'S DESK", head, "",
-             f"Good morning. {count_words(len(digest['papers']))}. Every line was checked against the paper's own abstract.", ""]
+             f"Good morning. {count_words(len(digest['papers']))}. The summaries were checked line by line against each paper's own abstract."
+             + html.unescape(left_out_note(digest)), ""]
     for n, p in enumerate(digest["papers"]):
         proj = p.get("project_idea") or {}
         lines += [f"{ROMAN[n]}. {p['title']}", f"   {short_authors(p.get('authors'))} · {p.get('url', '')}"]
@@ -335,8 +344,9 @@ def send(subject, text, body_html, config, banner=None):
     sender = os.getenv("GMAIL_ADDRESS", "").strip()
     password = "".join(os.getenv("GMAIL_APP_PASSWORD", "").split())  # no spaces or line breaks; Google shows it in groups of four
     to = [a.strip() for a in (os.getenv("EMAIL_TO") or sender).split(",") if a.strip()]
-    if not sender or not password:
-        raise SystemExit("GMAIL_ADDRESS or GMAIL_APP_PASSWORD is missing. Add them to .env (or GitHub Secrets).")
+    missing = [name for name, value in (("GMAIL_ADDRESS", sender), ("GMAIL_APP_PASSWORD", password)) if not value]
+    if missing:
+        raise SystemExit(f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'} missing. Add {'it' if len(missing) == 1 else 'them'} to .env (or GitHub Secrets).")
 
     msg = EmailMessage()
     msg["Subject"] = subject

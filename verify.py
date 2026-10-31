@@ -225,12 +225,17 @@ def main():
         print("Nothing was saved (canary mode).")
         return
 
+    # a paper whose summary has no proven sentence is left out; its struck lines are kept for the record
+    kept = [p for p in checked if p["explanation"]]
+    left_out = [{"id": p["id"], "title": p["title"], "url": p.get("url"), "claims": p["claims"]}
+                for p in checked if not p["explanation"]]
     digest = {
         "date": date,
         "verified_at": datetime.now(timezone.utc).isoformat(),
         "verifier": f"Groq ({model})",
         "status": "verified",
-        "papers": checked,
+        "papers": kept,
+        "left_out": left_out,
     }
     digest_path = folder / "digest.json"
     with open(digest_path, "w", encoding="utf-8") as f:
@@ -239,6 +244,8 @@ def main():
     for i, p in enumerate(checked, 1):
         print(f"\n[{i}] {p['title']}")
         print(f"    Supported: {p['claims_supported']} of {p['claims_checked']} sentences")
+        if not p["explanation"]:
+            print("    LEFT OUT OF THE DIGEST: no sentence of its summary could be proven")
         for c in p["claims"]:
             if not c["supported"]:
                 print(f"    - LEFT OUT: {c['claim']}")
