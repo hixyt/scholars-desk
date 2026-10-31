@@ -58,7 +58,8 @@ def load_config(path="config.yaml"):
 def load_keys():
     """API keys come from .env on my laptop, or from GitHub Secrets in Actions."""
     load_dotenv()
-    return os.getenv("GEMINI_API_KEY"), os.getenv("GROQ_API_KEY")
+    # a pasted secret can carry a hidden space or line break, which breaks the request
+    return tuple((os.getenv(name) or "").strip() or None for name in ("GEMINI_API_KEY", "GROQ_API_KEY"))
 
 
 HYPE_WORDS = {

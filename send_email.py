@@ -333,7 +333,7 @@ def send(subject, text, body_html, config, banner=None):
     """Send through Gmail. Returns how many people it went to (addresses stay out of the logs)."""
     load_dotenv()
     sender = os.getenv("GMAIL_ADDRESS", "").strip()
-    password = os.getenv("GMAIL_APP_PASSWORD", "").replace(" ", "")  # Google shows it in groups of four
+    password = "".join(os.getenv("GMAIL_APP_PASSWORD", "").split())  # no spaces or line breaks; Google shows it in groups of four
     to = [a.strip() for a in (os.getenv("EMAIL_TO") or sender).split(",") if a.strip()]
     if not sender or not password:
         raise SystemExit("GMAIL_ADDRESS or GMAIL_APP_PASSWORD is missing. Add them to .env (or GitHub Secrets).")
