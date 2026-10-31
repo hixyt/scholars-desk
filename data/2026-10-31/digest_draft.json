@@ -1,104 +1,12 @@
 {
   "date": "2026-10-31",
-  "generated_at": "2026-10-31T10:58:45.859785+00:00",
+  "generated_at": "2026-10-31T11:02:14.043363+00:00",
   "providers_used": [
     "Gemini (gemini-3.5-flash-lite)",
     "Gemini (gemini-3.5-flash-lite)"
   ],
   "status": "draft_unchecked",
   "papers": [
-    {
-      "id": "2610.40556",
-      "title": "Advancing Clinical Genomic Analysis with a Skill-Centred Agent",
-      "abstract": "Clinical genomic analysis requires experts to integrate evolving guidelines, databases, and computational evidence. As sequencing has become increasingly accessible, this complex and labor-intensive process has become a major bottleneck to the timely use of genomic information in clinical decision-making. To fill this gap, we developed ClinGeX, a large-language-model agent that composes 105 curated executable skills through task-specific retrieval and dependency-aware orchestration. On 223 temporally held-out benchmark cases, ClinGeX achieved 71.7\\% macro-averaged task-level concordance with expert reference classifications, compared with 45.7\\% for the strongest comparator. In a three-condition, counterbalanced human-AI collaboration study, 45 clinical genomic professionals assessed 135 clinically derived cases under routine (no AI assistance), DeepSeek-assisted and ClinGeX-assisted conditions. ClinGeX assistance increased raw case-level concordance across criterion-level variant analysis, genomic interpretation in rare disease and molecular oncology decision-making (51.1\\%, 57.8\\%, 64.4\\% versus 15.6\\%, 31.1\\%, 20.0\\% in comparator conditions) and reduced reported interpretation time in all scenarios. During an exploratory one-month real-world non-interventional assessment, 11 experienced professionals submitted feedback on 96 self-selected analysis episodes and reported frequent conclusion adoption and time savings. These findings support executable domain skills as a promising approach to augment specialist genomic interpretation.",
-      "authors": [
-        "Qiaoyu Zheng",
-        "Weike Zhao",
-        "Yanjie Fan",
-        "Ye Cao",
-        "Mengqi Jiang",
-        "Xiao Zhou",
-        "Xiaoman Zhang",
-        "Pengcheng Qiu",
-        "Yongguo Yu",
-        "Yanfeng Wang",
-        "Ya Zhang",
-        "Chaoyi Wu",
-        "Weidi Xie"
-      ],
-      "published": "2026-10-29T17:40:24Z",
-      "url": "https://arxiv.org/abs/2610.40556",
-      "pdf_url": "https://arxiv.org/pdf/2610.40556.pdf",
-      "categories": [
-        "cs.AI",
-        "q-bio.GN"
-      ],
-      "primary_category": "cs.AI",
-      "sources": [
-        "arxiv"
-      ],
-      "huggingface": null,
-      "matched_topics": [
-        "AI tools for non-programmers"
-      ],
-      "matched_keywords": [
-        "human-ai collaboration"
-      ],
-      "ranking_reason": "Shows how clinical workers use a skill-centered LLM agent to handle complex genomic data without coding.",
-      "explanation": "This paper built an AI assistant called ClinGeX to help doctors read DNA test results faster. It uses a collection of specific tools to check medical guidelines and patient data without making stuff up.",
-      "why_it_matters": "As a B.Tech student, you will see how wrapping an LLM [large language model, an AI that understands text] with specific software tools beats just prompting it blindly.",
-      "project_idea": {
-        "title": "Medical Fact Checker",
-        "description": "Write a python script that takes patient symptom notes and queries a small local database using keyword matching before sending anything to an LLM. This ensures the model only talks about verified facts.",
-        "difficulty": "Easy",
-        "time_estimate": "3-4 hours",
-        "no_code_version": "Use Google Sheets to store medical rules and Airtable automations to match user symptoms before triggering an OpenAI email summary."
-      }
-    },
-    {
-      "id": "2610.37916",
-      "title": "What Is the Role for Humans in Creative Writing? Creativity and Diversity in Human-AI Collaboration",
-      "abstract": "As AI agents increasingly participate in creative teamwork, writing emerges from hybrid human-AI teams. Although AI can improve the creativity of individual outputs, these gains may come at the cost of homogenization. What is the best role for human intervention? We introduce a transmission-chain paradigm inspired by cognitive models of writing, with four stages: Plan, Write, Review, and Revise. Each stage receives the previous output and passes its own forward. Using data from 333 participants across 427 stories, we compared creativity, diversity, and enjoyment across human, AI, and hybrid chains. Consistent with prior work, all-AI chains produced more creative but less diverse stories than all-human chains. Introducing a single human into an otherwise all-AI chain increased diversity depending on role. Human planning provided the best balance: it preserved AI-level creativity, increased diversity that persisted through downstream AI stages, and maintained enjoyment. We discuss implications for designing human-in-the-loop creative pipelines.",
-      "authors": [
-        "Chenyi Li",
-        "Haoyu Hu",
-        "Raja Marjieh",
-        "Katherine M Collins",
-        "Max Kreminski",
-        "Ilia Sucholutsky",
-        "Dalton Conley",
-        "Nori Jacoby"
-      ],
-      "published": "2026-10-27T19:59:00Z",
-      "url": "https://arxiv.org/abs/2610.37916",
-      "pdf_url": "https://arxiv.org/pdf/2610.37916.pdf",
-      "categories": [
-        "cs.HC"
-      ],
-      "primary_category": "cs.HC",
-      "sources": [
-        "arxiv"
-      ],
-      "huggingface": null,
-      "matched_topics": [
-        "AI tools for non-programmers",
-        "LLM agents for everyday work"
-      ],
-      "matched_keywords": [
-        "human-ai collaboration",
-        "ai agents"
-      ],
-      "ranking_reason": "Explores how humans and AI teams can write together while balancing creativity and variety.",
-      "explanation": "The researchers studied how humans and AI write stories together in stages like planning, writing, and reviewing. They found that letting the human handle the planning stage keeps the story creative and varied.",
-      "why_it_matters": "It teaches you that human-in-the-loop workflows work best when humans guide the creative direction instead of just fixing typos at the end.",
-      "project_idea": {
-        "title": "Step-by-Step Story Builder",
-        "description": "Build a web app where a user writes a story outline first, and Python code sends that outline to an API to generate only the next paragraph. The user must approve or edit each paragraph before the next one starts.",
-        "difficulty": "Easy",
-        "time_estimate": "4-5 hours",
-        "no_code_version": "Set up a multi-step Typeform that feeds a user outline into a ChatGPT node in Make, pausing for manual approval before writing the final chapter."
-      }
-    },
     {
       "id": "2610.33645",
       "title": "PreView: Enhancing GUI Grounding with Preprocessed Views and Cues",
@@ -126,15 +34,59 @@
       "matched_keywords": [
         "gui"
       ],
-      "ranking_reason": "Improves how graphical user interfaces are understood by AI using preprocessed views and visual cues.",
-      "explanation": "The authors created a helper tool called PreView that zooms in on tiny buttons and text inside phone screenshots. This helps standard vision AI models click the right spots on a screen without getting confused by clutter.",
-      "why_it_matters": "You learn how image preprocessing helps small AI models perform as well as massive, expensive ones.",
+      "ranking_reason": "This paper shows how to help AI understand phone and computer screens better so anyone can use them easily.",
+      "explanation": "This paper created a tool called PreView that helps AI look at cluttered phone and computer screens. It crops and enlarges small buttons and adds visual hints so the AI can click the right spot without needing extra training.",
+      "why_it_matters": "It teaches you how to improve computer vision inputs using simple preprocessing instead of retraining massive AI models from scratch.",
       "project_idea": {
-        "title": "UI Zoom Clipper",
-        "description": "Write a Python script using OpenCV to find text bounding boxes in a crowded app screenshot and crop out high-resolution closeups of those specific buttons.",
+        "title": "Smart Screenshot Cropper",
+        "description": "Write a Python script using OpenCV to find small icons in a cluttered screenshot and crop them into zoomed-in local views. This helps you practice image processing basics for computer interfaces.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an automated workflow tool with built-in image manipulation actions to crop and save specific regions of uploaded screenshots into a folder."
+      }
+    },
+    {
+      "id": "2610.39264",
+      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live IOS Apps",
+      "abstract": "While frontier vision-language models demonstrate strong capabilities in user interface (UI) navigation, their high inference costs prohibit everyday use. Conversely, smaller models trained via supervised fine-tuning (SFT) or offline reinforcement learning often memorize static trajectories, leading to brittle execution and an inability to recover from errors. To address these limitations, we propose a novel online reinforcement learning framework that trains UI navigation agents directly on live iOS applications. Our framework decouples the agent into two specialized components: a Planning agent and a UI Grounding model. We rely on an LLM-as-a-Judge to provide comprehensive reward signals, combining dense, step-level feedback to evaluate intermediate progress with a terminal reward for overall task completion. To effectively leverage this dual reward structure, we optimize the agent using Proximal Policy Optimization (PPO) with step-level advantage estimation. Furthermore, we introduce GiGPPO, a novel neighbor-conditioned value estimation method that improves critic stability by leveraging reward signals from visually similar states across concurrent trajectories. To support this online training paradigm at scale, we introduce an efficient infrastructure that orchestrates hundreds of concurrent virtual iOS devices. Evaluations on rigorous benchmarks, including UINavBench, iOSWorld, and AndroidWorld, demonstrate that our online RL trained agents substantially outperform both SFT and terminal-only RL baselines while accelerating training convergence. Notably, our 8B RL agents achieve nearly a sevenfold improvement over the SFT baseline in out-of-distribution generalization to Android environments, while outperforming Gemini-3.5-Flash and tying with Gemini-3.1-Pro on real iOS applications.",
+      "authors": [
+        "Peitong Duan",
+        "Khashayar Gatmiry",
+        "Jeffrey Nichols",
+        "Samy Bengio",
+        "Emmanuel Abbe"
+      ],
+      "published": "2026-10-29T03:17:33Z",
+      "url": "https://arxiv.org/abs/2610.39264",
+      "pdf_url": "https://arxiv.org/pdf/2610.39264.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv",
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 7,
+        "num_comments": 2,
+        "discussion_id": "6ae43845c3b566b041f6c912"
+      },
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "user interface"
+      ],
+      "ranking_reason": "This study explores how AI agents can navigate phone apps smoothly to help people complete everyday tasks.",
+      "explanation": "This study built an AI agent that learns how to tap through live phone apps using reinforcement learning [RL, a type of machine learning where software agents learn by trial and error to achieve a goal]. It splits the task into a planning part and a screen-clicking part to make app navigation much smoother.",
+      "why_it_matters": "It shows how splitting complex AI tasks into smaller specialized steps makes them work better on real mobile devices.",
+      "project_idea": {
+        "title": "App Navigation Logger",
+        "description": "Build a simple script that records button clicks and screen states on an emulator, then gives a reward score based on whether the task was completed. You will learn the basics of training agents using trial and error.",
         "difficulty": "Medium",
-        "time_estimate": "4-6 hours",
-        "no_code_version": "Use Cloudinary or Zapier image tools to automatically crop screenshots into standard grid squares before sending them to a vision AI node."
+        "time_estimate": "5-6 hours",
+        "no_code_version": "Connect a mobile testing platform to a spreadsheet to log app screen names and user journey paths automatically."
       }
     },
     {
@@ -171,59 +123,109 @@
         "human-ai interaction",
         "human-ai collaboration"
       ],
-      "ranking_reason": "Proposes a formal language to record how humans and AI assistants interact during daily tasks.",
-      "explanation": "This paper proposes a standard way to save every single interaction between a human and an AI assistant as structured data. This makes it easy to replay, debug, and analyze how people use AI tools.",
-      "why_it_matters": "When building AI apps, tracking user prompts and model responses as clean database logs helps you fix bugs and understand user behavior.",
+      "ranking_reason": "This research explains how people and AI assistants can collaborate and keep track of their shared work steps.",
+      "explanation": "This research treats human and AI conversations as structured data items rather than temporary chat logs. They introduced a format called HAIDL to save prompts, AI responses, and user feedback so conversations can be replayed and analyzed later.",
+      "why_it_matters": "It helps you understand how to design logging systems that track how users interact with AI tools over time.",
       "project_idea": {
-        "title": "Chat Logger and Replayer",
-        "description": "Create a simple chat interface in Python that saves every user message, AI response, and timestamp into a local JSON file. Add a button to reload and replay the conversation history step by step.",
+        "title": "Chat History JSON Saver",
+        "description": "Create a Python script that saves every prompt and AI reply into a structured JSON file with timestamps and user feedback tags. This makes your chat logs easy to search and analyze.",
         "difficulty": "Easy",
-        "time_estimate": "3-4 hours",
-        "no_code_version": "Connect a web form to Google Sheets so every prompt, response, and user rating is neatly saved in a structured table for review."
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Set up a form connected to a database or Google Sheets to capture user questions, AI answers, and thumbs-up or thumbs-down feedback."
       }
     },
     {
-      "id": "2610.39264",
-      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live IOS Apps",
-      "abstract": "While frontier vision-language models demonstrate strong capabilities in user interface (UI) navigation, their high inference costs prohibit everyday use. Conversely, smaller models trained via supervised fine-tuning (SFT) or offline reinforcement learning often memorize static trajectories, leading to brittle execution and an inability to recover from errors. To address these limitations, we propose a novel online reinforcement learning framework that trains UI navigation agents directly on live iOS applications. Our framework decouples the agent into two specialized components: a Planning agent and a UI Grounding model. We rely on an LLM-as-a-Judge to provide comprehensive reward signals, combining dense, step-level feedback to evaluate intermediate progress with a terminal reward for overall task completion. To effectively leverage this dual reward structure, we optimize the agent using Proximal Policy Optimization (PPO) with step-level advantage estimation. Furthermore, we introduce GiGPPO, a novel neighbor-conditioned value estimation method that improves critic stability by leveraging reward signals from visually similar states across concurrent trajectories. To support this online training paradigm at scale, we introduce an efficient infrastructure that orchestrates hundreds of concurrent virtual iOS devices. Evaluations on rigorous benchmarks, including UINavBench, iOSWorld, and AndroidWorld, demonstrate that our online RL trained agents substantially outperform both SFT and terminal-only RL baselines while accelerating training convergence. Notably, our 8B RL agents achieve nearly a sevenfold improvement over the SFT baseline in out-of-distribution generalization to Android environments, while outperforming Gemini-3.5-Flash and tying with Gemini-3.1-Pro on real iOS applications.",
+      "id": "2610.38009",
+      "title": "Large Language Models for Accurate Medical Chart Abstraction: Enabling Scalable and Secure Artificial Intelligence Deployment in Stroke",
+      "abstract": "Medical chart abstraction transforms unstructured clinical narratives into structured variables for research and quality monitoring. We evaluated a prompting-based large language model (LLM) framework for extracting eight clinical variables from 2,416 neurointerventional acute stroke intervention reports across three hospitals. Twenty-two instruction-tuned open-source LLMs were evaluated across architectures, model sizes, and biomedical adaptations using Quick Response and Chain-of-Thought (CoT) prompting. Non-expert staff annotations served as the cross-model reference standard. Evaluation was restricted to report-variable pairs with a valid LLaMA3.3-70B CoT prediction and a corresponding reference label. Performance measures included extraction accuracy, inference latency, and agreement with expert adjudication. Twenty discordant cases per variable underwent review by two senior physicians and four medical students. LLaMA3.3-70B achieved the highest overall accuracy (94.8%). CoT improved performance on inference-dependent variables such as site of occlusion, while Quick Response was optimal for directly stated procedural fields. Expert adjudication showed that AI predictions were more closely aligned with expert interpretations than non-expert annotations for most variables, with intracranial angioplasty remaining a challenge. Locally deployed LLMs can support scalable clinical information extraction and retrospective stroke registry curation, with expert oversight for ambiguous cases.",
       "authors": [
-        "Peitong Duan",
-        "Khashayar Gatmiry",
-        "Jeffrey Nichols",
-        "Samy Bengio",
-        "Emmanuel Abbe"
+        "Zhusi Zhong",
+        "Carl M. Porto",
+        "David Hong",
+        "Miranda Gonzales",
+        "Revyn Kim",
+        "Gnaneswari Karayi",
+        "Lulu Bi",
+        "Joshua R. Feler",
+        "Elias Shaaya",
+        "Scott Collins",
+        "Liqi Shu",
+        "Grayson Baird",
+        "Mahesh Jayaraman",
+        "Shadi Yaghi",
+        "Zhicheng Jiao",
+        "Dylan N. Wolman"
       ],
-      "published": "2026-10-29T03:17:33Z",
-      "url": "https://arxiv.org/abs/2610.39264",
-      "pdf_url": "https://arxiv.org/pdf/2610.39264.pdf",
+      "published": "2026-10-27T22:00:24Z",
+      "url": "https://arxiv.org/abs/2610.38009",
+      "pdf_url": "https://arxiv.org/pdf/2610.38009.pdf",
       "categories": [
-        "cs.AI"
+        "cs.CL"
       ],
-      "primary_category": "cs.AI",
+      "primary_category": "cs.CL",
       "sources": [
-        "arxiv",
-        "huggingface"
+        "arxiv"
       ],
-      "huggingface": {
-        "upvotes": 7,
-        "num_comments": 2,
-        "discussion_id": "6ae43845c3b566b041f6c912"
-      },
+      "huggingface": null,
       "matched_topics": [
         "AI tools for non-programmers"
       ],
       "matched_keywords": [
-        "user interface"
+        "non-expert"
       ],
-      "ranking_reason": "Builds an online reinforcement learning framework to help navigation agents run smoothly on live iOS applications.",
-      "explanation": "The researchers trained AI agents to navigate live phone screens using reinforcement learning [learning by trial and error using rewards] on virtual devices. They split the work into a planning agent and a grounding agent to make actions reliable.",
-      "why_it_matters": "It introduces you to advanced reinforcement learning techniques that make AI agents stable when interacting with real apps.",
+      "ranking_reason": "This paper demonstrates how AI can read messy medical notes and turn them into organized data without manual coding.",
+      "explanation": "This paper tested how well large language models can read messy medical notes about stroke patients and turn them into neat data tables. They found that open-source models can accurately extract clinical details when given clear prompting instructions.",
+      "why_it_matters": "It demonstrates how to use LLMs [large language models, AI that understands and generates text] to clean up unstructured text and convert it into structured databases.",
       "project_idea": {
-        "title": "Simple Grid Navigation Game",
-        "description": "Write a Python script where an agent learns to find the exit of a simple grid world by getting positive points for moving closer and negative points for hitting walls.",
+        "title": "Medical Note Extractor",
+        "description": "Write a Python script that takes a fake doctor's note and sends it to an LLM API with instructions to pull out specific details like patient age and symptoms into a clean JSON format.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use a spreadsheet AI extension to read text cells containing clinical notes and automatically extract key fields into separate columns."
+      }
+    },
+    {
+      "id": "2610.37916",
+      "title": "What Is the Role for Humans in Creative Writing? Creativity and Diversity in Human-AI Collaboration",
+      "abstract": "As AI agents increasingly participate in creative teamwork, writing emerges from hybrid human-AI teams. Although AI can improve the creativity of individual outputs, these gains may come at the cost of homogenization. What is the best role for human intervention? We introduce a transmission-chain paradigm inspired by cognitive models of writing, with four stages: Plan, Write, Review, and Revise. Each stage receives the previous output and passes its own forward. Using data from 333 participants across 427 stories, we compared creativity, diversity, and enjoyment across human, AI, and hybrid chains. Consistent with prior work, all-AI chains produced more creative but less diverse stories than all-human chains. Introducing a single human into an otherwise all-AI chain increased diversity depending on role. Human planning provided the best balance: it preserved AI-level creativity, increased diversity that persisted through downstream AI stages, and maintained enjoyment. We discuss implications for designing human-in-the-loop creative pipelines.",
+      "authors": [
+        "Chenyi Li",
+        "Haoyu Hu",
+        "Raja Marjieh",
+        "Katherine M Collins",
+        "Max Kreminski",
+        "Ilia Sucholutsky",
+        "Dalton Conley",
+        "Nori Jacoby"
+      ],
+      "published": "2026-10-27T19:59:00Z",
+      "url": "https://arxiv.org/abs/2610.37916",
+      "pdf_url": "https://arxiv.org/pdf/2610.37916.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "human-ai collaboration",
+        "ai agents"
+      ],
+      "ranking_reason": "This study looks at how humans and AI can team up on creative writing tasks while keeping the output diverse.",
+      "explanation": "This study looked at human and AI teamwork in creative writing and found that letting humans handle the planning stage keeps stories diverse while letting the AI help with drafting. Pure AI writing tends to become repetitive, but human planning fixes that issue.",
+      "why_it_matters": "It teaches you how to design hybrid workflows where humans and AI play distinct, complementary roles in creative projects.",
+      "project_idea": {
+        "title": "AI Story Planner",
+        "description": "Build a web app where a user writes a story outline, and a script prompts an LLM to expand specific paragraphs. You will practice combining human input with AI generation steps.",
         "difficulty": "Medium",
-        "time_estimate": "5-6 hours",
-        "no_code_version": "Build a conditional routing workflow in n8n that tests different user inputs against a decision tree and updates a scoring table based on success."
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Build a multi-step form where humans write the outline in step one, and an AI block generates the story expansion in step two."
       }
     }
   ]
