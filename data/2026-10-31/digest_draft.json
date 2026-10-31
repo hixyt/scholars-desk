@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-31",
+  "generated_at": "2026-10-31T10:52:39.532031+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2610.33645",
+      "title": "PreView: Enhancing GUI Grounding with Preprocessed Views and Cues",
+      "abstract": "GUI grounding requires locating small controls in cluttered screenshots and identifying which control a natural-language instruction refers to. Cropping and enlargement can expose local detail, but the resulting image may still leave ambiguity about the intended target. We propose PreView, an auxiliary preprocessor that improves the inputs to an existing grounding model without further training that model. PreView prepares two complementary types of input features: task-relevant views for localization and candidate-specific cues for target understanding. A trained lightweight auxiliary model predicts and refines a center, crops the screenshot into a local view, and enlarges that view for zoomed-in grounding. It also prepares a visual cue (i.e., a red-circle marker with a location hint) and a textual cue describing the candidate's identity or function. The frozen grounding model uses the prepared inputs to predict the final click. Across five benchmarks, PreView improves the average grounding accuracy of Qwen3-VL-2B, OS-Atlas-4B, and Qwen3-VL-4B without further training these grounding models. Extensive analyses examine the contributions of views and cues, center refinement, and visual input budgets.",
+      "authors": [
+        "Wenjun Hou",
+        "Kaishuai Xu"
+      ],
+      "published": "2026-10-24T00:00:00.000Z",
+      "url": "https://arxiv.org/abs/2610.33645",
+      "pdf_url": "https://arxiv.org/pdf/2610.33645.pdf",
+      "categories": [],
+      "primary_category": "cs.AI",
+      "sources": [
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 3,
+        "num_comments": 2,
+        "discussion_id": "6ae3f1eec3b566b041f6c748"
+      },
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper shows how to improve GUI [graphical user interface, like phone apps and buttons] tools so non-programmers can interact with screens more easily.",
+      "explanation": "The paper introduces PreView, a helper tool that zooms in on small buttons and adds visual hints on phone screens. This helps existing AI models find and click the correct buttons without retraining the main AI.",
+      "why_it_matters": "It teaches you how to build helper modules that upgrade existing AI tools without paying for expensive retraining.",
+      "project_idea": {
+        "title": "Smart Screen Cropper",
+        "description": "Write a Python script that takes a phone screenshot, finds a specific small icon using template matching, and crops around it. Then pass that zoomed image to a vision API to read the text inside.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an automated workflow tool like Make to watch a folder for screenshots, run a basic image resize, and send it to an image recognition sheet."
+      }
+    },
+    {
+      "id": "2610.39264",
+      "title": "Online Dense Reinforcement Learning with Planning-Grounding Agent for UI Navigation on Live IOS Apps",
+      "abstract": "While frontier vision-language models demonstrate strong capabilities in user interface (UI) navigation, their high inference costs prohibit everyday use. Conversely, smaller models trained via supervised fine-tuning (SFT) or offline reinforcement learning often memorize static trajectories, leading to brittle execution and an inability to recover from errors. To address these limitations, we propose a novel online reinforcement learning framework that trains UI navigation agents directly on live iOS applications. Our framework decouples the agent into two specialized components: a Planning agent and a UI Grounding model. We rely on an LLM-as-a-Judge to provide comprehensive reward signals, combining dense, step-level feedback to evaluate intermediate progress with a terminal reward for overall task completion. To effectively leverage this dual reward structure, we optimize the agent using Proximal Policy Optimization (PPO) with step-level advantage estimation. Furthermore, we introduce GiGPPO, a novel neighbor-conditioned value estimation method that improves critic stability by leveraging reward signals from visually similar states across concurrent trajectories. To support this online training paradigm at scale, we introduce an efficient infrastructure that orchestrates hundreds of concurrent virtual iOS devices. Evaluations on rigorous benchmarks, including UINavBench, iOSWorld, and AndroidWorld, demonstrate that our online RL trained agents substantially outperform both SFT and terminal-only RL baselines while accelerating training convergence. Notably, our 8B RL agents achieve nearly a sevenfold improvement over the SFT baseline in out-of-distribution generalization to Android environments, while outperforming Gemini-3.5-Flash and tying with Gemini-3.1-Pro on real iOS applications.",
+      "authors": [
+        "Peitong Duan",
+        "Khashayar Gatmiry",
+        "Jeffrey Nichols",
+        "Samy Bengio",
+        "Emmanuel Abbe"
+      ],
+      "published": "2026-10-29T03:17:33Z",
+      "url": "https://arxiv.org/abs/2610.39264",
+      "pdf_url": "https://arxiv.org/pdf/2610.39264.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv",
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 7,
+        "num_comments": 2,
+        "discussion_id": "6ae43845c3b566b041f6c912"
+      },
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "user interface"
+      ],
+      "ranking_reason": "This study explores how AI agents can navigate phone apps smoothly, making everyday tasks simpler.",
+      "explanation": "This paper trains phone navigation AI agents using online reinforcement learning [learning by trial and error with rewards and penalties]. It splits the task into a planning part and a screen tapping part to make the phone use smoother.",
+      "why_it_matters": "It shows you how splitting a big AI task into smaller specialized steps makes the overall system much smarter.",
+      "project_idea": {
+        "title": "Step-by-Step Task Logger",
+        "description": "Build a simple app that breaks a user goal into three steps and scores each step using an LLM [large language model, an AI that understands text]. Save the history in a local database.",
+        "difficulty": "Medium",
+        "time_estimate": "5-6 hours",
+        "no_code_version": "Connect Google Sheets to an AI prompt block in n8n to grade user inputs step by step automatically."
+      }
+    },
+    {
+      "id": "2610.40006",
+      "title": "Human--AI Interactions as First-Class Data: A Formal Interaction Model and Runtime for Explainable AI Collaboration",
+      "abstract": "AI assistants are increasingly embedded in computational notebooks, scientific workflows, software engineering tools, and learning systems, yet human-AI interactions are often treated as transient prompt-response exchanges rather than durable data products, hindering reproducibility, explainability, replay, behavioral analysis, and adaptive AI support. We argue that these interactions form a new data class requiring formal representation and introduce the Human-AI Interaction Description Language (HAIDL), a formal interaction model with a Backus-Naur Form-inspired concrete syntax. HAIDL encodes each interaction as a structured object capturing computational context, user request, prompt payload, AI response, feedback, problem context, provenance, and model metadata. We integrate this vision into HAIDL-X, a middleware for JupyterLab that instantiates HAIDL by capturing user-bot state, building contextualized prompts, interfacing with AI providers, collecting feedback, and storing interactions in a repository. We add a learning layer over HAIDL that maps interaction objects and notebook execution traces into reproducible measures of user behavior, including engagement, performance, help-seeking, error-oriented use, and learning personas. HAIDL-X provides a foundation for treating human-AI collaboration as structured, queryable, replayable, analyzable data.",
+      "authors": [
+        "Michela Taufer",
+        "Kin Ng",
+        "Ian Lumsden",
+        "Aashish Pandey",
+        "Rajasi Gore",
+        "Angelina Ju",
+        "Sukanya Moudgalya",
+        "Ewa Deelman",
+        "Sai Swaminathan"
+      ],
+      "published": "2026-10-29T13:23:54Z",
+      "url": "https://arxiv.org/abs/2610.40006",
+      "pdf_url": "https://arxiv.org/pdf/2610.40006.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.HC"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "human-ai interaction",
+        "human-ai collaboration"
+      ],
+      "ranking_reason": "It introduces a clear way to track how humans and AI collaborate during tasks.",
+      "explanation": "The authors treat chats between humans and AI as structured data instead of throwing them away. They built a system to save every prompt, response, and feedback item so researchers can study how people use AI.",
+      "why_it_matters": "It helps you understand how to log and analyze AI interactions instead of just printing responses to a console.",
+      "project_idea": {
+        "title": "AI Chat History Saver",
+        "description": "Create a local web app using Python and Streamlit that saves every chat message and user rating into a JSON file. Add a page to view stats on your most common prompts.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Set up a Google Form that feeds into a Google Sheet, logging every prompt and response pair along with a star rating."
+      }
+    },
+    {
+      "id": "2610.38009",
+      "title": "Large Language Models for Accurate Medical Chart Abstraction: Enabling Scalable and Secure Artificial Intelligence Deployment in Stroke",
+      "abstract": "Medical chart abstraction transforms unstructured clinical narratives into structured variables for research and quality monitoring. We evaluated a prompting-based large language model (LLM) framework for extracting eight clinical variables from 2,416 neurointerventional acute stroke intervention reports across three hospitals. Twenty-two instruction-tuned open-source LLMs were evaluated across architectures, model sizes, and biomedical adaptations using Quick Response and Chain-of-Thought (CoT) prompting. Non-expert staff annotations served as the cross-model reference standard. Evaluation was restricted to report-variable pairs with a valid LLaMA3.3-70B CoT prediction and a corresponding reference label. Performance measures included extraction accuracy, inference latency, and agreement with expert adjudication. Twenty discordant cases per variable underwent review by two senior physicians and four medical students. LLaMA3.3-70B achieved the highest overall accuracy (94.8%). CoT improved performance on inference-dependent variables such as site of occlusion, while Quick Response was optimal for directly stated procedural fields. Expert adjudication showed that AI predictions were more closely aligned with expert interpretations than non-expert annotations for most variables, with intracranial angioplasty remaining a challenge. Locally deployed LLMs can support scalable clinical information extraction and retrospective stroke registry curation, with expert oversight for ambiguous cases.",
+      "authors": [
+        "Zhusi Zhong",
+        "Carl M. Porto",
+        "David Hong",
+        "Miranda Gonzales",
+        "Revyn Kim",
+        "Gnaneswari Karayi",
+        "Lulu Bi",
+        "Joshua R. Feler",
+        "Elias Shaaya",
+        "Scott Collins",
+        "Liqi Shu",
+        "Grayson Baird",
+        "Mahesh Jayaraman",
+        "Shadi Yaghi",
+        "Zhicheng Jiao",
+        "Dylan N. Wolman"
+      ],
+      "published": "2026-10-27T22:00:24Z",
+      "url": "https://arxiv.org/abs/2610.38009",
+      "pdf_url": "https://arxiv.org/pdf/2610.38009.pdf",
+      "categories": [
+        "cs.CL"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-expert"
+      ],
+      "ranking_reason": "This paper examines how LLMs [large language models, an AI that understands text] help process medical charts without needing code.",
+      "explanation": "The researchers tested different open-source LLMs [large language model, an AI that understands text] to read messy hospital notes and pull out specific medical facts. They found that large models paired with step-by-step reasoning worked best.",
+      "why_it_matters": "It demonstrates how to parse messy real-world text documents into neat data tables using smart prompts.",
+      "project_idea": {
+        "title": "Medical Note Parser",
+        "description": "Write a Python script that takes a messy doctor note and uses an open-source LLM API to extract patient age, symptoms, and treatment into a clean table. Print the results to a CSV file.",
+        "difficulty": "Easy",
+        "time_estimate": "3 hours",
+        "no_code_version": "Use a spreadsheet automation tool to pass raw text paragraphs into an AI prompt node and output structured columns."
+      }
+    },
+    {
+      "id": "2610.37916",
+      "title": "What Is the Role for Humans in Creative Writing? Creativity and Diversity in Human-AI Collaboration",
+      "abstract": "As AI agents increasingly participate in creative teamwork, writing emerges from hybrid human-AI teams. Although AI can improve the creativity of individual outputs, these gains may come at the cost of homogenization. What is the best role for human intervention? We introduce a transmission-chain paradigm inspired by cognitive models of writing, with four stages: Plan, Write, Review, and Revise. Each stage receives the previous output and passes its own forward. Using data from 333 participants across 427 stories, we compared creativity, diversity, and enjoyment across human, AI, and hybrid chains. Consistent with prior work, all-AI chains produced more creative but less diverse stories than all-human chains. Introducing a single human into an otherwise all-AI chain increased diversity depending on role. Human planning provided the best balance: it preserved AI-level creativity, increased diversity that persisted through downstream AI stages, and maintained enjoyment. We discuss implications for designing human-in-the-loop creative pipelines.",
+      "authors": [
+        "Chenyi Li",
+        "Haoyu Hu",
+        "Raja Marjieh",
+        "Katherine M Collins",
+        "Max Kreminski",
+        "Ilia Sucholutsky",
+        "Dalton Conley",
+        "Nori Jacoby"
+      ],
+      "published": "2026-10-27T19:59:00Z",
+      "url": "https://arxiv.org/abs/2610.37916",
+      "pdf_url": "https://arxiv.org/pdf/2610.37916.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "human-ai collaboration",
+        "ai agents"
+      ],
+      "ranking_reason": "It investigates how humans and AI work together creatively for everyday writing projects.",
+      "explanation": "This study looks at how humans and AI write stories together through different stages like planning and writing. They found that letting humans do the planning keeps the story diverse and interesting.",
+      "why_it_matters": "It teaches you how to design hybrid workflows where humans keep control over creative direction while AI helps with details.",
+      "project_idea": {
+        "title": "Story Outline Assistant",
+        "description": "Build a Python command-line tool where you write a story outline, and the AI expands it into paragraphs. Then you can edit the paragraphs before saving the final draft.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Create a multi-step document generation pipeline in an automation tool where Step 1 is your manual outline and Step 2 is AI expansion."
+      }
+    }
+  ]
+}
