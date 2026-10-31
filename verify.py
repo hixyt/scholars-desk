@@ -205,6 +205,13 @@ def main():
     config = load_config(args.config)
     with open(draft_path, encoding="utf-8") as f:
         papers = json.load(f)["papers"]
+    if not papers:
+        if not args.canary:
+            with open(folder / "digest.json", "w", encoding="utf-8") as f:
+                json.dump({"date": date, "verified_at": datetime.now(timezone.utc).isoformat(), "verifier": None,
+                           "status": "no_papers", "papers": []}, f, indent=2)
+        print("The draft has no papers, so there is nothing to check.")
+        return
 
     checked, model, canaries = check_papers(papers, config, groq_key, canary=args.canary)
 

@@ -86,7 +86,8 @@ def day_numbers(digest, folder, data_dir):
         "picked": len(papers),
         "checked": sum(p.get("claims_checked") or 0 for p in papers),
         "proven": sum(p.get("claims_supported") or 0 for p in papers),
-        "issue": sum(1 for d in Path(data_dir).glob("*/digest.json") if d.parent.name <= digest["date"]),
+        "issue": sum(1 for d in Path(data_dir).glob("*/digest.json")  # days that had an email
+                     if d.parent.name <= digest["date"] and json.loads(d.read_text(encoding="utf-8")).get("papers")),
     }
     stats = folder / "stats.json"
     if stats.exists():
@@ -377,7 +378,8 @@ def main():
     with open(digest_path, encoding="utf-8") as f:
         digest = json.load(f)
     if not digest.get("papers"):
-        raise SystemExit("The digest has no papers, so there is nothing to send.")
+        print("No papers today, so no email was sent.")
+        return
 
     config = load_config(args.config)
     nums = day_numbers(digest, folder, args.data_dir)

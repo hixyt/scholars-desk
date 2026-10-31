@@ -169,6 +169,14 @@ def main():
         papers = json.load(f)
     log.info(f"Ranking {len(papers)} papers for {date}")
 
+    if not papers:  # a quiet day: save an empty draft so the next steps know
+        empty = {"date": date, "generated_at": datetime.now(timezone.utc).isoformat(), "providers_used": [],
+                 "status": "no_papers", "papers": []}
+        with open(folder / "digest_draft.json", "w", encoding="utf-8") as f:
+            json.dump(empty, f, indent=2)
+        print("No new papers matched my topics today, so there is nothing to pick.")
+        return
+
     chosen, model1 = pick_papers(papers, config, keys)
     final, model2 = write_details(chosen, config, keys)
 
