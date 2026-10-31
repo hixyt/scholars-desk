@@ -1,0 +1,60 @@
+name: Morning digest
+
+on:
+  schedule:
+    - cron: "47 0 * * *"   # 00:47 UTC = 6:17 AM in India, every day (GitHub can start it a little late)
+  workflow_dispatch:        # adds a "Run workflow" button, for tests
+
+permissions:
+  contents: write           # so it can save the day's papers back to the repo
+
+concurrency:
+  group: morning-digest     # never two runs at once
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      EMAIL_TO: ${{ secrets.EMAIL_TO }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Fetch new papers
+        run: python fetch.py
+
+      - name: Pick five and write them up
+        run: python rank.py
+
+      - name: Fact-check every line
+        run: python verify.py
+
+      - name: Send the email
+        run: python send_email.py
+
+      - name: Save the day's papers to the repo
+        if: always()        # keep whatever was fetched, even if a later step failed
+        run: |
+          git config user.name "Himani Dalvi"
+          git config user.email "himanidalvi4@gmail.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "Nothing new to save."
+            exit 0
+          fi
+          git commit -m "Add papers for $(date -u +'%-d %b')"
+          git pull --rebase
+          git push
