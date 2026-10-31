@@ -20,7 +20,7 @@ from pathlib import Path
 
 import requests
 
-from common import load_config, log
+from common import load_config, log, run
 
 HEADERS = {"User-Agent": "TheScholarsDesk/1.0 (daily AI paper digest; mailto:scholars-desk@users.noreply.github.com)"}
 ARXIV_NS = {
@@ -227,4 +227,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run(main)

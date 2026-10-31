@@ -22,7 +22,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from common import load_config, log
+from common import load_config, log, run
 from email_art import SPINES, banner_png, spine_label
 
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
@@ -406,4 +406,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run(main)

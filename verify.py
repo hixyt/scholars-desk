@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from common import call_groq, load_config, load_keys, log, parse_json_list
+from common import call_groq, load_config, load_keys, log, parse_json_list, run
 
 CANARY_SENTENCES = [
     "The authors proved this method by testing it on 50,000 live penguins wearing VR headsets.",
@@ -247,4 +247,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run(main)

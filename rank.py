@@ -14,7 +14,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from common import call_groq, clean_text, load_config, load_keys, log, parse_json_list
+from common import call_groq, clean_text, load_config, load_keys, log, parse_json_list, run
 
 STYLE_RULES = (
     "- Write like a friendly senior student. Use short sentences.\n"
@@ -198,4 +198,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run(main)

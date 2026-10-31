@@ -18,6 +18,36 @@ if sys.platform.startswith("win"):
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", datefmt="%H:%M:%S")
 log = logging.getLogger("scholars-desk")
+ON_ACTIONS = bool(os.getenv("GITHUB_ACTIONS"))
+
+
+def annotate(level, message):
+    """On GitHub Actions, show a warning or error as a note at the top of the run's page."""
+    if ON_ACTIONS:
+        print(f"::{level}::{str(message).replace(chr(10), ' ')}", flush=True)
+
+
+class _ActionsNotes(logging.Handler):
+    def emit(self, record):
+        if record.levelno >= logging.WARNING:
+            annotate("error" if record.levelno >= logging.ERROR else "warning", record.getMessage())
+
+
+if ON_ACTIONS:
+    log.addHandler(_ActionsNotes())
+
+
+def run(main):
+    """Run a script. If it stops with an error, say why on the run's page too."""
+    try:
+        main()
+    except SystemExit as e:
+        if isinstance(e.code, str):
+            annotate("error", e.code)
+        raise
+    except Exception as e:
+        annotate("error", f"{type(e).__name__}: {e}")
+        raise
 
 
 def load_config(path="config.yaml"):
