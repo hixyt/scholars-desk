@@ -2,7 +2,8 @@ name: Morning digest
 
 on:
   schedule:
-    - cron: "47 0 * * *"   # 00:47 UTC = 6:17 AM in India, every day (GitHub can start it a little late)
+    - cron: "17 6 * * *"   # 6:17 AM every day (GitHub can start it a little late)
+      timezone: "Asia/Kolkata"
   workflow_dispatch:        # adds a "Run workflow" button, for tests
 
 permissions:
@@ -45,12 +46,16 @@ jobs:
       - name: Send the email
         run: python send_email.py
 
-      - name: Save the day's papers to the repo
+      - name: Update the website
+        if: always()        # rebuild the page from whatever days are saved
+        run: python build_site.py
+
+      - name: Save the day's papers and the website to the repo
         if: always()        # keep whatever was fetched, even if a later step failed
         run: |
           git config user.name "Himani Dalvi"
           git config user.email "himanidalvi4@gmail.com"
-          git add data/
+          git add data/ index.html
           if git diff --cached --quiet; then
             echo "Nothing new to save."
             exit 0
