@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>The Scholar's Desk</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta property="og:title" content="The Scholar's Desk">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta name="theme-color" content="#0B0907">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="site/hero.css?v={{VERSION}}">
+<link rel="stylesheet" href="site/chapters.css?v={{VERSION}}">
+</head>
+<body>
+<main class="stage" id="stage">
+  <canvas id="gl" aria-label="Interactive 3D scene: a wax seal with books orbiting around it. Tap a book to open it, tap the seal to stamp, drag to stir."></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="imprints" id="imprints" aria-hidden="true"></div>
+  <div class="grain" id="grain" aria-hidden="true"></div>
+  <div class="frame" aria-hidden="true"></div>
+  <div class="label" id="label" hidden></div>
+  <button type="button" class="bookgo" id="bookGo" hidden>Read it in the folio ↓</button>
+
+  <div class="ui">
+    <header class="top">
+      <a class="brand" href="#stage">
+        <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon data-seal style="fill:var(--oxblood)"></polygon>
+          <circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle>
+          <text x="50" y="60" style="fill:var(--parchment);font-family:var(--display);font-size:30px;font-style:italic;font-weight:600;text-anchor:middle">SD</text>
+        </svg>
+        The Scholar’s Desk
+      </a>
+      <button type="button" class="exlib-tag leather" id="exlibTag" aria-controls="plate" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true"><polygon data-seal style="fill:var(--gold)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--leather-lo)"></circle><text x="50" y="62" style="fill:var(--gold-hi);font-family:var(--display);font-size:34px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg>
+        <span class="txt"><span class="lbl">Ex libris</span><span class="sg foil">Himani Dalvi</span></span>
+      </button>
+    </header>
+
+    <div class="bottom">
+      <section class="copy">
+        <p class="eyebrow">The Morning Dispatch · No. 014</p>
+        <h1>The library reads itself. <em>You just build.</em></h1>
+        <p class="sub">Daily AI papers, each with something you can build this weekend.</p>
+        <div class="actions">
+          <a class="cta" href="#folio">Read today’s {{COUNT_WORD_LOWER}} <span aria-hidden="true">↓</span></a>
+          <button type="button" class="exlib-tag exlib-inline leather" aria-controls="plate" aria-expanded="false">
+            <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true"><polygon data-seal style="fill:var(--gold)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--leather-lo)"></circle><text x="50" y="62" style="fill:var(--gold-hi);font-family:var(--display);font-size:34px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg>
+            <span class="txt"><span class="lbl">Ex libris</span><span class="sg foil">Himani Dalvi</span></span>
+          </button>
+        </div>
+      </section>
+
+      <div class="hintbar">
+        <div class="hint"><span><b>Tap a book</b> to open it</span><span><b>Tap the seal</b> to stamp</span><span><b>Drag</b> to stir the shelf</span><span class="scrollcue"><i></i><b>Scroll</b> for the chapters</span></div>
+        <div class="hint-tools">
+          <button type="button" class="sound" id="soundBtn" aria-pressed="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"></path><path class="wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"></path></svg>
+            <span class="st">Sound on</span>
+          </button>
+          <button type="button" class="replay" id="replay">Replay intro</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="plate-scrim" id="plateScrim" aria-label="Close the bookplate"></button>
+  <div class="plate" id="plate" role="group" aria-label="Ex libris: a personal project by Himani Dalvi">
+    <div class="plate-tilt" id="plateTilt">
+      <div class="plate-inner">
+        <section class="face front leather">
+          <div class="shine" aria-hidden="true"></div>
+          <div class="pl-top">
+            <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true">
+              <polygon data-seal style="fill:var(--gold)"></polygon>
+              <circle cx="50" cy="50" r="36" style="fill:var(--leather-lo)"></circle>
+              <text x="50" y="62" style="fill:var(--gold-hi);font-family:var(--display);font-size:34px;font-style:italic;font-weight:600;text-anchor:middle">SD</text>
+            </svg>
+            <span class="pl-lbl">Ex libris</span>
+            <span class="pl-no">No. 001</span>
+          </div>
+          <p class="pl-by">A personal project by</p>
+          <div class="sig-wrap"><span class="sig foil">Himani Dalvi</span><span class="nib" aria-hidden="true"></span></div>
+          <div class="pl-rule" aria-hidden="true"><span></span><i></i><span></span></div>
+          <div class="pl-foot">
+            <span class="pl-meta">B.Tech · AI &amp; DS</span>
+            <button type="button" class="pl-flip" data-flip>Why I built it <span aria-hidden="true">↻</span></button>
+          </div>
+        </section>
+        <section class="face back leather">
+          <div class="shine" aria-hidden="true"></div>
+          <div class="pl-top">
+            <span class="pl-lbl">Author’s note</span>
+            <span class="pl-no">Est. MMXXVI</span>
+          </div>
+          <p class="pl-note">I wanted to keep up with AI research without drowning in it. So I built a desk that reads the new papers every morning and hands me one thing to build.</p>
+          <div class="pl-foot">
+            <span class="pl-links"><a href="https://github.com/hixyt/scholars-desk" target="_blank" rel="noopener">GitHub ↗</a></span>
+            <button type="button" class="pl-flip" data-flip>Turn back <span aria-hidden="true">↺</span></button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="fade" id="fade" aria-hidden="true"></div>
+  <div class="loading" id="loading" role="status">
+    <div class="ld">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <polygon class="ld-body" data-seal-ld></polygon>
+        <polygon class="ld-outline" data-seal-ld pathLength="100"></polygon>
+        <circle class="ld-ring" cx="50" cy="50" r="36"></circle>
+        <text class="ld-mono" x="50" y="60">SD</text>
+      </svg>
+      <p>Lighting the candles…</p>
+    </div>
+  </div>
+  <script>
+  (function () {
+    var pts = [];
+    for (var i = 0; i < 120; i++) {
+      var a = (i / 120) * Math.PI * 2, r = 45 * (1 + (2.4 * Math.sin(a * 9) + 1.3 * Math.sin(a * 21 + 0.7)) / 45);
+      pts.push((50 + r * Math.cos(a)).toFixed(2) + "," + (50 + r * Math.sin(a)).toFixed(2));
+    }
+    document.querySelectorAll("[data-seal-ld]").forEach(function (p) { p.setAttribute("points", pts.join(" ")); });
+    var e = document.querySelector(".eyebrow");
+    if (e) {
+      var d = new Date(), h = d.getHours();
+      var name = h >= 5 && h < 12 ? "The Morning Dispatch" : h >= 12 && h < 17 ? "The Afternoon Edition" : h >= 17 && h < 21 ? "The Evening Edition" : "The Midnight Reading Room";
+      var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], mons = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      e.textContent = name + " · " + days[d.getDay()] + " " + d.getDate() + " " + mons[d.getMonth()];
+    }
+  })();
+  </script>
+</main>
+  <div class="quill" id="quill" aria-hidden="true">
+    <svg width="30" height="30" viewBox="0 0 30 30"><defs><linearGradient id="nibG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3DDA6"></stop><stop offset=".5" stop-color="#CFAE6B"></stop><stop offset="1" stop-color="#8A6A2E"></stop></linearGradient></defs><g transform="rotate(45 15 15)"><path d="M15 1C20 6 21 12 19 18L15 29L11 18C9 12 10 6 15 1Z" fill="url(#nibG)" stroke="#5C3D14" stroke-width=".8"></path><line x1="15" y1="14" x2="15" y2="28" stroke="#3A2810" stroke-width=".9"></line><circle cx="15" cy="12.5" r="1.6" fill="#3A2810"></circle></g></svg>
+  </div>
+
+<header class="topbar" id="topbar" aria-label="Chapters">
+  <div class="tb-in">
+    <a class="tb-brand" href="#stage">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true">
+        <polygon data-seal style="fill:var(--oxblood)"></polygon>
+        <circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle>
+        <text x="50" y="60" style="fill:var(--parchment);font-family:var(--display);font-size:30px;font-style:italic;font-weight:600;text-anchor:middle">SD</text>
+      </svg>
+      The Scholar’s Desk
+    </a>
+    <ul class="toc">
+      <li><a href="#folio">I<span class="w">Folio</span></a></li>
+      <li><a href="#margins">II<span class="w">Margins</span></a></li>
+      <li><a href="#desk">III<span class="w">Desk</span></a></li>
+      <li><a href="#stacks">IV<span class="w">Stacks</span></a></li>
+      <li><a href="#colophon">V<span class="w">Colophon</span></a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="chapters">
+
+  <section class="chapter wrap" id="folio">
+    <header class="ch-head">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter I</span>
+      <h2>Today’s <em>Folio</em></h2>
+      <p class="dek" id="folioDek">{{FOLIO_DEK}}</p>
+    </header>
+    <div class="row" id="bookRow" role="group" aria-label="Today's papers"></div>
+    <p class="row-hint">Pick a book · it opens on the stand below</p>
+    <div class="stand" id="stand">
+      <div class="fbview"><div class="fb closed" id="fb"></div></div>
+      <div class="fb-nav">
+        <button type="button" id="fbPrev">← Back</button>
+        <span class="fb-count" id="fbCount" aria-live="polite"></span>
+        <button type="button" id="fbNext">Turn the page →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter wrap" id="margins">
+    <header class="ch-head">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter II</span>
+      <h2>The <em>Margins</em></h2>
+      <p class="dek">Every line I publish has to be proven by the paper’s own abstract. The note beside it is the proof. Lines without proof get struck in red ink and never reach the email.</p>
+    </header>
+    <div class="picker" id="picker"></div>
+    <div class="mstage"><article class="mpage" id="mpage"></article></div>
+  </section>
+
+  <section class="chapter" id="desk">
+    <header class="ch-head wrap">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter III</span>
+      <h2>How the <em>Desk</em> works</h2>
+      <p class="dek">Every morning a small robot walks the same five steps, for free, and writes down what it did in a ledger.</p>
+    </header>
+    <div class="wrap">
+      <h3 class="sublabel"><span>The morning route</span></h3>
+      <ol class="plates" id="plates">
+        <li style="--i:0">
+          <div class="med"><svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+            <path class="ln" pathLength="1" d="M29 63 H63 L71 55 H37 Z"/>
+            <path class="ln" pathLength="1" d="M29 63 V68 H63 L71 60 V55 M63 63 V68"/>
+            <path class="ln" pathLength="1" d="M29 68 V73 H63 L71 65 V60 M63 68 V73"/>
+            <path class="ln" pathLength="1" d="M50 22 V45 M43 38 L50 45 L57 38"/>
+            <path class="ln" pathLength="1" d="M27 30 L37 27 L40 39 L30 42 Z"/>
+            <path class="ln" pathLength="1" d="M64 24 L74 27 L71 38 L61 35 Z"/>
+          </svg></div>
+          <div class="tx"><span class="pn">I</span><b>Fetch</b><span class="pd">New papers from arXiv and Hugging Face, from the last four days.</span></div>
+        </li>
+        <li style="--i:1">
+          <div class="med"><svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+            <path class="ln" pathLength="1" d="M28 24 H54 L62 32 V74 H28 Z"/>
+            <path class="ln" pathLength="1" d="M54 24 V32 H62"/>
+            <path class="ln" pathLength="1" d="M34 38 H52 M34 44 H56 M34 50 H46 M34 56 H50 M34 62 H44"/>
+            <circle class="fillin glass" cx="61" cy="58" r="11"/>
+            <circle class="ln" pathLength="1" cx="61" cy="58" r="11"/>
+            <path class="ln thick" pathLength="1" d="M69 66 L78 75"/>
+          </svg></div>
+          <div class="tx"><span class="pn">II</span><b>Filter</b><span class="pd">Keep the ones on my two topics. Skip anything already seen on an earlier morning.</span></div>
+        </li>
+        <li style="--i:2">
+          <div class="med"><svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+            <path class="ln" pathLength="1" d="M23 74 H77"/>
+            <path class="ln" pathLength="1" d="M27 74 V44 H34 V74 M35 74 V40 H42 V74"/>
+            <rect class="fillin pick" x="44" y="30" width="8" height="36"/>
+            <path class="ln" pathLength="1" d="M44 66 V30 H52 V66 Z M44 36 H52 M44 60 H52"/>
+            <path class="ln" pathLength="1" d="M54 74 V42 H61 V74 M62 74 V46 H70 V74"/>
+            <path class="ln" pathLength="1" d="M48 18 V24 M45 21 H51"/>
+          </svg></div>
+          <div class="tx"><span class="pn">III</span><b>Pick</b><span class="pd">Gemini chooses five and writes each one up, with a weekend project.</span></div>
+        </li>
+        <li style="--i:3">
+          <div class="med"><svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+            <path class="ln" pathLength="1" d="M40 77 H60 M50 77 V30"/>
+            <circle class="ln" pathLength="1" cx="50" cy="27" r="3"/>
+            <path class="ln" pathLength="1" d="M27 36 H73"/>
+            <path class="ln" pathLength="1" d="M30 36 L23 55 M30 36 L37 55 M70 36 L63 55 M70 36 L77 55"/>
+            <path class="ln" pathLength="1" d="M21 55 H39 Q37 62 30 62 Q23 62 21 55 Z M61 55 H79 Q77 62 70 62 Q63 62 61 55 Z"/>
+            <path class="ln" pathLength="1" d="M26 55 V46 H34 V55 M28 49 H32 M28 52 H32"/>
+            <path class="ln" pathLength="1" d="M65 50 L69 54 L76 45"/>
+          </svg></div>
+          <div class="tx"><span class="pn">IV</span><b>Check</b><span class="pd">Groq weighs every line against the abstract. No quote, no line.</span></div>
+        </li>
+        <li style="--i:4">
+          <div class="med"><svg class="art" viewBox="0 0 100 100" aria-hidden="true">
+            <path class="ln" pathLength="1" d="M24 34 H72 V68 H24 Z"/>
+            <path class="ln" pathLength="1" d="M24 34 L48 54 L72 34"/>
+            <path class="ln" pathLength="1" d="M24 68 L42 52 M72 68 L54 52"/>
+            <circle class="fillin seal" cx="48" cy="55" r="7"/>
+            <path class="ln" pathLength="1" d="M77 44 H85 M78 51 H88 M77 58 H84"/>
+          </svg></div>
+          <div class="tx"><span class="pn">V</span><b>Deliver</b><span class="pd">An email to my inbox and a fresh page here, every morning, for ₹0.</span></div>
+        </li>
+      </ol>
+
+      <h3 class="sublabel"><span>Today’s ledger</span></h3>
+      <div class="lbook" id="ledger">
+        <span class="lribbon" aria-hidden="true"></span>
+        <div class="lpage lp-l">
+          <header class="lhd"><h4>Came in</h4><span class="ldate">{{LONG_DATE}}</span></header>
+          <dl>
+            <div class="lrow"><dt>Papers read</dt><dd>{{N_FETCHED}}</dd></div>
+            <div class="lrow sub"><dt>from arXiv, {{ARXIV_RANGE}}</dt><dd>{{N_ARXIV}}</dd></div>
+            <div class="lrow sub"><dt>from Hugging Face</dt><dd>{{N_HF}}</dd></div>
+            <div class="lrow"><dt>Already seen, set aside</dt><dd>{{N_SEEN}}</dd></div>
+            <div class="lrow"><dt>Matched my two topics</dt><dd>{{N_MATCHED}}</dd></div>
+            <div class="lrow"><dt>Last run</dt><dd>{{RUN_TIME}}</dd></div>
+          </dl>
+        </div>
+        <div class="lpage lp-r">
+          <header class="lhd"><h4>Went out</h4><span class="ldate">to my inbox and this page</span></header>
+          <dl>
+            <div class="lrow"><dt>Picked for the folio</dt><dd>{{N_PICKED}}</dd></div>
+            <div class="lrow"><dt>Lines checked</dt><dd>{{N_CHECKED}}</dd></div>
+            <div class="lrow sub"><dt>proven by the abstract</dt><dd>{{N_PROVEN}}</dd></div>
+            <div class="lrow sub red"><dt>struck in red</dt><dd>{{N_STRUCK}}</dd></div>
+            <div class="lrow"><dt>Checker test, planted lies caught</dt><dd>5 / 5</dd></div>
+            <div class="lrow total"><dt>Cost of the morning</dt><dd>₹0</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter wrap" id="stacks">
+    <header class="ch-head">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter IV</span>
+      <h2>The <em>Stacks</em></h2>
+      <p class="dek">Every morning adds a book to the shelf. Pull one out to see that day’s papers.</p>
+    </header>
+    <div class="stacks-grid">
+      <div class="bookcase">
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <defs>
+            <linearGradient id="brassG" x1="0" x2="1"><stop offset="0" stop-color="#6B4A1A"></stop><stop offset=".45" stop-color="#E8C57A"></stop><stop offset="1" stop-color="#5E4016"></stop></linearGradient>
+            <radialGradient id="flameG" cx=".5" cy=".72" r=".62"><stop offset="0" stop-color="#FFF8DF"></stop><stop offset=".42" stop-color="#FFC65C"></stop><stop offset="1" stop-color="#E0661A" stop-opacity="0"></stop></radialGradient>
+            <linearGradient id="glassG" x1="0" x2="1"><stop offset="0" stop-color="#2A211A"></stop><stop offset=".3" stop-color="#4A3B2E"></stop><stop offset="1" stop-color="#140F0B"></stop></linearGradient>
+          </defs>
+        </svg>
+        <div class="bc-inner">
+          <div class="bc-glow" aria-hidden="true"></div>
+          <div class="shelf-books" id="shelfBooks"></div>
+          <div class="shelf-board" aria-hidden="true"><span class="plate">The Stacks · MMXXVI</span></div>
+        </div>
+        <p class="shelf-note">One new book every morning. The empty slots are the days still to come.</p>
+      </div>
+      <div class="slip" id="slip"></div>
+    </div>
+  </section>
+
+  <section class="chapter wrap" id="colophon">
+    <header class="ch-head">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter V</span>
+      <h2><em>Colophon</em></h2>
+    </header>
+    <div class="colo" id="colo">
+      <svg class="colo-seal" viewBox="0 0 100 100" role="button" tabindex="0" aria-label="Wax seal. Tap it three times for a surprise.">
+        <polygon data-seal style="fill:var(--oxblood)"></polygon>
+        <circle cx="50" cy="50" r="39.5" style="fill:none;stroke:var(--wax-hi);stroke-width:1;stroke-dasharray:2 2.2"></circle>
+        <circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle>
+        <text x="50" y="60" style="fill:var(--wax-hi);font-family:var(--display);font-size:30px;font-style:italic;font-weight:600;text-anchor:middle">SD</text>
+      </svg>
+      <p class="seal-hint" id="sealHint">Psst. Tap the seal three times.</p>
+      <div class="sealbook" id="sealbook" hidden>
+        <h3>The Seal Book</h3>
+        <p class="sb-lead">You found the hidden page. Press your initials into wax, and your seal stays here for whoever comes next.</p>
+        <div class="sb-make">
+          <div class="sb-prev" id="sbPreview"></div>
+          <div class="sb-form">
+            <label class="sb-l" for="sbInit">Your initials</label>
+            <input id="sbInit" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC">
+            <div class="sb-colors" role="radiogroup" aria-label="Wax colour">
+              <button type="button" role="radio" aria-checked="true" data-c="oxblood" style="--w:#7A2620" aria-label="Oxblood wax"></button>
+              <button type="button" role="radio" aria-checked="false" data-c="forest" style="--w:#1F4A36" aria-label="Forest green wax"></button>
+              <button type="button" role="radio" aria-checked="false" data-c="midnight" style="--w:#22305A" aria-label="Midnight blue wax"></button>
+            </div>
+            <button type="button" class="sb-press" id="sbPress">Press the seal</button>
+            <p class="sb-msg" id="sbMsg" aria-live="polite"></p>
+          </div>
+        </div>
+        <p class="sb-count" id="sbCount"></p>
+        <div class="seal-wall" id="sealWall"></div>
+      </div>
+      <p class="colo-lead">You’ve reached the last page.</p>
+      <p>Before you close the book, pick one weekend project from today’s folio and build it. Tomorrow morning, five new papers will be waiting on the desk.</p>
+      <div class="sigline"><span class="sg2 foil">Himani Dalvi</span></div>
+      <div class="who">Maker of this desk · MMXXVI</div>
+      <div class="links">
+        <a href="https://github.com/hixyt/scholars-desk" target="_blank" rel="noopener">Source on GitHub ↗</a>
+      </div>
+      <div class="mail">
+        <span class="mail-l">Write to me</span>
+        <a class="mail-a" id="mailAddr" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=himanidalvi4@gmail.com&amp;su=Hello%20from%20The%20Scholar%E2%80%99s%20Desk" target="_blank" rel="noopener" title="Write to me">himanidalvi4@gmail.com</a>
+        <div class="mail-btns">
+          <a class="mail-b" id="mailGmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=himanidalvi4@gmail.com&amp;su=Hello%20from%20The%20Scholar%E2%80%99s%20Desk" target="_blank" rel="noopener">Open Gmail</a>
+          <a class="mail-b" id="mailApp" href="mailto:himanidalvi4@gmail.com?subject=Hello%20from%20The%20Scholar%E2%80%99s%20Desk" target="_blank" rel="noopener">Mail app</a>
+          <button type="button" class="mail-b" id="copyMail">Copy</button>
+        </div>
+      </div>
+      <p class="colo-small">Papers from arXiv and Hugging Face. Picked and written by Gemini, checked line by line by Groq, printed every morning by GitHub Actions. Set in Playfair Display, Spectral and Cinzel.</p>
+    </div>
+  </section>
+
+  <div class="finis">
+    <a class="to-seal" href="#stage" aria-label="Back to the seal, at the top of the page">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <polygon data-seal style="fill:var(--oxblood)"></polygon>
+        <circle cx="50" cy="50" r="39.5" style="fill:none;stroke:var(--wax-hi);stroke-width:1;stroke-dasharray:2 2.2"></circle>
+        <circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle>
+        <path d="M50 66 V36 M38 47 L50 35 L62 47" style="fill:none;stroke:var(--gold-hi);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round"></path>
+      </svg>
+      <span>Back to the seal</span>
+    </a>
+  </div>
+</div>
+
+<script>window.SD_DATA = {{SD_DATA}};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="site/hero.js?v={{VERSION}}"></script>
+<script src="site/chapters.js?v={{VERSION}}"></script>
+</body>
+</html>
