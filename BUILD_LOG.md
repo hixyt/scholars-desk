@@ -11,10 +11,16 @@ A free robot that reads new AI papers daily, picks 5 and suggests a weekend proj
 - [x] Fact-checker
 - [x] Daily email
 - [x] Runs every morning
-- [ ] Website shows real papers
+- [x] Website shows real papers
 - [ ] Launch
 
 ## Log
+
+**Day 5 · 2 Nov**
+- Built: the website now shows the real papers; build_site.py rebuilds it from the saved days every morning, and the design lives in site/
+- Broke: the morning runs started at 12:22 PM instead of 6:17 AM; Gemini began one reason with "Hey!", and the checker struck it
+- Decided: the schedule is set in India time; the page is made from the data, so nobody edits it by hand; write-ups start with what the paper does
+- Numbers: 4 days on the shelf · 1 Nov was a quiet Sunday with 0 matches · today 756 papers → 49 matched → 4 picked · 9 of 13 lines proven
 
 **Day 4 · 31 Oct**
 - Built: GitHub Actions runs the whole desk at 6:17 AM every day and saves the day's papers to the repo; errors now show on the run page
