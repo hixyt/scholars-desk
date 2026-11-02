@@ -184,7 +184,7 @@ html{scroll-behavior:smooth}
 @keyframes glow{0%,100%{opacity:.85}45%{opacity:1}70%{opacity:.75}}
 .shelf-books{display:flex;align-items:flex-end;justify-content:flex-start;gap:6px;min-height:236px;padding:0 6px;position:relative;z-index:1}
 .shelf-board{position:relative;z-index:1;height:24px;margin:0 -24px;background:linear-gradient(#6E4628,#3B2415 55%,#22140B);box-shadow:0 18px 30px -10px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,214,170,.28)}
-.plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:4px 12px;background:linear-gradient(100deg,#8A6A2E,#E8C57A 45%,#A9823E);color:#2B1E10;font:700 9px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;border-radius:1px;box-shadow:0 1px 2px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+.shelf-plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:4px 12px;background:linear-gradient(100deg,#8A6A2E,#E8C57A 45%,#A9823E);color:#2B1E10;font:700 9px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;border-radius:1px;box-shadow:0 1px 2px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35)}
 .shelf-books .b3{--w:150px;--h:206px;--t:44px;transform:rotateY(88deg)}
 .shelf-books .b3:hover,.shelf-books .b3:focus-visible{transform:translateY(-6px) rotateY(88deg)}
 .shelf-books .b3[aria-pressed="true"]{transform:translateY(-14px) translateZ(40px) rotateY(88deg)}
