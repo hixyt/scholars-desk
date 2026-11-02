@@ -70,6 +70,8 @@ HYPE_WORDS = {
     r"game-?changers?": "big improvement",
     r"highly employable": "useful for practical work",
     r"cutting-?edge": "modern",
+    r"super cool": "useful",
+    r"awesome": "useful",
 }
 
 
@@ -77,9 +79,12 @@ def clean_text(text):
     """Remove em dashes and hype words that the AI sometimes writes anyway."""
     text = re.sub(r"\s*(—| -- )\s*", ", ", text or "")
     text = text.replace("–", "-")
+    text = re.sub(r"^(hey|hi|hello|wow|oh)\b[!,.]*\s*", "", text, flags=re.IGNORECASE)  # no greetings
+    text = re.sub(r"^check out this paper because( it)?\s*", "This paper ", text, flags=re.IGNORECASE)
     for word, plain in HYPE_WORDS.items():
         text = re.sub(rf"\b{word}\b", plain, text, flags=re.IGNORECASE)
-    return re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:1].upper() + text[1:]
 
 
 def parse_json_list(text):

@@ -18,6 +18,7 @@ from common import call_groq, clean_text, load_config, load_keys, log, parse_jso
 
 STYLE_RULES = (
     "- Write like a friendly senior student. Use short sentences.\n"
+    "- Start with what the paper does or shows. No greetings or filler such as 'Hey!', 'Check out', 'super cool' or 'neat'.\n"
     "- Explain any technical word in brackets the first time you use it "
     "(for example: GUI [graphical user interface, like phone apps and buttons], "
     "LLM [large language model, an AI that understands text]), or use a simple everyday word instead.\n"
