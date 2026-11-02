@@ -995,7 +995,21 @@
     var sbInit = document.getElementById("sbInit"), sbPrev = document.getElementById("sbPreview"), sbPress = document.getElementById("sbPress"),
       sbMsg = document.getElementById("sbMsg"), sbCount = document.getElementById("sbCount"), wall = document.getElementById("sealWall"),
       colorBtns = [].slice.call(book.querySelectorAll(".sb-colors button"));
-    var SB = { color: "oxblood", db: null, user: null, uid: null, started: false, mine: null };
+    // Seals are kept in a small free database (Supabase). Its public key is meant to be in the page;
+    // the table only lets visitors add and read seals. Without it, the seal is pressed but not kept.
+    var STORE = D.seals && D.seals.url && D.seals.key ? D.seals : null;
+    var SB = { color: "oxblood", started: false, pressed: false };
+    function myLast() { try { return JSON.parse(localStorage.getItem("sd-my-seal") || "null"); } catch (e) { return null; } }
+    function rememberMine(row) { try { localStorage.setItem("sd-my-seal", JSON.stringify({ id: row.id, at: row.created_at })); } catch (e) {} }
+    function api(path, opts) {
+      opts = opts || {};
+      var headers = { apikey: STORE.key, "Content-Type": "application/json" };
+      if (STORE.key.split(".").length === 3) headers.Authorization = "Bearer " + STORE.key;  // older anon keys are JWTs
+      for (var h in opts.headers || {}) headers[h] = opts.headers[h];
+      return fetch(STORE.url.replace(/\/$/, "") + "/rest/v1/" + path, {
+        method: opts.method || "GET", headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined
+      }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+    }
     function drawPreview() { sbPrev.innerHTML = sealSVG(cleanInit(sbInit.value), SB.color, "sb-seal"); }
     drawPreview();
     sbInit.addEventListener("input", function () {
@@ -1030,66 +1044,40 @@
       setTimeout(function () { book.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" }); }, 120);
       if (SB.started) return;
       SB.started = true;
-      var C = window.claude;
-      if (!C || typeof C.use !== "function") { noDb(); return; }
-      Promise.all([C.use("db"), C.use("user")]).then(function (r) {
-        SB.db = r[0]; SB.user = r[1];
-        if (!SB.db) { noDb(); return; }
-        return (SB.user ? SB.user.id() : Promise.resolve(null)).then(function (id) {
-          SB.uid = id;
-          SB.db.collection("seals").orderBy("at", "desc").limit(120).onSnapshot(renderWall, function () {
-            sbCount.textContent = "The Seal Book could not be opened right now.";
-          });
-        });
-      }, noDb);
+      if (!STORE) { sbCount.textContent = ""; wall.hidden = true; return; }
+      var mine = myLast();
+      if (mine) sbMsg.textContent = "You left a seal here on " + fmtDay(mine.at) + ". Thank you.";
+      loadWall();
     }
-    function noDb() {
-      SB.db = null;
-      sbCount.textContent = "";
-      wall.hidden = true;
+    function loadWall() {
+      api("seals?select=id,initials,color,created_at&order=created_at.desc&limit=120").then(renderWall, function () {
+        sbCount.textContent = "The Seal Book could not be opened right now.";
+      });
     }
-    function renderWall(snap) {
-      var docs = snap.docs.filter(function (d) { return d.exists; });
-      sbCount.textContent = docs.length === 0 ? "No seals yet. Yours can be the first." : docs.length === 1 ? "1 seal in the book" : docs.length + " seals in the book";
-      wall.innerHTML = docs.map(function (d) {
-        var v = d.data() || {}, col = WAX[v.color] ? v.color : "oxblood", me = d.id === SB.uid;
-        return '<figure class="sw' + (me ? " me" : "") + '" data-id="' + esc(d.id) + '" style="--rot:' + rotFor(d.id) + '">' +
-          sealSVG(cleanInit(v.initials), col, "sw-seal") + "<figcaption>" + esc(fmtDay(v.at)) + "</figcaption></figure>";
+    function renderWall(rows) {
+      var mine = myLast();
+      sbCount.textContent = rows.length === 0 ? "No seals yet. Yours can be the first." : rows.length === 1 ? "1 seal in the book" : rows.length + " seals in the book";
+      wall.innerHTML = rows.map(function (v) {
+        var id = String(v.id), col = WAX[v.color] ? v.color : "oxblood", me = mine && String(mine.id) === id;
+        return '<figure class="sw' + (me ? " me" : "") + '" style="--rot:' + rotFor(id) + '">' +
+          sealSVG(cleanInit(v.initials), col, "sw-seal") + "<figcaption>" + esc(fmtDay(v.created_at)) + "</figcaption></figure>";
       }).join("");
-      var mine = SB.uid ? docs.filter(function (d) { return d.id === SB.uid; })[0] : null;
-      if (mine && !SB.mine && !SB.pressed) {
-        var mv = mine.data() || {};
-        sbInit.value = cleanInit(mv.initials);
-        if (WAX[mv.color]) { SB.color = mv.color; colorBtns.forEach(function (x) { x.setAttribute("aria-checked", String(x.dataset.c === mv.color)); }); }
-        drawPreview();
-        sbMsg.textContent = "Your seal is already in the book. Press again to change it.";
-      }
-      SB.mine = mine || null;
-      if (SB.user && docs.length) {
-        SB.user.isOwner().then(function (own) {
-          if (!own) return;
-          return SB.user.profiles(docs.map(function (d) { return d.id; })).then(function (ps) {
-            wall.querySelectorAll(".sw").forEach(function (f) { var p = ps[f.dataset.id]; f.title = (p && p.name) || "A visitor"; });
-          });
-        }).catch(function () {});
-      }
     }
     sbPress.addEventListener("click", function () {
       var init = cleanInit(sbInit.value);
       if (!init) { sbMsg.textContent = "Type one to three letters first."; sbInit.focus(); return; }
+      if (STORE && myLast()) { sbMsg.textContent = "You have already signed the book from this browser. One seal each."; return; }
       sbPrev.classList.remove("pressed"); void sbPrev.getBoundingClientRect(); sbPrev.classList.add("pressed");
       SB.pressed = true;
       setTimeout(function () { sfx("thud"); }, 260);
-      if (!SB.db || !SB.uid) {
-        sbMsg.textContent = "Pressed. Your seal is set in wax.";
-        return;
-      }
+      if (!STORE) { sbMsg.textContent = "Pressed. Your seal is set in wax."; return; }
       sbPress.disabled = true;
-      SB.db.doc("seals/" + SB.uid).set({ initials: init, color: SB.color, at: new Date().toISOString() }).then(function () {
+      api("seals", { method: "POST", headers: { Prefer: "return=representation" }, body: { initials: init, color: SB.color } }).then(function (rows) {
+        if (rows && rows[0]) rememberMine(rows[0]);
         sbMsg.textContent = "Sealed. Thank you for stopping by.";
-      }, function (e) {
-        sbMsg.textContent = e && e.code === "invalid_argument" ? "Only people with access to this page can sign the book." :
-          e && e.code === "quota_exceeded" ? "The book is full for now." : "Could not save right now. Try again in a moment.";
+        loadWall();
+      }, function () {
+        sbMsg.textContent = "Could not save right now. Try again in a moment.";
       }).then(function () { sbPress.disabled = false; });
     });
   }

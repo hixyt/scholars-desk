@@ -12,6 +12,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import requests
+
 from common import load_config, log, run
 from email_art import spine_label
 
@@ -103,6 +105,9 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
         "days": shelf,
         "nextDays": [{"short": day_text(d, "%d %b"), "label": day_text(d, "%a %d %b")} for d in next_days],
     }
+    site_cfg = config.get("site") or {}
+    if site_cfg.get("supabase_url") and site_cfg.get("supabase_key"):
+        data["seals"] = {"url": site_cfg["supabase_url"].strip(), "key": site_cfg["supabase_key"].strip()}
 
     def num(key):
         return f"{stats[key]:,}" if key in stats else "&mdash;"
@@ -148,12 +153,29 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     return digest["date"], len(papers), len(days)
 
 
+def wake_seal_book(config):
+    """Read the Seal Book once. Free Supabase projects sleep after a quiet week; this daily visit keeps it awake."""
+    site = config.get("site") or {}
+    url, key = (site.get("supabase_url") or "").strip(), (site.get("supabase_key") or "").strip()
+    if not url or not key:
+        return
+    try:
+        r = requests.get(f"{url.rstrip('/')}/rest/v1/seals?select=id&limit=1", headers={"apikey": key}, timeout=20)
+        if r.ok:
+            log.info("The Seal Book is awake")
+        else:
+            log.warning(f"The Seal Book answered {r.status_code}")
+    except requests.RequestException as e:
+        log.warning(f"Could not reach the Seal Book: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Build index.html from the saved digests.")
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--config", default="config.yaml")
     args = parser.parse_args()
     date, count, n_days = build(args.data_dir, args.config)
+    wake_seal_book(load_config(args.config))
     log.info(f"Website built for {date}: {count} papers on the desk, {n_days} days on the shelf")
 
 

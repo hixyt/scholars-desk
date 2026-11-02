@@ -78,3 +78,11 @@ email:
   signed_by: "Himani Dalvi"
   repo_url: "https://github.com/hixyt/scholars-desk"
   site_url: ""            # fill in once the website is live
+
+# Website
+site:
+  # The Seal Book (hidden on the last page) keeps visitors' seals in a free Supabase table.
+  # Both values are public by design: the key is the "publishable" one, never the secret one.
+  # Leave them empty and the seal is still pressed, just not kept.
+  supabase_url: ""
+  supabase_key: ""
