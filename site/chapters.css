@@ -461,3 +461,5 @@ html{scroll-behavior:smooth}
 }
 
 .wax-page{display:block;margin:0 auto;transform:rotate(-10deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.sealbook.signed .sb-l,.sealbook.signed #sbInit,.sealbook.signed .sb-colors,.sealbook.signed .sb-press{display:none}
+.sealbook.signed .sb-msg{margin:0;font-size:17px;line-height:1.55}

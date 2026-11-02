@@ -1001,6 +1001,11 @@
     var SB = { color: "oxblood", started: false, pressed: false };
     function myLast() { try { return JSON.parse(localStorage.getItem("sd-my-seal") || "null"); } catch (e) { return null; } }
     function rememberMine(row) { try { localStorage.setItem("sd-my-seal", JSON.stringify({ id: row.id, at: row.created_at })); } catch (e) {} }
+    function showSigned(row) {  // already signed from this browser: show their seal instead of the form
+      book.classList.add("signed");
+      sbPrev.innerHTML = sealSVG(cleanInit(row.initials), WAX[row.color] ? row.color : "oxblood", "sb-seal");
+      sbMsg.textContent = SB.pressed ? "Sealed. Thank you for stopping by." : "You left your seal here on " + fmtDay(row.created_at) + ". Thank you for stopping by.";
+    }
     function api(path, opts) {
       opts = opts || {};
       var headers = { apikey: STORE.key, "Content-Type": "application/json" };
@@ -1045,8 +1050,6 @@
       if (SB.started) return;
       SB.started = true;
       if (!STORE) { sbCount.textContent = ""; wall.hidden = true; return; }
-      var mine = myLast();
-      if (mine) sbMsg.textContent = "You left a seal here on " + fmtDay(mine.at) + ". Thank you.";
       loadWall();
     }
     function loadWall() {
@@ -1057,6 +1060,8 @@
     function renderWall(rows) {
       var mine = myLast();
       sbCount.textContent = rows.length === 0 ? "No seals yet. Yours can be the first." : rows.length === 1 ? "1 seal in the book" : rows.length + " seals in the book";
+      var own = mine && rows.filter(function (v) { return String(v.id) === String(mine.id); })[0];
+      if (own) showSigned(own);
       wall.innerHTML = rows.map(function (v) {
         var id = String(v.id), col = WAX[v.color] ? v.color : "oxblood", me = mine && String(mine.id) === id;
         return '<figure class="sw' + (me ? " me" : "") + '" style="--rot:' + rotFor(id) + '">' +
