@@ -1,0 +1,310 @@
+{
+  "date": "2026-11-03",
+  "generated_at": "2026-11-03T07:15:39.344116+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.03634",
+      "title": "WebHarbor: Docking Real Websites for Evolving GUI Agent Environments",
+      "abstract": "GUI web agents require realistic and interactive environments that remain stable during both evaluation and training. Live website evaluation suffers from changing content, access restrictions, and limited coverage of authenticated workflows, while existing synthetic environments for training often lack functional depth and visual fidelity. We propose WebHarbor, a suite of 153 executable and dockerized website environments that faithfully reconstruct the visual interfaces, content, and functional workflows of real-world web services under deterministic control. We build WebHarbor through task-driven human-agent collaboration, where environments evolve as new tasks expand their functional scope, coding agents implement the required changes, and human contributors audit visual fidelity, functional correctness, and task validity. The resulting suite comprises 3,518 tasks spanning multi-step and post-authentication workflows, where existing works often fail to cover. Beyond reliable evaluation, WebHarbor provides high-fidelity synthetic web environments for cost-efficient reinforcement learning (RL). We demonstrate that a Qwen 4B-level GUI agent trained with RL in WebHarbor generalizes to unseen tasks and performs competitively with leading open-source GUI web agents across four benchmarks. The code and data are publicly available at https://github.com/aiming-lab/WebHarbor.",
+      "authors": [
+        "Zhaoyang Wang",
+        "Qianhui Wu",
+        "Boyu Gou",
+        "Demi Wang",
+        "Jiacheng Zhang",
+        "Peichun Hua",
+        "Qize Li",
+        "Shi Qiu",
+        "Yifan Jiang",
+        "Yifan Zhang",
+        "Zexu Jin",
+        "Baolin Peng",
+        "Bolin Shen",
+        "Chetan Bansal",
+        "Dehan Kong",
+        "Deren Lei",
+        "Dongshen Peng",
+        "Fengqing Jiang",
+        "Hao Cheng",
+        "Haoqing Wang",
+        "Jiaming Shan",
+        "Jicheng Wang",
+        "Jingguang Zhou",
+        "Jixuan He",
+        "Kaide Zeng",
+        "Kangyu Zhu",
+        "Lama Moukheiber",
+        "Mufan Qiu",
+        "Peng Xia",
+        "Qihan Sun",
+        "Qingwei Lin",
+        "Qiushi Sun",
+        "Ruichen Zhang",
+        "Shuqing Luo",
+        "Si Qin",
+        "Sicheng Fan",
+        "Tao Xiong",
+        "Wenlin Yao",
+        "Xinyu Zhang",
+        "Xinyue Zeng",
+        "Xuanrui Li",
+        "Xuchao Zhang",
+        "Yian Wang",
+        "Yichao Liu",
+        "Yiming Liang",
+        "Yiyang Zhou",
+        "Yizhu Jiao",
+        "Yuetai Li",
+        "Yurun Chen",
+        "Yuxuan Zhang",
+        "Zheyuan Yang",
+        "Zhiyuan Yao",
+        "Zhongyang Li",
+        "Zihao Li",
+        "Zili Wang",
+        "Jianfeng Gao",
+        "Huaxiu Yao"
+      ],
+      "published": "2026-11-02T18:57:36Z",
+      "url": "https://arxiv.org/abs/2611.03634",
+      "pdf_url": "https://arxiv.org/pdf/2611.03634.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper shows how AI tools can interact with real websites smoothly so non-programmers can automate tasks.",
+      "explanation": "This paper built a collection of 153 safe, simulated websites inside Docker [a tool that packages software into neat containers to run anywhere] so AI web agents can practice tasks without breaking real systems. Training AI on these stable websites helps the models learn how to browse the internet, click buttons, and complete multi-step tasks reliably.",
+      "why_it_matters": "As a 2nd-year student, you will often need reliable environments to test your web automation scripts without getting blocked by live website changes.",
+      "project_idea": {
+        "title": "Local Web Task Automator",
+        "description": "Write a Python script using Selenium to automatically log into a locally hosted dummy website and fill out a contact form. Record the steps your script takes to see how web agents interact with DOM [Document Object Model, the tree structure of a web page].",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use a browser extension like Ui.Vision RPA to record yourself filling out a web form, and replay that sequence automatically without writing Python code."
+      }
+    },
+    {
+      "id": "2611.01563",
+      "title": "\\textsc{ChatDify}: Automating End-to-End Dify Workflow Synthesis from Natural Language via Multi-Agent Collaboration",
+      "abstract": "The proliferation of Large Language Models has catalyzed powerful application development platforms like Dify, which enable users to build sophisticated LLM-powered workflows through modular node orchestration. However, manually configuring these workflows requires deep platform expertise and remains time-consuming and error-prone, creating a significant barrier for non-expert users. To address this challenge, we propose \\textsc{ChatDify}, a novel multi-agent framework that automates end-to-end Dify workflow synthesis from natural language descriptions. \\textsc{ChatDify} employs an Actor-Critic architecture comprising three specialized agents: the \\textit{Planner Agent} that decomposes user requests into structured execution plans, the \\textit{Executor Agent} that performs context-aware parameter synthesis and schema-augmented DSL compilation, and the \\textit{Reviewer Agent} that ensures reliability through hybrid verification with closed-loop refinement. We evaluate \\textsc{ChatDify} on a curated benchmark of 100 production-inspired tasks across three state-of-the-art LLM backends, achieving 0.96, 0.91, and 0.75 success rates with Qwen-3.7, GLM-5.1, and DeepSeek-v4, respectively. These results demonstrate its robustness and practical applicability for lowering the technical barrier to creating sophisticated LLM applications.",
+      "authors": [
+        "Tao Fan",
+        "Guoqiang Ma"
+      ],
+      "published": "2026-11-01T04:40:49Z",
+      "url": "https://arxiv.org/abs/2611.01563",
+      "pdf_url": "https://arxiv.org/pdf/2611.01563.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-expert"
+      ],
+      "ranking_reason": "This paper presents a system that lets users build complex workflows using plain English without writing code.",
+      "explanation": "This paper introduces a multi-agent framework [a system where multiple specialized AI workers talk to each other to solve problems] that turns plain English sentences into complete workflow graphs for the Dify platform. It uses a Planner, an Executor, and a Reviewer agent to build, check, and fix complex AI pipelines automatically.",
+      "why_it_matters": "It shows how breaking down a big coding task among multiple AI roles makes automation much more reliable than relying on a single prompt.",
+      "project_idea": {
+        "title": "Text-to-Workflow Generator",
+        "description": "Build a small Python script that takes a user prompt describing a task, uses an LLM to generate a JSON configuration file, and validates the file format. Print out the structured JSON blueprint to the console.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use Make.com to parse an incoming text prompt from a Google Form and dynamically route the data through different conditional branches based on keywords."
+      }
+    },
+    {
+      "id": "2611.02472",
+      "title": "MAGAR: Multimodal Agents for GUI-Based 3D Mechanical Assembly and Minimal Rework",
+      "abstract": "A GUI command can be correct at the interface level yet still produce an incorrect assembly. An agent must identify the relevant components, respect their structural relationships, and determine which parts should move during recovery. We introduce MAGAR-Bench, a benchmark of 4,000 multimodal samples from 26 assembly families that separates Assembly Decision, Atomic Action, and Minimal Rework. For rework, the objective counts distinct moved parts within the validated recovery candidate set for each state, rather than the number of actions. We also introduce MAGAR, a selective correction framework built on a frozen policy obtained by supervised fine-tuning. Its key design matches correction granularity to output dependencies. Structured candidates revise assembly fields and rework scope, while complete action candidates keep native GUI primitives coupled with their parameters. A learned selector retains the original prediction unless a candidate passes a task-specific intervention threshold. On recorded states from held-out assembly families, MAGAR improves Overall, the task-balanced aggregate, from 37.50 to 41.39, with gains on all three tasks. Across 209 interventions, 70 correct an error and 22 introduce one. These results support task-specific correction while highlighting the remaining tradeoff between fixing errors and preserving reliable predictions.",
+      "authors": [
+        "Jingxuan Wei",
+        "Jiahao Fu",
+        "Fuqiang Wang",
+        "Xiaoming Wu",
+        "Yuwen Liu",
+        "Kaiwen Wei",
+        "Ming Yang",
+        "Junnan Zhu"
+      ],
+      "published": "2026-11-02T03:40:49Z",
+      "url": "https://arxiv.org/abs/2611.02472",
+      "pdf_url": "https://arxiv.org/pdf/2611.02472.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper introduces an AI agent that helps users perform 3D mechanical assembly tasks through visual instructions.",
+      "explanation": "This paper studies how AI visual agents handle 3D mechanical assembly instructions and fix mistakes during building. It introduces a benchmark and a selective correction framework that checks if parts move correctly and repairs errors with minimal rework.",
+      "why_it_matters": "It teaches you how AI can handle physical or spatial logic problems step-by-step instead of just generating text.",
+      "project_idea": {
+        "title": "Step Validator for IKEA Manuals",
+        "description": "Write a Python script that compares an image of a built Lego block structure against a target image template. Output a simple pass or fail status based on the visual difference.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Cloud Vision API inside an AppSheet app to check if uploaded photos of a completed task match a reference image."
+      }
+    },
+    {
+      "id": "2611.03178",
+      "title": "CoworkOS:Scaling Agent Coworkers for Real-world Automation",
+      "abstract": "Rapid advances in cowork agents are shifting human-AI collaboration toward real-world automation, delivering software, designs, and other artifacts. However, such productivity work demands both high-quality delivery on complex productivity tasks and continued monitoring and decision-making over long horizons, a combination that remains an open challenge. We introduce CoworkOS, a general-purpose harness for long-horizon work that separates task strategy from execution management: the model decides actions, delegation, and acceptance, while the runtime maintains state and feedback. Its three-layer architecture enables direct execution or delegation to Subagents, synchronously or asynchronously, under stable responsibilities. Through a shared application layer, humans and agents inspect and revise the same evolving documents, presentations, CAD models, and Blender scenes, so human-in-the-loop participation can enter both through conversation and through direct modification of the work itself. To sustain continuity across agents and sessions, CoworkOS further introduces hierarchical workspaces and persistent semantic memory, so working files, key decisions, and long-running Job logs remain shareable, reusable, and resumable after interruption. Across 12 benchmarks and 6 categories of real-world applications, CoworkOS proves highly competitive with frontier agent applications such as Codex and DeepSeek Harness. As a sustained-work case study, CoworkOS uses GLM-5.3 as its backbone to conduct RSI-driven automated post-training on Qwen3.6-35B-A3B. Over five rounds, the model's average score across eight benchmarks rose from 33.19 to 42.95 (+9.76). Looking ahead, we believe CoworkOS opens a meaningful path toward general cowork-agent intelligence.",
+      "authors": [
+        "Jiajie Jin",
+        "Guanting Dong",
+        "Chengjun Pan",
+        "Xin Deng",
+        "Zhuohui Sheng",
+        "Guoqiang Wang",
+        "Tao Gui",
+        "Yutao Zhu",
+        "Yujia Chen",
+        "Shihong Yi",
+        "Binze Hu",
+        "Zhixiong Yang",
+        "Zhichao Sun",
+        "Rui Wang",
+        "Han Han",
+        "Mingyu Ma",
+        "Junhao Huang",
+        "Xiaotao Wang",
+        "Huicheng Jiang",
+        "Yuyang Hu",
+        "Xinyu Yang",
+        "Wanghan Xu",
+        "Yajie Yang",
+        "Zhecan Wang",
+        "Honglin Guo",
+        "Xiaoyu Xing",
+        "Xiaoqian Zhang",
+        "Yulun Zhu",
+        "Xiaoxi Li",
+        "Jiahang Lin",
+        "Shaofan Liu",
+        "Shihan Dou",
+        "Zhiheng Xi",
+        "Qi Zhang",
+        "Yu-Gang Jiang",
+        "See-Kiong Ng",
+        "Yang Zhang",
+        "Tat-Seng Chua",
+        "Ji-Rong Wen",
+        "Zhicheng Dou"
+      ],
+      "published": "2026-11-02T14:15:11Z",
+      "url": "https://arxiv.org/abs/2611.03178",
+      "pdf_url": "https://arxiv.org/pdf/2611.03178.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "human-ai collaboration",
+        "productivity"
+      ],
+      "ranking_reason": "This paper builds an assistant framework that handles long-horizon productivity work and everyday tasks.",
+      "explanation": "This paper presents a general framework called CoworkOS that lets AI agents manage long-horizon productivity tasks by separating task strategy from execution management. It uses persistent memory and subagents so humans and AI can edit documents and code files together smoothly over long periods.",
+      "why_it_matters": "Real AI applications require managing state and memory over hours or days, rather than answering single-turn questions.",
+      "project_idea": {
+        "title": "Persistent Task Log Manager",
+        "description": "Create a Python CLI [command-line interface, a text-based menu in your terminal] tool that saves your daily project tasks and notes into a local SQLite database. Ensure the tool can load past context when you restart your terminal.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Build a persistent task tracking board in Notion or Airtable that automatically logs updates whenever you drop a file into a designated Google Drive folder using n8n."
+      }
+    },
+    {
+      "id": "2611.00191",
+      "title": "MemU-Bench: Benchmarking GUI Agents on Long-Horizon User Interactions",
+      "abstract": "Existing Graphical User Interface (GUI) benchmarks predominantly rely on precise and stateless user instructions. In everyday usage, however, instructions are often \\emph{vague and history-dependent}: users omit the exact details of their past operations because they no longer remember them, leaving the agent to recover the missing context from long and noisy interaction histories. To bridge this evaluation gap, we introduce \\textbf{MemU-Bench}, a mobile benchmark of \\textbf{118 vague tasks} grounded in 29 long-horizon user trajectories, where agents must distill raw interaction streams into memory and retrieve the missing context on demand, with task outcomes verified against serialized application databases. Alongside Success Rate, we incorporate Interaction Efficiency (IE) and Success weighted by Path Length (SPL) to expose agents that succeed by exhaustively searching across different applications rather than by \\emph{genuinely recalling} the history. Evaluations show that without user history, state-of-the-art systems struggle under such ambiguity: the best-performing Gemini-3.1-Pro achieves an SPL of only 16.4\\%, and end-to-end GUI agents fall below 5\\%. To address this, we further propose \\textbf{AppMem}, a training-free framework that distills user history into a \\emph{structured, app-centric} memory bank, tracks interrupted intents across application switches, and selectively retrieves relevant memories via target-app inference. AppMem raises the SPL of GPT-5.5 from 15.7\\% to 66.9\\% (\\textbf{+51.2\\%}), outperforms a naive summary baseline by 9.3\\%, and delivers consistent gains across evaluated backbones.",
+      "authors": [
+        "Yizhou Liu",
+        "Zhengxi Lu",
+        "Fei Tang",
+        "Yiwen Qiu",
+        "Yong Du",
+        "Tongbo Chen",
+        "Bofan Chen",
+        "Tao Jiang",
+        "Wenhao Xu",
+        "Yunfeng Shu",
+        "Wenqi Zhang",
+        "Weiming Lu",
+        "Jun Xiao",
+        "Yueting Zhuang",
+        "Yongliang Shen"
+      ],
+      "published": "2026-10-30T17:41:46Z",
+      "url": "https://arxiv.org/abs/2611.00191",
+      "pdf_url": "https://arxiv.org/pdf/2611.00191.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CV"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui",
+        "user interface"
+      ],
+      "ranking_reason": "This paper evaluates AI mobile agents on handling vague and history-dependent user requests over long sessions.",
+      "explanation": "This paper evaluates mobile AI agents on vague instructions that depend on past user actions, and introduces a memory framework called AppMem to store and retrieve past context. It shows that giving agents a structured memory bank helps them succeed when users give incomplete commands.",
+      "why_it_matters": "You will learn how proper memory management transforms a forgetful AI assistant into a context-aware helper.",
+      "project_idea": {
+        "title": "Chat History Memory Summarizer",
+        "description": "Write a Python script that reads a long text file of chat messages, extracts key user preferences using an LLM, and saves them into a summary JSON file for future prompts.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an OpenAI assistant node in Make.com connected to a Google Sheet to store user chat history and retrieve relevant past answers automatically."
+      }
+    }
+  ]
+}
