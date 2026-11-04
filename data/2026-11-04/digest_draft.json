@@ -1,0 +1,215 @@
+{
+  "date": "2026-11-04",
+  "generated_at": "2026-11-04T06:59:02.267879+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.05263",
+      "title": "JHiMA-WebRL: A Joint Hierarchical Multi-Agent Reinforcement Learning Framework for Long-Horizon Web Tasks",
+      "abstract": "Multimodal web agents have shown promising capabilities for interacting with websites through graphical user interfaces (GUIs), yet realistic web tasks often require long-horizon, multi-step planning that remains challenging for monolithic policies. Such agents must jointly infer high-level plans, navigate through intermediate states, track progress over extended interaction histories, and execute visually grounded actions. Although prior work has explored modular multi-agent systems with a separate planner, the planner is typically not updated jointly with the actor. We investigate whether explicitly separating and jointly training planning and execution provides a stronger inductive bias for long-horizon web navigation. We introduce JHiMA-WebRL, a joint hierarchical multi-agent reinforcement learning framework for web agents that couples a task decomposer with an actor. To train the decomposer, we use a strong teacher model to construct structured subtask supervision from multimodal GUI trajectories, and use these annotations to fine-tune both the decomposer and the subtask-conditioned actor. We then extend Group Relative Policy Optimization (GRPO) to jointly optimize the decomposer and actor in the interactive WebArena environment through hierarchical rollout grouping and role-specific advantages. On WebArena-Lite-v2, JHiMA-WebRL-14B, consisting of a 7B actor and a 7B decomposer, achieves an average success rate of 37.2%, compared with 24% for a ScaleCUA-32B agent that we fine-tune with RL on the same training tasks and evaluate under the same protocol. Ablations show that jointly updating the decomposer during RL outperforms updating the actor alone. These results suggest that jointly learned role factorization with smaller models can be a competitive alternative to scaling monolithic agents for long-horizon web tasks.",
+      "authors": [
+        "Shanka Subhra Mondal",
+        "Jiayun Wang"
+      ],
+      "published": "2026-11-03T17:49:14Z",
+      "url": "https://arxiv.org/abs/2611.05263",
+      "pdf_url": "https://arxiv.org/pdf/2611.05263.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper shows how multiple AI helpers can work together to handle complex web pages and actions.",
+      "explanation": "This paper combines two smaller AI models to handle long online tasks. One model breaks down the big goal, and the other model clicks through web pages to finish it.",
+      "why_it_matters": "It shows that breaking a big problem into smaller pieces helps smaller AI models work better than one giant model.",
+      "project_idea": {
+        "title": "Two-Step Web Helper",
+        "description": "Write a script where one prompt breaks a user request into subtasks, and a second prompt executes them one by one. Test it on simple multi-step form filling.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use Make.com to parse an incoming email into separate bullet points, then send each point to a different OpenAI module for processing."
+      }
+    },
+    {
+      "id": "2611.05171",
+      "title": "AgentAM: An AI Agent for Spatter- and Defect-Aware Process Optimization in Laser Powder Bed Fusion",
+      "abstract": "Predictive models for laser powder bed fusion (LPBF) are rarely used on the shop floor because querying them requires programming and model-specific knowledge. We present AgentAM, a large language model (LLM) agent that gives process engineers natural-language access to CFD-trained surrogates of spatter and melt pool geometry for SS316L through the Model Context Protocol (MCP). Polynomial surrogates trained on 279 single-track simulations predict melt pool dimensions ($R^2 \\geq 0.95$) and spatter volume ($R^2 = 0.83$ on test data) at any power-velocity point in the trained range, and geometric criteria assign each point a geometry-derived defect regime (keyhole, lack of fusion, balling or stable) that matches the regime obtained from the simulated geometry in 93.4% of tracks under cross-validation. The agent selects and parameterizes tools for prediction, process-window scans and constrained optimization. Minimum-spatter optima often sat within 10 $μ$m of the lack-of-fusion boundary; a margin-aware optimizer moved them away from all thresholds and raised the estimated probability of remaining classified Good from 0.94 to 1.00 under an assumed 2% process drift, and from 0.72 to 0.91 when jointly sampled cross-validated geometry residuals were added. About 40-50 well-spread simulations sufficed to reproduce the defect map. To evaluate the agent layer, we introduce a 145-prompt benchmark scored against direct tool calls, plus eight prompts (40 runs) on margin-aware requests. Over the 725 runs of the main benchmark the agent passed the intended inputs in 98.5% of parsing prompts, reported the scored spatter values and defect classes faithfully and met every stated constraint in the 65 feasible optimization runs, within a median 1.0% of the brute-force optimum.",
+      "authors": [
+        "Olabode T. Ajenifujah",
+        "Amir Barati Farimani"
+      ],
+      "published": "2026-11-03T16:38:46Z",
+      "url": "https://arxiv.org/abs/2611.05171",
+      "pdf_url": "https://arxiv.org/pdf/2611.05171.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agent"
+      ],
+      "ranking_reason": "This paper explains how factory engineers can use everyday language to talk to complex engineering AI systems.",
+      "explanation": "This paper introduces an AI helper that lets factory engineers use normal text to run complex physics simulations. Engineers do not need to write code to get answers about metal 3D printing anymore.",
+      "why_it_matters": "It teaches you how to wrap complex Python backend tools inside a language model interface using function calling.",
+      "project_idea": {
+        "title": "Chat with Calculator",
+        "description": "Build a chatbot that takes natural language requests and runs math or physics formulas using Python functions. Display the computed results back in chat format.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use Google Sheets with built-in Gemini functions to calculate values based on text prompts in neighboring cells."
+      }
+    },
+    {
+      "id": "2611.04483",
+      "title": "CogniLife: Continuous Cognitive Distillation for Deployed Multi-Expert Agent Marketplaces",
+      "abstract": "Multi-expert agent marketplaces -- where creators publish domain-specific AI experts for end users to consult -- are an emerging deployment pattern for language technology. A published expert can receive many requests yet little evidence about its creator, who remains active elsewhere: the cold-expert problem. We frame continuous cognitive distillation as converting attributed creator observations into revisable decision rules, communication patterns, and domain procedures. CogniLife proposes a cross-expert attribution design for this problem, with Creator Profiles for transferable creator patterns and Expert Journals for listing-specific knowledge; this design is not yet implemented or evaluated. A deployed platform partially realizes the surrounding lifecycle through creator-authorized authoring, capability-owned proposal filtering, and reversible consolidation of eligible owner-scoped memory. On ProfyBench-v1, an 85-task offline benchmark built from replay seeds and controlled internal tests, the Profy Full configuration as a whole achieves a mean overall score of 4.65/5 from the primary LLM judge, compared with 4.01 for Raw LLM and 4.28 for Expert Prompt, with the largest gains in completeness, specificity, and missing-information tasks. These configuration-level scores do not test cold-expert mitigation, cross-expert transfer, or longitudinal distillation.",
+      "authors": [
+        "Xuwei Tan",
+        "Jingchun Huang",
+        "Ming Cai",
+        "Shuangquan Lyu",
+        "Tiange Wang",
+        "Yinzhi Wang",
+        "Ronghua Shi",
+        "Jingwei Song",
+        "Yang Jingsong",
+        "Yinghui Xia",
+        "Hehua Fan",
+        "Yifan Zhou",
+        "Hanxin Chen",
+        "Jiwei Song",
+        "Tianyu Shi"
+      ],
+      "published": "2026-11-03T08:13:34Z",
+      "url": "https://arxiv.org/abs/2611.04483",
+      "pdf_url": "https://arxiv.org/pdf/2611.04483.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "end users"
+      ],
+      "ranking_reason": "This paper looks at digital marketplaces where people can buy and sell specialized AI helpers.",
+      "explanation": "This paper studies online marketplaces where creators sell specialized AI helpers. It looks at how these helpers can learn and update their rules from real user interactions over time.",
+      "why_it_matters": "As a developer, you will likely build or use systems where multiple AI agents share knowledge and improve automatically.",
+      "project_idea": {
+        "title": "Agent Memory Log",
+        "description": "Create a local JSON file that acts as a journal for your chatbot, updating its stored preferences after every user conversation. Load this journal into the system prompt next time.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets to store user feedback and preferences, then pull them into your automation workflows using basic formulas."
+      }
+    },
+    {
+      "id": "2611.04459",
+      "title": "$τ$-Rec-Books: A Disclosure-Controlled Benchmark for Requirement Elicitation in Agentic Recommender Systems",
+      "abstract": "While conversational recommendation systems provide a more natural user interface, they face the challenge of progressively discovering a user's needs before they can recommend an item that satisfies them. To evaluate the ability of AI agents at this elicitation process, we introduce $τ$-Rec-Books, a benchmark that holds each user request fixed while varying only when the user reveals their requirements: all at the start (volunteer), one at the start and the rest when asked (mixed), or some never (hidden). A hidden requirement can be found only by proposing books and inferring it from the user's accept or reject verdicts. We generate 450 tasks over a catalog of 20,000 books from Wikidata, develop a rule-based simulated user to answer the agent, and score recommendations against catalog metadata without an LLM judge. Across four agents and two search interfaces, success rates fall for every agent and interface, on average from 0.975 (volunteer) to 0.756 (mixed) and 0.283 (hidden). Mixed tasks fail mainly because agents do not ask, and when told to ask, every agent reaches at least 0.931. On hidden tasks, most failures come from agents recommending a book they never proposed to the user. When told to propose first, agents only match a simple baseline that proposes popular books, and stay well below one that uses rejection to rule out possible requirements. We release the catalog pipeline, task generator, simulated user, validators, reference agents, and all agent traces at https://github.com/nbharaths/tau-rec/tree/main/data/tracks/books-wikidata-v2.",
+      "authors": [
+        "Bharath Sivaram Narasimhan",
+        "Karthik R. Narasimhan"
+      ],
+      "published": "2026-11-03T07:47:46Z",
+      "url": "https://arxiv.org/abs/2611.04459",
+      "pdf_url": "https://arxiv.org/pdf/2611.04459.pdf",
+      "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.IR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "user interface",
+        "ai agents",
+        "agentic"
+      ],
+      "ranking_reason": "This paper tests how well AI helpers can figure out what a user wants through conversation.",
+      "explanation": "This paper tests how well AI chatbots can figure out what a user wants by asking questions. It shows that many AI models fail to recommend the right books because they forget to ask the user for missing preferences.",
+      "why_it_matters": "It highlights why good conversation design and asking clarifying questions matter when building recommendation systems.",
+      "project_idea": {
+        "title": "Book Recommender Chatbot",
+        "description": "Write a Streamlit app where an AI asks the user three questions about their reading taste before suggesting a book. Track how many questions the AI actually asks.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build a simple conversational bot using a no-code chatbot builder like Voiceflow and set rules to require user inputs before outputting a result."
+      }
+    },
+    {
+      "id": "2611.03853",
+      "title": "Performance, Scalability and Maintenance: An Experimental Study of RPA vs. Autonomous Agents in the Healthcare Domain",
+      "abstract": "Healthcare information systems are fragmented, and retrieving data from legacy web portals is a recurrent need. Robotic Process Automation (RPA) is deterministic but sensitive to interface changes, whereas autonomous agents based on large language models (Agent Process Automation, APA) promise adaptability at a higher computational cost. Following Design Science Research, we developed and compared an RPA solution (Playwright) and an APA solution (browser-use, LangGraph and Gemini 2.5 Flash-lite) to retrieve mammography and breast ultrasound reports from a laboratory portal, treating reports solely as informational artifacts. Across two rounds (T and T+7), RPA reached 98.90% accuracy and 98.27% F1-score versus 96.49% and 94.48% for APA, was about 13 times faster (16.07 s vs. 207.21 s per patient) and cost about six times less per report (USD 0.030 vs. 0.187). Both reached 100% step success rates; APA varied more over time. For a stable interface, RPA was superior.",
+      "authors": [
+        "Daniel Schulz",
+        "Pedro Cabral Buchaim",
+        "Bernardo Soares",
+        "Fernando Rafael Ensslin Schwengber",
+        "Lorenzo Farias",
+        "Daniela Duarte da Silva Bagatini",
+        "Ana Paula Wernz da Cunha Müller"
+      ],
+      "published": "2026-11-02T19:22:22Z",
+      "url": "https://arxiv.org/abs/2611.03853",
+      "pdf_url": "https://arxiv.org/pdf/2611.03853.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.SE"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "autonomous agents"
+      ],
+      "ranking_reason": "This paper compares traditional automation tools with modern AI helpers in managing medical records.",
+      "explanation": "This paper compares old-school automation scripts with modern AI web agents for healthcare data entry. It finds that traditional code scripts are much faster and cheaper when website layouts do not change.",
+      "why_it_matters": "It proves that you do not always need an expensive AI model when a simple script can do the job reliably.",
+      "project_idea": {
+        "title": "Web Scraper vs AI Agent",
+        "description": "Write a Python script using BeautifulSoup to scrape a static webpage, and compare its speed and cost against using a large language model browser automation tool.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use n8n to fetch data via a standard web scraping node and compare its execution speed against an AI-powered extraction node."
+      }
+    }
+  ]
+}
