@@ -1,10 +1,12 @@
 name: Morning digest
 
 on:
+  # The main trigger is a 6:17 AM call from Supabase (pg_cron), because GitHub's own timer runs hours late.
+  # GitHub's timer stays as a backup: if the morning run already happened, the backup does nothing.
   schedule:
-    - cron: "17 6 * * *"   # 6:17 AM every day (GitHub can start it a little late)
+    - cron: "17 6 * * *"
       timezone: "Asia/Kolkata"
-  workflow_dispatch:        # adds a "Run workflow" button, for tests
+  workflow_dispatch:        # used by the Supabase call, and as a "Run workflow" button for tests
 
 permissions:
   contents: write           # so it can save the day's papers back to the repo
@@ -26,32 +28,46 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Check if today's digest already went out
+        id: today
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ -f "data/$(date -u +%F)/digest.json" ]; then
+            echo "done=true" >> "$GITHUB_OUTPUT"
+            echo "Today's digest is already out, so the backup run has nothing to do."
+          fi
+
       - uses: actions/setup-python@v6
+        if: steps.today.outputs.done != 'true'
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Install
+        if: steps.today.outputs.done != 'true'
         run: pip install -r requirements.txt
 
       - name: Fetch new papers
+        if: steps.today.outputs.done != 'true'
         run: python fetch.py
 
       - name: Pick five and write them up
+        if: steps.today.outputs.done != 'true'
         run: python rank.py
 
       - name: Fact-check every line
+        if: steps.today.outputs.done != 'true'
         run: python verify.py
 
       - name: Send the email
+        if: steps.today.outputs.done != 'true'
         run: python send_email.py
 
       - name: Update the website
-        if: always()        # rebuild the page from whatever days are saved
+        if: always() && steps.today.outputs.done != 'true'   # rebuild from whatever days are saved
         run: python build_site.py
 
       - name: Save the day's papers and the website to the repo
-        if: always()        # keep whatever was fetched, even if a later step failed
+        if: always() && steps.today.outputs.done != 'true'   # keep whatever was fetched, even if a later step failed
         run: |
           git config user.name "Himani Dalvi"
           git config user.email "himanidalvi4@gmail.com"
