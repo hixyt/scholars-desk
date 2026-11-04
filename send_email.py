@@ -22,7 +22,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from common import load_config, log, run
+from common import load_config, log, run, tidy_title
 from email_art import SPINES, banner_png, spine_label
 
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
@@ -387,6 +387,8 @@ def main():
         raise SystemExit(f"{digest_path} not found. Run verify.py first.")
     with open(digest_path, encoding="utf-8") as f:
         digest = json.load(f)
+    for p in digest.get("papers", []) + digest.get("left_out", []):
+        p["title"] = tidy_title(p["title"])
     if not digest.get("papers"):
         print("No papers today, so no email was sent.")
         return

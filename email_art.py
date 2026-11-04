@@ -51,11 +51,11 @@ def glow(size, color, strength):
 
 def spine_label(title):
     """Short name for a spine: the part before the colon, or the first few words."""
-    name = title.split(":")[0].strip()
+    name = title.replace("$", "").split(":")[0].strip()
     words = name.split()
     while len(" ".join(words)) > 18 and len(words) > 1:
         words.pop()
-    return " ".join(words)
+    return " ".join(words).rstrip(",;.-")
 
 
 def draw_book(img, x, w, h, color, numeral, label, f_num, f_label):

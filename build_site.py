@@ -14,7 +14,7 @@ from pathlib import Path
 
 import requests
 
-from common import load_config, log, run
+from common import load_config, log, run, tidy_title
 from email_art import spine_label
 
 WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
@@ -39,6 +39,8 @@ def load_days(data_dir):
     days = []
     for path in sorted(Path(data_dir).glob("*/digest.json")):
         digest = json.loads(path.read_text(encoding="utf-8"))
+        for p in digest.get("papers", []) + digest.get("left_out", []):
+            p["title"] = tidy_title(p["title"])
         if digest.get("papers"):
             stats_path = path.parent / "stats.json"
             stats = json.loads(stats_path.read_text(encoding="utf-8")) if stats_path.exists() else {}

@@ -20,7 +20,7 @@ from pathlib import Path
 
 import requests
 
-from common import load_config, log, run
+from common import load_config, log, run, tidy_title
 
 HEADERS = {"User-Agent": "TheScholarsDesk/1.0 (daily AI paper digest; mailto:scholars-desk@users.noreply.github.com)"}
 ARXIV_NS = {
@@ -46,7 +46,7 @@ def normalize_title(title):
 def make_paper(paper_id, title, abstract, authors, published, source, categories=(), primary="cs.AI", hf=None):
     return {
         "id": paper_id,
-        "title": " ".join(title.split()),
+        "title": tidy_title(title),
         "abstract": " ".join(abstract.split()),
         "authors": authors,
         "published": published,

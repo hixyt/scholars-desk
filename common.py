@@ -87,6 +87,12 @@ def clean_text(text):
     return text[:1].upper() + text[1:]
 
 
+def tidy_title(title):
+    """Paper titles sometimes carry LaTeX math marks, like "$\\tau$-Bench". Show them as plain text."""
+    title = re.sub(r"\$([^$]*)\$", r"\1", title or "").replace("$", "")
+    return re.sub(r"\s+", " ", title).strip()
+
+
 def parse_json_list(text):
     """Parse the AI's JSON reply and return the list inside it ({"papers": [...]} gives [...])."""
     text = text.strip()
