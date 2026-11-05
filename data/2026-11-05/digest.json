@@ -1,0 +1,360 @@
+{
+  "date": "2026-11-05",
+  "verified_at": "2026-11-05T07:25:29.810337+00:00",
+  "verifier": "Groq (openai/gpt-oss-20b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.06075",
+      "title": "UniCompress: From Multi-LoRA Experts to One Compact Model for Edge Intelligence",
+      "abstract": "Embodied and edge systems increasingly rely on vision-language models (VLMs) to support heterogeneous skills, yet deploying a separate task adapter for each skill while retaining a high-precision backbone creates substantial memory and management costs. We present UniCompress, a deployment-oriented framework that converts multi-task expertise into one compact, adapter-free model. Starting from a consolidated BF16 Qwen3-VL-4B teacher, UniCompress constructs an asymmetric INT2 student using GPTQ initialization and teacher-guided quantization recovery. The approach jointly quantizes and recovers the projection weights in the vision encoder and language backbone, enabling aggressive compression of the complete vision-language model while preserving its multi-task behavior. We evaluate UniCompress on four heterogeneous embodied tasks: posture recognition, household-safety understanding, multimodal dialogue routing, and mobile-GUI action prediction. UniCompress reduces the approximate weight storage from 8.9 GB in BF16 to 2.1 GB in INT2, corresponding to a reduction of approximately 76%. It improves the INT2 macro task score by 34.3 percentage points over GPTQ-INT2 while remaining within 0.9 points of the consolidated BF16 teacher. These results demonstrate the potential of teacher-guided joint vision-language INT2 recovery for deploying a single multi-skill VLM on resource-constrained embodied platforms.",
+      "authors": [
+        "Mingkang Liu",
+        "Peipei Jiao",
+        "Weiming Meng",
+        "Tianyuan Liu",
+        "Lichen Pang",
+        "Junyan Li"
+      ],
+      "published": "2026-11-04T07:18:55Z",
+      "url": "https://arxiv.org/abs/2611.06075",
+      "pdf_url": "https://arxiv.org/pdf/2611.06075.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper shows how to compress large AI models so they can run smoothly on ordinary edge devices without losing skill.",
+      "explanation": "This paper shows how to shrink a large vision-language model [AI that understands both images and text] into a much smaller size without losing its ability to do many different tasks. It squeezes the model weights [internal numbers that store what the AI learned] so it can run smoothly on ordinary edge devices [small hardware like phones or Raspberry Pis] without needing expensive cloud servers.",
+      "why_it_matters": "As a student, understanding model compression helps you build AI apps that run locally on cheap hardware instead of paying high cloud fees.",
+      "project_idea": {
+        "title": "Tiny Image Captioner",
+        "description": "Write a Python script using PyTorch [a popular library for deep learning] to load a quantized [compressed to lower precision] vision model and generate captions for your local photos. Measure how much RAM [computer memory for active tasks] your script uses compared to the uncompressed version.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use Hugging Face spaces with pre-quantized models to test image captioning directly in your browser without writing Python code."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper shows how to compress large AI models so they can run smoothly on ordinary edge devices without losing skill.",
+          "supported": true,
+          "evidence": "We present UniCompress, a deployment-oriented framework that converts multi-task expertise into one compact, adapter-free model.",
+          "reason": "Abstract states the paper compresses large AI models for edge devices."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper shows how to shrink a large vision-language model [AI that understands both images and text] into a much smaller size without losing its ability to do many different tasks.",
+          "supported": true,
+          "evidence": "Starting from a consolidated BF16 Qwen3-VL-4B teacher, UniCompress constructs an asymmetric INT2 student using GPTQ initialization and teacher-guided quantization recovery.",
+          "reason": "Abstract explicitly mentions shrinking a large vision-language model into a smaller size without losing multi-task ability."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It squeezes the model weights [internal numbers that store what the AI learned] so it can run smoothly on ordinary edge devices [small hardware like phones or Raspberry Pis] without needing expensive cloud servers.",
+          "supported": true,
+          "evidence": "UniCompress reduces the approximate weight storage from 8.9 GB in BF16 to 2.1 GB in INT2, corresponding to a reduction of approximately 76%.",
+          "reason": "Abstract states weights are squeezed to run on edge devices without needing cloud servers."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.06830",
+      "title": "Alignment Myopia in Generative AI",
+      "abstract": "Current generative AI alignment relies on a myopic paradigm that prioritizes immediate conversational satisfaction. By relying on short-horizon feedback, this approach ignores the profound, longitudinal externalities of persistent human-AI interaction, which can lead to adverse outcomes such as cognitive atrophy, social erosion, and diminished human agency. To address this, we propose a paradigm shift toward long-horizon alignment that accounts for how AI reshapes human experience over time. To this end, we map the tensions between near-term utility and long-term costs of AI use across four facets of human well-being to reveal outcomes that current reward models fail to capture. Ultimately, we advocate for moving beyond simple preference optimization toward alignment strategies that actively foster long-term human well-being by navigating these complex temporal scales.",
+      "authors": [
+        "Remi Denton",
+        "Aida Davani",
+        "Cynthia L Bennett",
+        "Michael Madaio",
+        "Roma Patel",
+        "Himabindu Lakkaraju"
+      ],
+      "published": "2026-11-04T17:44:07Z",
+      "url": "https://arxiv.org/abs/2611.06830",
+      "pdf_url": "https://arxiv.org/pdf/2611.06830.pdf",
+      "categories": [
+        "stat.ML",
+        "cs.CY",
+        "cs.LG"
+      ],
+      "primary_category": "stat.ML",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "human-ai interaction"
+      ],
+      "ranking_reason": "This study looks at how daily interactions with generative AI change human habits and thinking over long periods of time.",
+      "explanation": "This paper looks at how chatting with generative AI [AI that creates text, images, or code] every day changes human habits and thinking over long periods of time. It points out that current AI focuses only on making you happy right now, which might cause people to rely too much on AI and lose their own problem-solving skills over time.",
+      "why_it_matters": "It teaches you to think beyond just making an AI app feel smart today, and consider how your app shapes user behavior over months and years.",
+      "project_idea": {
+        "title": "Study Habit Tracker",
+        "description": "Build a simple web app using Flask [a python framework for websites] that logs how many times students ask an AI for direct answers versus asking for study hints. Add a weekly reflection prompt that encourages users to solve problems on their own.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build a Google Form connected to Google Sheets that logs your daily study habits and triggers automated email reminders to use AI only for hints."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This study looks at how daily interactions with generative AI change human habits and thinking over long periods of time.",
+          "supported": true,
+          "evidence": "Current generative AI alignment relies on a myopic paradigm that prioritizes immediate conversational satisfaction.",
+          "reason": "Abstract discusses daily interactions changing habits over long periods."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper looks at how chatting with generative AI [AI that creates text, images, or code] every day changes human habits and thinking over long periods of time.",
+          "supported": true,
+          "evidence": "By relying on short-horizon feedback, this approach ignores the profound, longitudinal externalities of persistent human-AI interaction, which can lead to adverse outcomes such as cognitive atrophy, social erosion, and diminished human agency.",
+          "reason": "Abstract states daily chatting changes habits and thinking over long periods."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It points out that current AI focuses only on making you happy right now, which might cause people to rely too much on AI and lose their own problem-solving skills over time.",
+          "supported": true,
+          "evidence": "This approach ignores the profound, longitudinal externalities of persistent human-AI interaction, which can lead to adverse outcomes such as cognitive atrophy, social erosion, and diminished human agency.",
+          "reason": "Abstract notes current AI focuses only on immediate satisfaction, potentially causing loss of problem-solving skills."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.06687",
+      "title": "LifeVal: Evaluating AI Model Performance on Personalized Agentic Consumer Tasks",
+      "abstract": "We introduce LifeVal, a benchmark evaluating AI model performance on personalized agentic consumer tasks. LifeVal covers the most valuable life tasks that a personalized digital superassistant could automate, representing over 1.7 trillion US dollars in annual willingness-to-pay across 148 consumer task categories (e.g., managing finances, moving apartments, searching for a job, finding childcare). To construct our activity distribution, we conducted a new survey of willingness-to-pay for a digital superassistant across a demographically representative sample of over 3,800 consumers, cross-referencing our results against the American Time Use Survey (Bureau of Labor Statistics, 2025) and the Multinational Time Use Study (Fisher et al., 2025). For the most valuable consumer activities, we recruited task creators to create AI evaluation tasks personalized using real ChatGPT conversations and memories, reference files, and personal context. Task creators had to pass our expertise threshold (including personally completing the task multiple times and seeing the results through in their real lives for over a year) and also write a rubric, ensuring that our evaluation measured the best personalized completion for that task. All tasks had to pass at least three rounds of human quality-control before acceptance into our final evaluation sets.",
+      "authors": [
+        "Jenny Yang",
+        "Elizabeth Proehl",
+        "Anjan Bharadwaj",
+        "Emily Fan",
+        "Charlotte Cole",
+        "James Kim",
+        "Noam Brown",
+        "Phoebe Thacker",
+        "Amelia Glaese",
+        "Tejal Patwardhan"
+      ],
+      "published": "2026-11-04T15:55:20Z",
+      "url": "https://arxiv.org/abs/2611.06687",
+      "pdf_url": "https://arxiv.org/pdf/2611.06687.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "agentic"
+      ],
+      "ranking_reason": "This paper introduces a benchmark to test how well AI assistants can automate valuable everyday consumer tasks like managing money and finding jobs.",
+      "explanation": "This paper introduces a new way to test how well AI agents [AI programs that can take actions to achieve goals] can handle complex everyday consumer tasks like managing finances, moving apartments, or finding a job. It uses real consumer data and personal context to check if the AI truly helps people complete multi-step real-world chores.",
+      "why_it_matters": "It gives you a clear picture of what real users actually want AI assistants to automate, moving beyond simple chat bots.",
+      "project_idea": {
+        "title": "Apartment Search Assistant",
+        "description": "Write a Python script using OpenAI API [application programming interface, a way for programs to talk to each other] that takes a user budget and neighborhood preference, reads a CSV [comma-separated values, a spreadsheet-like file format] of rental listings, and outputs a personalized ranked list of apartments.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Make or Zapier to connect a Google Sheet of rental listings to an AI prompt that emails you a summary of the best matches."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper introduces a benchmark to test how well AI assistants can automate valuable everyday consumer tasks like managing money and finding jobs.",
+          "supported": true,
+          "evidence": "We introduce LifeVal, a benchmark evaluating AI model performance on personalized agentic consumer tasks.",
+          "reason": "Abstract states benchmark tests AI assistants automating valuable consumer tasks."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a new way to test how well AI agents [AI programs that can take actions to achieve goals] can handle complex everyday consumer tasks like managing finances, moving apartments, or finding a job.",
+          "supported": true,
+          "evidence": "LifeVal covers the most valuable life tasks that a personalized digital superassistant could automate, representing over 1.7 trillion US dollars in annual willingness-to-pay across 148 consumer task categories.",
+          "reason": "Abstract indicates new way to test AI agents on complex consumer tasks."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It uses real consumer data and personal context to check if the AI truly helps people complete multi-step real-world chores.",
+          "supported": true,
+          "evidence": "Task creators had to pass our expertise threshold (including personally completing the task multiple times and seeing the results through in their real lives for over a year) and also write a rubric, ensuring that our evaluation measured the best personalized completion for that task.",
+          "reason": "Abstract mentions use of real consumer data and personal context for evaluation."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.05512",
+      "title": "SlackBench: Benchmarking Agents on Collaborative Projects Grounded in Real Code Repositories",
+      "abstract": "AI Agents are becoming digital coworkers that can browse the web, write code, run experiments, and assist humans over extended horizons. Yet existing benchmarks fall short of real knowledge work: many rely on synthetic data or isolated tasks, missing the complex, multi-party dynamics of collaborative projects, where critical information is scattered across conversations, code, and evolving decisions. Even simple workplace questions may require locating relevant channels and direct messages, recovering context from long discussions, inspecting repository state, reconciling stale or conflicting evidence, and synthesizing across sources. We introduce SlackBench, a benchmark for evaluating agents on realistic research and engineering workflows that require joint reasoning over workplace communication and evolving repository state. Grounded in privacy-preserving reenactments of real academic research projects, SlackBench provides reproducible environments with realistic multi-party dialogue, evolving decisions, and corresponding code changes grounded in GitHub repositories and Google Docs. It contains 140 queries spanning heterogeneous-source agentic search, abstention on unanswerable or false-premise questions, goal-directed summarization, and circumstance inference over long conversations. These tasks are not reducible to static corpus question answering: agents must determine which conversations matter, traverse threads, inspect repository state, and synthesize evidence across communication and code artifacts. Across 33 frontier models and agent harnesses, the best system scores around 80% and most agents score below 66%, highlighting substantial headroom for improvement. SlackBench thus provides an extensible framework for evaluating agents in collaborative work environments. The SlackBench dataset is available at https://huggingface.co/datasets/HuanzhiMao/SlackBench .",
+      "authors": [
+        "Mingxuan Li",
+        "Huanzhi Mao",
+        "Ruitao Zheng",
+        "Jarod Stanbury James",
+        "Yunze Li",
+        "Natanya Anderson",
+        "Joseph E. Gonzalez",
+        "Alex Dimakis"
+      ],
+      "published": "2026-11-03T19:10:50Z",
+      "url": "https://arxiv.org/abs/2611.05512",
+      "pdf_url": "https://arxiv.org/pdf/2611.05512.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agents",
+        "agentic",
+        "workplace"
+      ],
+      "ranking_reason": "This work tests AI agents as digital coworkers handling collaborative projects across chat messages and code repositories.",
+      "explanation": "This paper tests how well AI agents can act as digital coworkers by looking at collaborative projects that involve both chat messages and code repositories [storage places for code files]. It shows that most current AI struggle when they have to search through long chat histories and code changes at the same time to answer questions.",
+      "why_it_matters": "It shows the real challenges of building AI tools that work across different workplace apps like Slack [team chat software] and GitHub [code hosting platform].",
+      "project_idea": {
+        "title": "Repo Chat Summarizer",
+        "description": "Write a Python script that reads a text file containing chat logs and a small Python code file, then uses an LLM [large language model, an AI that understands text] to answer a question that requires information from both sources.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use n8n to connect a Slack channel archive to an AI node that automatically summarizes daily discussions and pushes them to a Notion page."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This work tests AI agents as digital coworkers handling collaborative projects across chat messages and code repositories.",
+          "supported": true,
+          "evidence": "We introduce SlackBench, a benchmark for evaluating agents on realistic research and engineering workflows that require joint reasoning over workplace communication and evolving repository state.",
+          "reason": "Abstract describes testing AI agents as digital coworkers handling collaborative projects across chat and code repositories."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper tests how well AI agents can act as digital coworkers by looking at collaborative projects that involve both chat messages and code repositories [storage places for code files].",
+          "supported": true,
+          "evidence": "Grounded in privacy-preserving reenactments of real academic research projects, SlackBench provides reproducible environments with realistic multi-party dialogue, evolving decisions, and corresponding code changes grounded in GitHub repositories and Google Docs.",
+          "reason": "Abstract confirms focus on chat messages and code repositories."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It shows that most current AI struggle when they have to search through long chat histories and code changes at the same time to answer questions.",
+          "supported": true,
+          "evidence": "Across 33 frontier models and agent harnesses, the best system scores around 80% and most agents score below 66%, highlighting substantial headroom for improvement.",
+          "reason": "Abstract indicates many current AI struggle with searching long histories and code changes simultaneously."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.05549",
+      "title": "Whose Transparency is it Anyway? Understanding Generative AI Transparency Needs and Gaps Across Stakeholders",
+      "abstract": "Transparency has become a central principle in AI governance, yet there is little agreement about what transparency means, for whom, and in what contexts. Drawing on interpretive flexibility within the Social Construction of Technology, this paper examines how different stakeholders understand and experience transparency in generative AI. This study draws from a global survey of 400 end-users, AI builders, and policymakers, complemented by a structured focus group with end-users, grounding the quantitative findings in qualitative insights from the group most underserved by current transparency practice. We present three key findings. First, all three groups share similar understandings of what transparency means and what it should afford, centered on ensuring accuracy and privacy. Second, gaps between the importance of transparency features and their perceived availability are substantially larger for end-users than builders, revealing how power shapes what gets built and who it serves. Only 28% of end-users report that current transparency practices reflect their needs very well, compared to 53% of builders and 49% of policymakers. Third, transparency is situationally constructed, priorities shift with context and task structure, with role-specific frames activating when context demands them and receding when it does not. We argue that meaningful AI transparency requires moving beyond a one-size-fits-all solution, including current emphases on AI disclosure and static documentation, toward pluralistic transparency infrastructures that reflect the needs of diverse users and stakeholders.",
+      "authors": [
+        "Genevieve Smith",
+        "Sahiba Chopra",
+        "Natalia Luka",
+        "Min Kyung Lee"
+      ],
+      "published": "2026-11-03T19:40:36Z",
+      "url": "https://arxiv.org/abs/2611.05549",
+      "pdf_url": "https://arxiv.org/pdf/2611.05549.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CY",
+        "cs.HC"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "end-users"
+      ],
+      "ranking_reason": "This paper examines what different groups of people mean when they ask for transparency from generative AI systems.",
+      "explanation": "This paper studies what different groups of people mean when they ask for transparency [openness about how a system works] from generative AI. It finds that everyday users care most about accuracy and privacy, but builders and companies often fail to provide the features that users actually need.",
+      "why_it_matters": "It reminds you that when you build AI products, you need to think about what your users consider fair and clear, not just what is easy to code.",
+      "project_idea": {
+        "title": "AI Transparency Card Generator",
+        "description": "Create a Streamlit [a python library for building interactive web apps easily] app where users paste an AI model prompt and system instructions, and the app generates a clean summary card explaining what data the model uses and its known limits.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Create a standard template in Google Docs or Notion that automatically populates AI system details using form responses from your project team."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper examines what different groups of people mean when they ask for transparency from generative AI systems.",
+          "supported": true,
+          "evidence": "This paper examines how different stakeholders understand and experience transparency in generative AI.",
+          "reason": "Abstract states the paper examines what different groups mean by transparency."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper studies what different groups of people mean when they ask for transparency [openness about how a system works] from generative AI.",
+          "supported": true,
+          "evidence": "Drawing on interpretive flexibility within the Social Construction of Technology, this paper examines how different stakeholders understand and experience transparency in generative AI.",
+          "reason": "Abstract confirms study of what different groups mean by transparency."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It finds that everyday users care most about accuracy and privacy, but builders and companies often fail to provide the features that users actually need.",
+          "supported": true,
+          "evidence": "Only 28% of end-users report that current transparency practices reflect their needs very well, compared to 53% of builders and 49% of policymakers.",
+          "reason": "Abstract shows everyday users care about accuracy and privacy, but builders/companies often fail to provide needed features."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": []
+}
