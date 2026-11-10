@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-10",
+  "generated_at": "2026-11-10T07:44:54.332689+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.12222",
+      "title": "PARIS: A multi-agent LLM framework for end-to-end, PRISMA-guided systematic literature reviews with pre-synthesis corpus quality assessment",
+      "abstract": "Systematic literature reviews (SRs) remain slow and labor-intensive, and most automation tools address single stages of the workflow. We present PARIS (PRISMA Agentic Research Intelligence System), an open-source framework in which a conductor agent running in Claude Code orchestrates 15 specialized large language model (LLM) agents, from scoping a research question to exporting a manuscript draft. Agents are specified declaratively, coordinate exclusively through persisted artifacts that the conductor validates before every transition, and delegate retrieval, bibliometric analysis and scoring to deterministic Python utilities. Three human checkpoints gate study inclusion, corpus adequacy and the synthesis outline. We also introduce QualityScore, a pre-synthesis index that aggregates normalized network, bibliometric, semantic and process sub-scores into a 0-100 grade. Two case studies illustrate both: AI chatbots and university students' learning (388 records, 100 included) and AI-assisted SR methods (131 records, 123 included, QualityScore 69.1 recomputed with a proxy network sub-score). They show end-to-end feasibility across domains and the diagnostic use of QualityScore: in the first run, corpus improvements chosen at the corpus-adequacy checkpoint raised the score from 74.6 to 81.9 and the number of pre-2023 studies from 1 to 19. Audits of both runs exposed failure modes: incomplete retrieval, counts that drifted between agents, unrecorded or delegated checkpoint decisions and a grade that depends on how citation data are handled. PARIS fully supports 8 of the 27 PRISMA 2020 items and partially supports 11. Output quality has so far been judged only by an internal reviewer agent; independent validation against human reviews is the next step.",
+      "authors": [
+        "Christophe Cruz",
+        "Hussam Ghanem",
+        "Samir Jabbar",
+        "Ait Kbir",
+        "Hocine Cherifi"
+      ],
+      "published": "2026-11-09T11:16:03Z",
+      "url": "https://arxiv.org/abs/2611.12222",
+      "pdf_url": "https://arxiv.org/pdf/2611.12222.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "agentic"
+      ],
+      "ranking_reason": "This paper shows how multiple AI workers can team up to write research papers from start to finish.",
+      "explanation": "This paper built a system where fifteen specialized AI agents work together to write academic literature reviews. A main manager AI coordinates the smaller AI workers, checks their outputs, and stops for human approval at key steps.",
+      "why_it_matters": "It shows how to break a massive, complex project down into smaller tasks handled by different AI helpers.",
+      "project_idea": {
+        "title": "Mini Research Assistant",
+        "description": "Write a Python script that uses two LLMs to read a research abstract and summarize it, then have a second LLM check the summary for errors.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets to pull abstracts via an API, send them to an AI plugin to summarize them, and pass the text to another prompt for review."
+      }
+    },
+    {
+      "id": "2611.12393",
+      "title": "AutoBuddy: Evaluating Proactive, Always-On Agents on Task Discovery and Execution in a Simulated Workplace",
+      "abstract": "As LLM agents become more autonomous, they are increasingly expected to run as always-on assistants on a user's behalf, identifying work to be done and completing it without being asked. Yet existing benchmarks usually give the agent its task, whereas in knowledge work the requests sit in the user's workspace and the agent must first recognise which obligations exist. We study proactive task discovery and execution, in which an agent must infer a user's pending tasks from their workspace and complete them in the systems where the work lives. This setting poses two challenges. For the agent, the tasks are buried in a large volume of mail, chat, documents and records. For evaluation, a benchmark needs a simulated organisation whose people, events and documents are mutually consistent, so that tasks arise realistically and their correct outcomes are known. We introduce AutoBuddy-Bench, a simulator that addresses these challenges. It models an organisation's employees, projects, business systems and event history as a temporal graph, renders it into realistic workspace artefacts, derives ground-truth tasks from the events that create obligations, and computes each task's outcome from the world state; execution is judged by the agent's changes to the workspace. To evaluate current LLMs, we build AutoBuddy, a reference agent with interchangeable backbone LLMs: it identifies tasks from the workspace, grounding each in its source records, and executes each in a separate session with write access. Varying only the backbone, we find a systematic shift in where tasks are lost: weaker models fail mainly at discovery, intermediate models identify tasks but often stop short of carrying them out, and the strongest models fail mainly during execution, most often on business-system operations. Discovery precision is only weakly related to execution quality, suggesting the two are distinct capabilities.",
+      "authors": [
+        "Shiqi Chen",
+        "Daniel Madrigal Diaz",
+        "Wei-Ning Chen",
+        "Gbola Afonja",
+        "Fangkai Yang",
+        "Rujia Wang",
+        "Chetan Bansal",
+        "Victor Rühle",
+        "Saravan Rajmohan",
+        "Dongge Han"
+      ],
+      "published": "2026-11-09T13:30:18Z",
+      "url": "https://arxiv.org/abs/2611.12393",
+      "pdf_url": "https://arxiv.org/pdf/2611.12393.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "llm agents",
+        "workplace"
+      ],
+      "ranking_reason": "This study tests AI assistants that find and finish pending tasks in your workspace without being asked.",
+      "explanation": "This research tested AI assistants that silently read a simulated office workspace to find pending tasks and finish them without being asked. The authors found that weaker AIs fail to spot the work, while stronger AIs struggle to execute the final steps safely.",
+      "why_it_matters": "It teaches you how to evaluate whether an AI agent can act independently instead of just answering direct questions.",
+      "project_idea": {
+        "title": "Unread Email Action Finder",
+        "description": "Build a script that scans text files representing a fake inbox, extracts action items using an LLM, and creates a checklist file.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Set up an n8n workflow that triggers when a new email arrives, asks an AI model to extract any tasks, and adds them to a Trello board."
+      }
+    },
+    {
+      "id": "2611.10602",
+      "title": "Agentic discrete-event simulation for manufacturing system design: an open 3D simulator, a benchmark and an industrial case",
+      "abstract": "The design of manufacturing systems relies on discrete-event simulation (DES) models that experts still build in tool-specific interfaces. AI agents can now write simulation code, but every model they write from scratch is new, unverified software. We present SimuLean, an open-source 3D DES simulator on the Unity engine designed to be programmed by AI agents: its modelling semantics are verified once, in the platform, and the agent builds and studies one model through domain-level commands, in the 3D scene or headless; physically simulated durations are calibrated for fast headless studies. We evaluated it on 18 manufacturing modelling tasks, from single machines to published production lines. A frontier agent built valid models in 93 of 108 attempts (86%), in about two minutes each; on the benchmark's interface version, two frontier agents built 105 of 108 models through domain commands alone, so that each comes with a record of how it was built. Every residual failure was silent - a model that builds and runs but answers wrongly - and only comparison with reference models revealed them all. In an industrial case, one agent working alone rebuilt, verified and studied a robotised welding workshop from a published study, in SimuLean and in SimPy. Comparing them with the published, expert-built model exposed an error in it; against the corrected model, the agent-built models agree within 1%. One agent can already build complete, realistic and traceable models for the design of manufacturing systems; independent reference models are what make them trustworthy.",
+      "authors": [
+        "Javier Pernas-Álvarez",
+        "Diego Crespo-Pereira"
+      ],
+      "published": "2026-11-07T09:12:09Z",
+      "url": "https://arxiv.org/abs/2611.10602",
+      "pdf_url": "https://arxiv.org/pdf/2611.10602.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agents",
+        "agentic"
+      ],
+      "ranking_reason": "This paper presents a 3D simulator that allows AI agents to design and test manufacturing systems using simple text instructions.",
+      "explanation": "This paper created a 3D manufacturing simulator that AI agents can control using simple text commands. The AI can build and test factories automatically, helping engineers spot design errors faster.",
+      "why_it_matters": "It demonstrates how text-based AI models can control complex visual software and physics simulations.",
+      "project_idea": {
+        "title": "Text-to-Grid Factory Planner",
+        "description": "Create a script where an LLM reads a text description of a warehouse layout and outputs a JSON grid representing asset locations.",
+        "difficulty": "Easy",
+        "time_estimate": "3 hours",
+        "no_code_version": "Use Make.com to parse user requests about room layouts and generate structured table entries in Google Sheets."
+      }
+    },
+    {
+      "id": "2611.10224",
+      "title": "Jais 3: Introducing Arabic-centric Agentic AI",
+      "abstract": "We present Jais 3, a fleet of six open, Arabic-centric agentic language models ranging from 0.9B to 375B parameters. Jais 3 is built to complete tasks for Arabic speakers, not only to answer questions in plain text: it is trained to plan multi-step tasks, call tools and Model Context Protocol (MCP) servers, operate a terminal, search the web, and read, edit, and produce PDF, spreadsheet, and presentation files, while communicating with the user in Arabic. Instead of pretraining from scratch, we adapt each model of the fully open K2 Horizon fleet to Arabic through continual pretraining, followed by supervised fine-tuning (SFT), final token preference optimization (FTPO), and reinforcement learning with verifiable rewards (RLVR). We combine natural Arabic text with translated, transliterated, and synthetic Arabic, and replay the base model's own training data to keep its reasoning, agentic, and English abilities. Jais 3 covers Modern Standard Arabic and the major regional dialects, follows instructions with Arabic-specific constraints, and inherits the 512K-token context window of K2 Horizon (all models except the 0.9B). To our knowledge, its 375B model is the largest open Arabic-centric language model to date. For evaluation, we revisit how Arabic models are assessed, moving to fully generative evaluation on audited Arabic benchmarks. Across model sizes, Jais 3 matches or outperforms open-weight models of comparable size on Arabic and agentic benchmarks, with particularly strong agentic capabilities and Arabic instruction following, and far fewer hallucinations. We release the weights and the checkpoints from every training stage of all six models, together with samples of the training data, the data recipes and training configurations, the training logs, the audited benchmarks, and the evaluation code.",
+      "authors": [
+        "Team IFM",
+        "Haonan Li",
+        "Hadi Abdine",
+        "Nikhil Ranjan",
+        "Mohamed Anwar",
+        "Ahmad Chamma",
+        "Amr Mohamed",
+        "Ahmed Frikha",
+        "Dani Bouch",
+        "Maaz Maqsood",
+        "George Ibrahim",
+        "Mostafa Awad",
+        "Nurkhan Laiyk",
+        "Hasan Iqbal",
+        "Abhishek Maiti",
+        "Bilal Bouardi",
+        "Shivam Chauhan",
+        "Ahmer Tabassum",
+        "Owais Aijaz",
+        "Omar Arbi",
+        "Neha Sengupta",
+        "Aaryamonvikram Singh",
+        "Abdelhakim Freihat",
+        "Sarath Chandran",
+        "Rahul Pal",
+        "Mohammed Bellam",
+        "Sajid Siddiki",
+        "Sarah AlBarri",
+        "Debopriyo Banerjee",
+        "Ali El Filali",
+        "Samta Kamboj",
+        "Rifo Genadi",
+        "Ahmed Attia",
+        "Go Inoue",
+        "Shuonan Dong",
+        "Amine Khelif Khelif",
+        "Evan Dufraisse",
+        "Florian Valade",
+        "Tapas Sen",
+        "Guowei He",
+        "Sunil Sahu",
+        "Onkar Pandit",
+        "Kareem Magdy",
+        "Sheikh Khalid bin Khalifa Al Nahyan",
+        "Samujjwal Ghosh",
+        "Zainul Abedien",
+        "Ahmed Quraishi",
+        "Larry Murray",
+        "Avraham Sheinin",
+        "Natalia Vassilieva",
+        "Preslav Nakov",
+        "Guokan Shang",
+        "Xuguang Hector Ren",
+        "Zhengzhong Liu",
+        "Eric Xing"
+      ],
+      "published": "2026-11-06T21:11:05Z",
+      "url": "https://arxiv.org/abs/2611.10224",
+      "pdf_url": "https://arxiv.org/pdf/2611.10224.pdf",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "agentic"
+      ],
+      "ranking_reason": "This paper introduces a family of AI models designed to handle multi-step tasks and file editing in Arabic.",
+      "explanation": "This work introduces a family of open AI models specifically optimized for the Arabic language. These models can plan multi-step tasks, use external tools, edit documents, and write code while chatting naturally in Arabic.",
+      "why_it_matters": "It highlights how open-source models are adapted for specific languages and complex multi-step tasks rather than just basic chat.",
+      "project_idea": {
+        "title": "Multilingual Tool Caller",
+        "description": "Fine-tune a small open-source model prompt template to handle tool calls and translate responses accurately in a target language.",
+        "difficulty": "Medium",
+        "time_estimate": "4-6 hours",
+        "no_code_version": "Build an AI chatbot workflow in n8n that detects the input language and routes queries to specialized translation and task-execution blocks."
+      }
+    },
+    {
+      "id": "2611.10453",
+      "title": "BunshinRL: Splitting Live Agent Workspaces for Memory-Efficient Agentic RL",
+      "abstract": "Agentic reinforcement learning (RL) rollouts interleave model reasoning with tool calls in persistent workspaces. Scaling these rollouts incurs substantial memory costs for concurrent environments, while slow tool calls delay entire rollout batches. We present BunshinRL, an agentic RL rollout system that exploits shared environment state and recurring tool calls through three techniques: memory sharing across environments, tool-prefix caching, and speculative tool execution. These techniques build on BunshinFork, a novel live whole-workspace forking mechanism for containers. BunshinFork reconstructs process trees, shares memory copy-on-write, and preserves file, communication, and GUI state, enabling cached-state reuse and rollback after incorrect speculation. We implement BunshinRL and BunshinFork through Linux kernel module and CRIU modifications. BunshinRL reduces peak memory by up to 43%, total memory consumption by up to 51%, and end-to-end rollout latency by 23%.",
+      "authors": [
+        "Yutong Huang",
+        "Vikranth Srivatsa",
+        "Alex Asch",
+        "Yiying Zhang"
+      ],
+      "published": "2026-11-07T04:05:17Z",
+      "url": "https://arxiv.org/abs/2611.10453",
+      "pdf_url": "https://arxiv.org/pdf/2611.10453.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.OS"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "gui",
+        "agentic"
+      ],
+      "ranking_reason": "It matches the topic AI tools for non-programmers.",
+      "explanation": "This paper introduces a system to make running multiple AI agents much faster and cheaper. It shares memory between background containers so they do not waste computer resources when running repetitive tasks.",
+      "why_it_matters": "It teaches you about the heavy backend engineering required to scale up AI applications without running out of memory.",
+      "project_idea": {
+        "title": "Workspace State Cacher",
+        "description": "Write a Python script that saves the intermediate states of a task execution so you can restart it instantly after a crash.",
+        "difficulty": "Medium",
+        "time_estimate": "4 hours",
+        "no_code_version": "Use Google Sheets to save state logs at every step of a multi-step workflow so you can resume from the last good row if an error occurs."
+      }
+    }
+  ]
+}
