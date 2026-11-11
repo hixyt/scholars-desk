@@ -1,0 +1,207 @@
+{
+  "date": "2026-11-11",
+  "generated_at": "2026-11-11T07:09:32.025280+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.14256",
+      "title": "A Cross-Scenario Survey and Analysis of Self-Evolving Multimodal Agents",
+      "abstract": "Recent work shows that multimodal agents increasingly self-improve without recurring human annotation. However, each self-improvement mechanism is designed and evaluated within a single scenario, leaving its preconditions unverified under cross-scenario transfer. This survey investigates the structural source of asymmetric mechanism transfer across four scenarios: multimodal reasoning, multimodal generation, GUI and Web navigation, and embodied manipulation. We first formalize the self-evolving multimodal agent by four criteria and a differentia of self-reference, and adopt the three-stage self-evolving loop of experience generation, feedback acquisition, and update consolidation as our analytical framework to position the scenarios along ceilings on rollout count and feedback fidelity. Comparing self-evolving with fixed loops within each scenario separates the limitations that the scenario imposes from those inherent in the self-evolving design. We then recast each mechanism as a trade-off that raises a scarce factor by presupposing a task-structural resource, such as output equivalence or checkable outcomes, and judge it portable, conditional, blocked, or redundant across scenarios. We attribute the asymmetry to divergent combinations of scarce factors and resources across opposite transfer directions, and identify the matched-budget measurements that could overturn these still untested verdicts.",
+      "authors": [
+        "Jingjing Jiang"
+      ],
+      "published": "2026-11-10T16:04:02Z",
+      "url": "https://arxiv.org/abs/2611.14256",
+      "pdf_url": "https://arxiv.org/pdf/2611.14256.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper surveys multimodal agents that use GUIs [graphical user interfaces, like phone apps and buttons] without human help.",
+      "explanation": "This paper looks at multimodal agents [AI systems that process both text and images] that learn to improve themselves without human help. It studies how these self-improving tricks transfer across different tasks like web browsing, reasoning, and image generation.",
+      "why_it_matters": "As a student, you will soon build agents that can fix their own mistakes. Understanding how learning transfers helps you design systems that work across multiple domains.",
+      "project_idea": {
+        "title": "Self-Correcting Web Searcher",
+        "description": "Write a Python script where an LLM [large language model, an AI that understands text] tries to browse a website and fixes its own prompt if it hits an error page. Test it on three different simple web pages over the weekend.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use an n8n workflow that catches API errors from a web scraper and uses an OpenAI node to rewrite the search query automatically."
+      }
+    },
+    {
+      "id": "2611.13386",
+      "title": "Designing Accessible and Rigorous ML Experiments: No-Code Visual Workflows and Structured Guidance for Beginners",
+      "abstract": "Designing machine learning (ML) experiments requires beginners to plan a methodologically sound workflow and implement it in a concrete environment. We evaluated two forms of support in two within-participant studies with 18 predominantly technically trained participants: mlguide, which provides structured, evidence- backed guidance for workflow design, and AI Sandbox, a visual no-code environment for workflow implementation. After using mlguide, participants produced better high-level workflow designs, but their scores on a quiz about specific methodological choices did not improve significantly. Compared with Google Colab, AI Sandbox received higher hedonic user experience ratings, while perceived workload and acceptance did not differ significantly. These findings suggest that different forms of interactive support help with differ- ent aspects of beginner ML experimentation. The paper contributes a reusable evaluation task with instructions, a modified dataset, and a quiz, as well as empirical evidence on structured guidance for workflow design and on the experience of implementing workflows in visual and notebook-based environments.",
+      "authors": [
+        "Henrik H. J. Detjen",
+        "David Pfrang",
+        "Max Westphal",
+        "Melissa Finster",
+        "Dörte Corr",
+        "Markus Wenzel"
+      ],
+      "published": "2026-11-10T00:02:31Z",
+      "url": "https://arxiv.org/abs/2611.13386",
+      "pdf_url": "https://arxiv.org/pdf/2611.13386.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "no-code"
+      ],
+      "ranking_reason": "This paper evaluates no-code visual tools that help beginners design machine learning experiments.",
+      "explanation": "This paper tests tools that help beginners design and run machine learning experiments without getting stuck on complex code setup. It compares visual no-code drag and drop environments with traditional coding notebooks.",
+      "why_it_matters": "When starting out, building correct machine learning workflows is hard. This research shows how visual tools help you plan better experiments before writing code.",
+      "project_idea": {
+        "title": "Visual ML Pipeline Comparison",
+        "description": "Build a basic classification model using a drag and drop tool like Orange or Google Colab on the same dataset. Compare how long it takes you to set up and train the model in both environments.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Build the entire data classification pipeline inside Google Sheets using the Simple ML extension or a similar no-code add-on."
+      }
+    },
+    {
+      "id": "2611.13143",
+      "title": "Autonomous Optimization of Numerical Algorithms by an AI Agent: Application to Atomistic Simulation",
+      "abstract": "Coding agents built on large language models, run in automated improvement loops, can discover more efficient algorithms. We present AIOA, a framework that brings this approach to the numerical algorithms of atomistic simulation: an agent improves an algorithm against a pre-specified metric in a loop guarded by verifiers it cannot alter. Applied to ASE, a widely used atomistic simulation library, AIOA targets two facets of an algorithm: its implementation, rewritten to run faster with unchanged results, and the method itself, redesigned to converge with fewer force evaluations. Agents made six kernels 22-24 times faster on average in Python with NumPy and SciPy. On unseen problems, optimizers from the best configuration needed 3.1-3.4 times fewer force evaluations than L-BFGS for structure relaxation and 4.6-17 times fewer than standard climbing-image nudged elastic band calculations for reaction paths. The agents' optimizers also contain two algorithmic components we did not find in the literature.",
+      "authors": [
+        "Jeheon Woo"
+      ],
+      "published": "2026-11-09T19:23:39Z",
+      "url": "https://arxiv.org/abs/2611.13143",
+      "pdf_url": "https://arxiv.org/pdf/2611.13143.pdf",
+      "categories": [
+        "physics.chem-ph",
+        "cs.AI"
+      ],
+      "primary_category": "physics.chem-ph",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "ai agent"
+      ],
+      "ranking_reason": "This paper shows how coding agents can automatically rewrite and speed up numerical algorithms.",
+      "explanation": "This paper builds an AI agent that automatically rewrites and optimizes math code for computer simulations. The agent loops through testing and improving code until it runs much faster than before.",
+      "why_it_matters": "Coding agents are changing how we write software. Seeing how an AI can optimize raw numerical code shows you the future of automated performance tuning.",
+      "project_idea": {
+        "title": "Automated Python Speed Checker",
+        "description": "Write a Python script that takes a slow loop function and uses the OpenAI API to rewrite it for better speed using NumPy. Measure the execution time before and after the change.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Create a Make automation that takes a snippet of text code, sends it to an LLM for optimization, and logs the speedup results into Airtable."
+      }
+    },
+    {
+      "id": "2611.12953",
+      "title": "Agent Architecture Cost-Success Trade-offs: A Controlled Evaluation across Enterprise-Style SOPs",
+      "abstract": "Enterprises increasingly use large language model agents to execute standard operating procedures (SOPs): long, branching, tool-intensive workflows. Yet there is little controlled evidence for choosing among competing agentic architectures. Holding the model, tasks, and tools fixed and varying only the architecture, we compare four designs (a function-calling single agent, a skill-augmented agent, centralized multi-agent orchestration, and a triage swarm; eight arms) across 13 enterprise SOPs, and introduce a skill-definition quality rubric to build matched high and low-quality skill corpora. Three takeaways emerge. (1)~\\textbf{There is no universal best architecture; the right choice is SOP-dependent.} On a given SOP, task success ranges from under $10\\%$ on the hardest to near $100\\%$ on the easiest; no architecture is statistically separable in aggregate, and added structure only plausibly pays off on complex, branching SOPs (a directional, not yet significant, trend). (2)~\\textbf{Added architecture cost must be justified by a task-success gain.} Every coordinated arm (multi-agent or skill-augmented) spends $1.4$--$4.7\\times$ the tokens and $2.6$--$5.8\\times$ the latency of the single agent for gains that are usually small and rarely significant, making the single agent the efficient default; high-quality skills do lift success (to $73.1\\%$ from $67.4\\%$) while degraded skills fall below it. (3)~\\textbf{Implementation quality outweighs the single- versus multi-agent choice.} A plausible multi-agent implementation loses to the single agent, yet a targeted redesign of it becomes the only arm to significantly beat the baseline ($75.6\\%$ vs.\\ $67.4\\%$).",
+      "authors": [
+        "Subhrangshu Nandi",
+        "Hitesh Arora",
+        "Yunfei Bai",
+        "Udita Patel",
+        "Chirag Shah",
+        "Hannah Kwon",
+        "Wei Zhang",
+        "Weian Chen",
+        "Chloe Ruoqi Li",
+        "Alberto Sconfienza",
+        "Ayush Goyal",
+        "Yasmine Lee",
+        "Ming Xiong",
+        "Prathap Ramachandra"
+      ],
+      "published": "2026-11-07T05:12:41Z",
+      "url": "https://arxiv.org/abs/2611.12953",
+      "pdf_url": "https://arxiv.org/pdf/2611.12953.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "language model agents",
+        "agentic"
+      ],
+      "ranking_reason": "This paper compares different agent architectures across standard operating procedures for enterprise tasks.",
+      "explanation": "This paper compares four different multi-agent architectures on enterprise workflows. It finds that adding complex multi-agent setups often increases cost and latency without making the results much better than a single well-built agent.",
+      "why_it_matters": "Many tutorials tell you to build complex multi-agent teams. This paper teaches you to keep your system design simple unless complexity is strictly needed.",
+      "project_idea": {
+        "title": "Single vs Multi-Agent Task Runner",
+        "description": "Write a script that solves a multi-step math and text summarization task using one single LLM prompt versus a two-agent handoff chain. Compare the token cost and final accuracy.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Set up an n8n workflow with a single AI agent node and compare its speed and output against a three-node sequential agent chain."
+      }
+    },
+    {
+      "id": "2611.13217",
+      "title": "Reliability of Claude Code as an Agentic AI Grading System for Handwritten University Exams",
+      "abstract": "This study examines the reliability of Claude Code, an agentic deployment of the Claude Opus 4.6 large language model, as a grading system for handwritten university exams. Four research questions addressed agreement with expert human grading on total scores (RQ1), agreement across five question types from multiple choice to evaluative judgement (RQ2), consistency across two independent grading sessions one week apart (RQ3), and the accuracy of AI-generated feedback (RQ4). Claude Code graded the 20-mark mid-term papers of 60 consenting students in a Saudi computer graphics course in a single agentic session, guided by three rubric files. Reliability was estimated on disjoint samples: 20 papers for RQ1, RQ2 and RQ4, and 15 papers for RQ3. Analyses used Pearson correlation, mean absolute error, Bland-Altman analysis, weighted Cohen kappa, intraclass correlation, and a four-category coding scheme separating diagnostic from confirmation feedback. The author, as the sole subject-matter expert for the course, provided the human benchmark, so the design assesses agreement with a domain-expert reference rather than inter-rater reliability. AI grading agreed strongly with human grading on totals (r = 0.97; MAE = 0.85 marks) with a small but significant AI-positive bias of 0.68 marks, showed excellent test-retest consistency (ICC = 0.96), and produced accurate feedback (92.8% diagnostic; 97.8% confirmation). Drawing items were the outlier on three of four measures. Three failure modes recurred: keyword matching without conceptual depth, selection-state ambiguity on corrected multiple-choice answers, and region-of-attention drift on hand-drawn diagrams. The findings suggest that AI grading at this capability level can assist instructors on objective and short-form items under structural safeguards but is not yet ready to replace instructor judgement at boundary cases or on drawing items.",
+      "authors": [
+        "Rayed AlGhamdi"
+      ],
+      "published": "2026-11-09T20:39:02Z",
+      "url": "https://arxiv.org/abs/2611.13217",
+      "pdf_url": "https://arxiv.org/pdf/2611.13217.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CY"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "agentic"
+      ],
+      "ranking_reason": "This paper tests how reliably an LLM [large language model, an AI that understands text] agent can grade student exams.",
+      "explanation": "This paper tests how well an advanced LLM agent grades handwritten university exams by following a strict grading rubric. The AI matched human grades very closely on total scores but struggled with tricky boundary cases and drawings.",
+      "why_it_matters": "AI is increasingly used for automated evaluation and feedback. Knowing its strengths and failure modes helps you build safe grading or tutoring tools.",
+      "project_idea": {
+        "title": "AI Quiz Grader",
+        "description": "Build a simple Python script that reads student short-answer text files and a grading rubric. Have an LLM grade the answers out of ten points and output brief feedback.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build a Google Sheets sheet where rows of student text answers are sent to an LLM via a prompt column to output scores and feedback automatically."
+      }
+    }
+  ]
+}
