@@ -1,71 +1,71 @@
 # Build log: The Scholar's Desk
 
-A free robot that reads new AI papers daily, picks about one per topic and suggests a weekend project for each.
+A small robot that reads new AI papers every morning, picks about one paper per topic, explains it in simple words and gives you a weekend project for it. It costs ₹0.
 
-**How it works:** arXiv + Hugging Face → filter by 6 topics → Gemini picks ~6 → Groq fact-checks → email + website
+How it works: arXiv and Hugging Face → keep the papers on my 6 topics → Gemini picks about 6 and writes about them → Groq checks every line → email and website
 
 ## Status
 - [x] Hero page
-- [x] Fetch papers
-- [x] Pick top 5
+- [x] Get the papers
+- [x] Pick the best ones
 - [x] Fact-checker
-- [x] Daily email
-- [x] Runs every morning
-- [x] Website shows real papers
-- [x] README and share preview
-- [x] Starts on time (Supabase timer)
+- [x] Morning email
+- [x] Runs by itself every morning
+- [x] Website shows the real papers
+- [x] README and share picture
+- [x] Starts on time at 6:17 AM
 - [x] Six topics
-- [ ] Subscribe form and Examiner live (built, switched on after exams)
+- [ ] Subscribe form and Examiner go live (built, I'll switch them on after my exams)
 - [ ] Launch
 
 ## Log
 
-**Day 7 · 13 Nov**
-- Built: six topics instead of two (added health, education, trust and safety, business and money), about one paper per topic; a subscribe form where people choose their topics, with a confirmation email and an unsubscribe link in every email; the Examiner, which checks the claims in a LinkedIn post against the paper's abstract; a Supabase Edge Function for both, which GitHub tests and deploys
-- Broke: no email on 12 Nov, because Gemini was overloaded, the backup model name no longer existed, and on a 1-paper day the Groq backup sent a reply with no list; the Supabase timer never fired, because the saved token was missing its "github_pat_" start, so GitHub answered 401
-- Decided: Gemini gets two more tries (after 30s and 90s) before Groq; keywords skip words that mean something else in ML papers (student, bias, trading); the Examiner uses the same quote test as the digest, so a made-up quote is never shown; visitors are counted with a scrambled id, never an IP; the new features stay off until the setup is done
-- Numbers: 5 to 13 Nov: 9 runs · 6 emails · 2 weekend days with no new papers · 1 failed run · 81 of 90 lines proven · the quote test in TypeScript matches the Python one on 600 of 600 cases · 7 function tests pass
+### Day 7 · 13 Nov
+- Built: I added four new topics (health, education, trust and safety, business and money). The desk now covers six and picks about one paper for each. I also built two new things. One is a form where people can subscribe and choose their topics. The other is the Examiner: you paste a LinkedIn post about a paper, and it checks each claim against the paper's abstract. Both run on a small Supabase function. They're ready, but I'm keeping them off until my exams are over.
+- Broke: No email went out on 12 Nov. Gemini was overloaded, the backup model name didn't exist anymore, and the Groq backup broke because that day had only 1 paper. The Supabase timer never ran either. The token I saved was missing its first part ("github_pat_"), so GitHub said 401.
+- Decided: If Gemini is busy, the desk now waits and tries again before it moves to Groq. I left out keywords that mean something else in ML papers, like "student" and "bias". The Examiner uses the same quote check as the email, so it can't show a made-up quote. It doesn't save anyone's IP address.
+- Numbers: From 5 to 13 Nov there were 9 runs and 6 emails. 2 weekend days had no new papers and 1 run failed. 81 of 90 lines were proven. I tested the Examiner's quote check against the email's on 600 examples, and they agreed every time.
 
-**Day 6 · 4 Nov**
-- Built: README with screenshots; a share picture so links show a preview on WhatsApp and LinkedIn; a wax seal favicon; paper titles without LaTeX $ marks
-- Broke: GitHub's own timer kept starting the morning run about 6 hours late, even with the time zone set
-- Decided: a Supabase pg_cron job starts the run at 6:17 AM; GitHub's timer stays as a backup that does nothing if the morning run already happened
-- Numbers: 1,447 papers → 131 already seen → 47 matched → 4 picked · 11 of 15 lines proven · 29 Oct to 4 Nov: 52 of 73 lines proven
+### Day 6 · 4 Nov
+- Built: A README with screenshots, a preview picture that shows up when the link is shared on WhatsApp or LinkedIn, and a wax seal icon for the browser tab. I also removed the $ signs that showed up in some paper titles.
+- Broke: GitHub's timer kept starting the morning run about 6 hours late, even after I set the time zone.
+- Decided: Supabase now starts the run at 6:17 AM. GitHub's timer is still there as a backup, and it does nothing if the run already happened.
+- Numbers: 1,447 papers read, 47 on my topics, 4 picked, 11 of 15 lines proven. From 29 Oct to 4 Nov, 52 of 73 lines were proven.
 
-**Day 5 · 2 Nov**
-- Built: the website now shows the real papers; build_site.py rebuilds it from the saved days every morning, and the design lives in site/
-- Broke: the morning runs started at 12:22 PM instead of 6:17 AM; Gemini began one reason with "Hey!", and the checker struck it
-- Decided: the schedule is set in India time; the page is made from the data, so nobody edits it by hand; write-ups start with what the paper does
-- Numbers: 4 days on the shelf · 1 Nov was a quiet Sunday with 0 matches · today 756 papers → 49 matched → 4 picked · 9 of 13 lines proven
+### Day 5 · 2 Nov
+- Built: The website now shows the real papers. build_site.py rebuilds it every morning from the saved days.
+- Broke: The morning runs started at 12:22 PM instead of 6:17 AM. Gemini also started one sentence with "Hey!", and the checker cut it.
+- Decided: I set the schedule in India time. Nobody edits the page by hand; it's made from the data. Write-ups now start with what the paper does.
+- Numbers: 4 days on the shelf. 1 Nov was a quiet Sunday with 0 matches. That day: 756 papers, 49 on my topics, 4 picked, 9 of 13 lines proven.
 
-**Day 4 · 31 Oct**
-- Built: GitHub Actions runs the whole desk at 6:17 AM every day and saves the day's papers to the repo; errors now show on the run page
-- Broke: the Groq secret had a hidden line break, so every request was refused; the Gmail secret had gone missing; one paper had 0 of 3 lines proven
-- Decided: keys are cleaned before use; a paper with no proven summary stays out of the email; a quiet day with no papers is not an error
-- Numbers: 1,141 papers (1,091 arXiv + 50 Hugging Face) → 45 already seen → 89 matched → 5 picked · 13 of 15 lines proven · run took 40s · ₹0
+### Day 4 · 31 Oct
+- Built: GitHub Actions now runs the whole desk every morning and saves the day's papers in the repo. Errors show up on the run page.
+- Broke: The Groq key had a hidden line break, so every request failed. The Gmail secret went missing. One paper had 0 of 3 lines proven.
+- Decided: Keys get cleaned before they're used. A paper with no proven lines stays out of the email. A day with no papers isn't an error.
+- Numbers: 1,141 papers (1,091 from arXiv, 50 from Hugging Face), 45 already seen, 89 on my topics, 5 picked, 13 of 15 lines proven. The run took 40 seconds and cost ₹0.
 
-**Day 3 · 30 Oct**
-- Built: send_email.py, a dark academia email with a plain-text copy, sent through Gmail with an App Password; website design draft with a 3D bookcase
-- Broke: the flat CSS bookshelf looked fake, rebuilt it in real 3D; mailto links do nothing on laptops with no mail app, switched to a Gmail link
-- Decided: the email only shows lines that passed the fact-check; email addresses never go in the logs, because Actions logs are public
-- Numbers: 5 papers → 21 KB email → 1 reader · ₹0
+### Day 3 · 30 Oct
+- Built: send_email.py. It sends a dark academia style email, with a plain text copy too, through Gmail. I also made the first design of the website, with a 3D bookcase.
+- Broke: The flat bookshelf looked fake, so I rebuilt it in 3D. Email links did nothing on laptops without a mail app, so I switched to a Gmail link.
+- Decided: The email only shows lines that passed the fact-check. Email addresses never go in the logs, because the logs are public.
+- Numbers: 5 papers, a 21 KB email, 1 reader, ₹0.
 
-**Day 2 · 29 Oct · 1.5h**
-- Built: 4-day arXiv window with a seen list, fact-checker that needs a proof quote, shared common.py
-- Broke: Groq had shut down llama-3.3-70b, checker skipped all 5 planted lies, replies ran out of tokens
-- Decided: a sentence goes in the digest only if its proof is really in the abstract
-- Numbers: 1017 papers → 48 already seen → 82 matched · canary 5/5 · 12 of 15 real sentences kept · code 1851 → 764 lines
+### Day 2 · 29 Oct · 1.5h
+- Built: The desk now looks back 4 days and skips papers it already saw. I made the fact-checker, which needs a quote from the abstract as proof. Shared code went into common.py.
+- Broke: Groq had shut down the llama-3.3-70b model. The checker missed all 5 fake sentences I planted to test it. Replies ran out of tokens.
+- Decided: A sentence goes in only if its proof is really in the abstract.
+- Numbers: 1,017 papers, 48 already seen, 82 on my topics. After the fix, the checker caught 5 of 5 fake sentences. 12 of 15 real sentences were kept. The code went from 1,851 lines to 764.
 
-**Day 1 · 28 Oct · 4h**
-- Built: hero page, fetch.py, rank.py
-- Broke: shared my API keys by mistake → made new ones, moved them to .env and GitHub Secrets
-- Decided: one AI call for all papers, so it stays free
-- Numbers: 388 papers → 44 matched → 5 picked
+### Day 1 · 28 Oct · 4h
+- Built: The hero page, fetch.py and rank.py.
+- Broke: I shared my API keys by mistake, so I made new ones and moved them into .env and GitHub Secrets.
+- Decided: One AI call for all the papers, so it stays free.
+- Numbers: 388 papers, 44 on my topics, 5 picked.
 
 <!--
 Template (paste under "## Log", so the newest day stays on top):
 
-**Day N · DD Mon · Xh**
+### Day N · DD Mon · Xh
 - Built:
 - Broke:
 - Decided:
