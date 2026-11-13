@@ -1,0 +1,91 @@
+name: Deploy the desk function
+
+# Puts supabase/functions/desk on Supabase whenever it (or config.yaml) changes, and hands it
+# the keys it needs from this repo's secrets, so nobody pastes keys into Supabase by hand.
+# Until SUPABASE_ACCESS_TOKEN is added, this only runs the tests and deploys nothing.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/**"
+      - "config.yaml"
+      - "scripts/function_settings.py"
+      - ".github/workflows/deploy-function.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-function
+  cancel-in-progress: false
+
+env:
+  PROJECT_REF: moflbxuaozrcsqbzrwwt   # from site.supabase_url in config.yaml; not a secret
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Copy topics and limits from config.yaml
+        run: |
+          pip install pyyaml
+          python scripts/function_settings.py
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Test the function
+        run: deno test --allow-read supabase/tests/
+
+      - name: Check that a deploy token exists
+        id: ready
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::notice::SUPABASE_ACCESS_TOKEN is not set yet, so the function was tested but not deployed."
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: supabase/setup-cli@v1
+        if: steps.ready.outputs.go == 'true'
+        with:
+          version: latest
+
+      - name: Give the function its keys
+        if: steps.ready.outputs.go == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          DESK_DB_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: |
+          umask 077
+          keys="$RUNNER_TEMP/desk.env"
+          {
+            printf 'GEMINI_API_KEY=%s\n' "$GEMINI_API_KEY"
+            printf 'GROQ_API_KEY=%s\n' "$GROQ_API_KEY"
+            printf 'GMAIL_ADDRESS=%s\n' "$GMAIL_ADDRESS"
+            printf 'GMAIL_APP_PASSWORD=%s\n' "$(printf '%s' "$GMAIL_APP_PASSWORD" | tr -d '[:space:]')"
+            printf 'DESK_DB_KEY=%s\n' "$DESK_DB_KEY"
+          } > "$keys"
+          supabase secrets set --project-ref "$PROJECT_REF" --env-file "$keys"
+          rm -f "$keys"
+
+      - name: Deploy
+        if: steps.ready.outputs.go == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy desk --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
