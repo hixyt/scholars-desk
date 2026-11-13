@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Step 2: pick today's 5 papers and write about them.
+Step 2: pick today's papers and write about them.
 
-AI call 1 picks 5 papers from raw.json (at least one per topic).
+AI call 1 picks about one paper per topic from raw.json (settings.picks_per_day in total).
 AI call 2 writes a plain explanation, why it matters, and a weekend project
 (with a no-code version) for each pick.
 Gemini does the writing. If both Gemini models fail, Groq is the backup.
@@ -34,8 +34,9 @@ BUSY_SIGNS = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "high demand", 
 gemini_busy = False  # True once both Gemini models stayed busy, so the next call goes straight to Groq
 
 
-def ask_ai(system, prompt, config, gemini_key, groq_key):
-    """Try Gemini first, then Groq. Returns (parsed JSON list, model used)."""
+def ask_ai(system, prompt, config, gemini_key, groq_key, groq_prompt=None):
+    """Try Gemini first, then Groq. Returns (parsed JSON list, model used).
+    groq_prompt is a shorter version of the prompt for Groq, whose free plan allows 8,000 tokens a minute."""
     global gemini_busy
     models = config["models"]
 
@@ -68,33 +69,52 @@ def ask_ai(system, prompt, config, gemini_key, groq_key):
 
     if not groq_key:
         raise RuntimeError("Gemini failed and there is no GROQ_API_KEY to fall back on")
-    reply, model = call_groq([models["groq"], models["groq_fallback"]], system, prompt, groq_key)
+    reply, model = call_groq([models["groq"], models["groq_fallback"]], system, groq_prompt or prompt, groq_key)
     return parse_json_list(reply), f"Groq ({model})"
 
 
+def score(p):
+    """A rough first sort before the AI looks: trending on Hugging Face, then how many keywords matched."""
+    hf = p.get("huggingface") if isinstance(p.get("huggingface"), dict) else {}
+    return (hf.get("upvotes") or 0) * 3 + len(p.get("matched_keywords") or []) + len(p.get("matched_topics") or [])
+
+
+def shortlist(papers, topics, per_topic):
+    """The best few papers of every topic, so a busy day still fits in one AI call."""
+    ranked = sorted(papers, key=score, reverse=True)
+    keep = {}
+    for topic in topics:
+        for p in [p for p in ranked if topic in p.get("matched_topics", [])][:per_topic]:
+            keep.setdefault(p["id"], p)
+    return [p for p in ranked if p["id"] in keep]
+
+
 def pick_papers(papers, config, keys):
-    """AI call 1: pick 5 papers, at least one for each topic."""
+    """AI call 1: pick about one paper per topic (settings.picks_per_day in total)."""
     topics = [t["name"] for t in config["topics"]]
-    catalog = [{"id": p["id"], "title": p["title"], "abstract": p["abstract"][:600],
-                "matched_topics": p.get("matched_topics", [])} for p in papers]
+    want = min(config["settings"].get("picks_per_day", 5), len(papers))  # a slow day can have fewer papers
+
+    def catalog(per_topic, cut):
+        return [{"id": p["id"], "title": p["title"], "abstract": p["abstract"][:cut],
+                 "matched_topics": p.get("matched_topics", [])} for p in shortlist(papers, topics, per_topic)]
 
     system = (
         "You are a friendly senior student helping a 2nd-year B.Tech AI student choose research papers to read. "
         "The student has never read a research paper before.\n"
         "Target topics:\n" + "\n".join(f"- {t}" for t in topics) + "\n\n"
         "Rules:\n"
-        "- Pick at least 1 paper for each topic that has matching papers in the list. "
-        "Fill the other slots with the most practical papers.\n"
+        "- Cover as many different topics as you can. One paper per topic is ideal, for every topic that has "
+        "papers in the list. Fill any other slots with the most practical papers.\n"
         + STYLE_RULES +
         "- Give a short, grounded one-line reason for each paper."
     )
-    want = min(5, len(catalog))  # a slow day can have fewer than 5 papers
-    prompt = (
-        f"Here are {len(catalog)} candidate papers:\n\n{json.dumps(catalog, ensure_ascii=False)}\n\n"
-        f"Pick exactly {want}. Return a JSON object with a list of {want} picks:\n"
-        '{"papers": [{"id": "<paper id from the list>", "reason": "<one short line>"}]}'
-    )
-    picks, model = ask_ai(system, prompt, config, *keys)
+
+    def ask(cards):
+        return (f"Here are {len(cards)} candidate papers:\n\n{json.dumps(cards, ensure_ascii=False)}\n\n"
+                f"Pick exactly {want}. Return a JSON object with a list of {want} picks:\n"
+                '{"papers": [{"id": "<paper id from the list>", "reason": "<one short line>"}]}')
+
+    picks, model = ask_ai(system, ask(catalog(20, 500)), config, *keys, groq_prompt=ask(catalog(5, 220)))
 
     by_id = {p["id"]: p for p in papers}
     chosen = []
@@ -102,21 +122,31 @@ def pick_papers(papers, config, keys):
         pid = str(item.get("id", "")).strip()
         if pid in by_id and pid not in {p["id"] for p in chosen}:
             chosen.append(dict(by_id[pid], ranking_reason=clean_text(item.get("reason", ""))))
-    chosen = chosen[:5]
+    chosen = chosen[:want]
     if len(chosen) < want:
         log.warning(f"The AI returned only {len(chosen)} valid picks out of {want}")
 
-    # In case the AI ignored the topic rule
+    # In case the AI skipped a topic that had papers: add its best paper, and if the list is full,
+    # drop a pick whose topics are all covered by the other picks anyway.
+    def covered(items):
+        return {t for p in items for t in p.get("matched_topics", [])}
+
     for topic in topics:
-        if any(topic in p.get("matched_topics", []) for p in chosen):
+        if topic in covered(chosen):
             continue
         chosen_ids = {p["id"] for p in chosen}
-        extra = next((p for p in papers if topic in p.get("matched_topics", []) and p["id"] not in chosen_ids), None)
-        if extra:
-            log.info(f"No pick for '{topic}', adding: {extra['title'][:60]}")
-            if len(chosen) == 5:
-                chosen.pop()
-            chosen.append(dict(extra, ranking_reason=f"It matches the topic {topic}."))
+        extra = next((p for p in sorted(papers, key=score, reverse=True)
+                      if topic in p.get("matched_topics", []) and p["id"] not in chosen_ids), None)
+        if not extra:
+            continue
+        if len(chosen) >= want:
+            spare = next((k for k in range(len(chosen) - 1, -1, -1)
+                          if set(chosen[k].get("matched_topics", [])) <= covered(chosen[:k] + chosen[k + 1:])), None)
+            if spare is None:
+                continue
+            chosen.pop(spare)
+        log.info(f"No pick for '{topic}', adding: {extra['title'][:60]}")
+        chosen.append(dict(extra, ranking_reason=""))  # no made-up reason; the checker would only strike it
 
     return chosen, model
 
@@ -173,7 +203,7 @@ def write_details(chosen, config, keys):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pick today's 5 papers and write about them.")
+    parser = argparse.ArgumentParser(description="Pick today's papers and write about them.")
     parser.add_argument("--date", help="YYYY-MM-DD (default: today in UTC)")
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--config", default="config.yaml")

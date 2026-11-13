@@ -6,6 +6,8 @@
 # Digest topics and their associated search keywords
 topics:
   - name: "AI tools for non-programmers"
+    slug: "no-code"               # short id used in links and the subscribers table, don't change it later
+    label: "No-code AI"           # shown on the website and in the email
     description: "Tools, interfaces, and methods enabling non-technical users to build, automate, and interact with AI"
     keywords:
       - "non-programmer"
@@ -30,6 +32,8 @@ topics:
       - "interactive ai"
 
   - name: "LLM agents for everyday work"
+    slug: "agents"
+    label: "AI agents at work"
     description: "Language model agents, automation workflows, and practical assistants for daily tasks and workplace productivity"
     keywords:
       - "llm agent"
@@ -49,6 +53,112 @@ topics:
       - "office work"
       - "copilot"
 
+  - name: "AI in health"
+    slug: "health"
+    label: "AI in health"
+    description: "AI for doctors, patients, hospitals and mental health"
+    keywords:
+      - "clinical"
+      - "clinician"
+      - "clinicians"
+      - "medical"
+      - "medicine"
+      - "healthcare"
+      - "health care"
+      - "public health"
+      - "digital health"
+      - "mental health"
+      - "patient"
+      - "patients"
+      - "hospital"
+      - "medical diagnosis"
+      - "clinical diagnosis"
+      - "radiology"
+      - "electronic health records"
+      - "biomedical"
+      - "drug discovery"
+
+  - name: "AI in education"
+    slug: "education"
+    label: "AI in education"
+    description: "AI tutors, classrooms and how people learn with AI"
+    keywords:            # not "student", "teacher" or "learners": in ML those also mean models
+      - "education"
+      - "educational"
+      - "classroom"
+      - "classrooms"
+      - "tutor"
+      - "tutors"
+      - "tutoring"
+      - "educators"
+      - "learning outcomes"
+      - "student engagement"
+      - "intelligent tutoring"
+      - "pedagogy"
+      - "pedagogical"
+      - "k-12"
+      - "higher education"
+      - "school students"
+      - "university students"
+      - "homework"
+      - "edtech"
+      - "programming education"
+      - "computing education"
+
+  - name: "Trust and safety"
+    slug: "trust"
+    label: "Trust and safety"
+    description: "Hallucinations, misinformation, bias, privacy and keeping AI honest"
+    keywords:            # not plain "bias" or "alignment": those have other meanings in ML
+      - "hallucination"
+      - "hallucinations"
+      - "factuality"
+      - "fact-checking"
+      - "misinformation"
+      - "disinformation"
+      - "deepfake"
+      - "deepfakes"
+      - "jailbreak"
+      - "jailbreaks"
+      - "prompt injection"
+      - "red teaming"
+      - "ai safety"
+      - "trustworthy ai"
+      - "fairness"
+      - "social bias"
+      - "gender bias"
+      - "algorithmic bias"
+      - "privacy"
+      - "content moderation"
+      - "watermarking"
+
+  - name: "AI for business and money"
+    slug: "business"
+    label: "Business and money"
+    description: "AI in companies, finance, jobs and customer work"
+    keywords:            # not "trading", "jobs" or "accounting": "trading off", "compute jobs", "accounting for"
+      - "business"
+      - "businesses"
+      - "enterprise"
+      - "finance"
+      - "financial"
+      - "fintech"
+      - "banking"
+      - "stock market"
+      - "stock trading"
+      - "algorithmic trading"
+      - "marketing"
+      - "customer service"
+      - "customer support"
+      - "e-commerce"
+      - "economic"
+      - "labor market"
+      - "employment"
+      - "job market"
+      - "financial reporting"
+      - "insurance"
+      - "supply chain"
+
 # AI models configuration
 models:
   gemini: "gemini-3.5-flash-lite" # Free-tier Flash model
@@ -64,12 +174,14 @@ settings:
       - "cs.CL"
       - "cs.HC"
       - "cs.LG"
+      - "cs.CY"           # Computers and Society: education, health and jobs papers often land here
     days_back: 4          # look back 4 days, so late and weekend papers are not missed
     max_results: 4000     # upper limit of papers per run
     page_size: 1000       # arXiv sends results in pages of this size
     rate_limit_seconds: 3.0
   huggingface:
     daily_papers_url: "https://huggingface.co/api/daily_papers"
+  picks_per_day: 6        # roughly one paper per topic
 
 # Morning email (sent with Gmail; the address and app password live in .env / GitHub Secrets)
 email:
@@ -86,3 +198,15 @@ site:
   # Leave them empty and the seal is still pressed, just not kept.
   supabase_url: "https://moflbxuaozrcsqbzrwwt.supabase.co"
   supabase_key: "sb_publishable_i_rqph_yh30-q9mMNSViPQ_WE41UiHu"
+
+  # Subscribe form and the claim checker run on a Supabase Edge Function ("desk").
+  # Keep these false until the function is deployed (see SETUP.md), then switch them on.
+  subscribe: false
+  checker: false
+
+# Claim checker (supabase/functions/desk). Daily caps keep it inside the free Groq and Gemini limits.
+checker:
+  checks_per_day: 120         # for everyone together
+  checks_per_visitor: 8       # per visitor per day
+  subscribes_per_visitor: 5   # per visitor per day
+  max_claims: 6               # claims taken from one post

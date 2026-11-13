@@ -215,7 +215,8 @@ def main():
     with open(folder / "raw.json", "w", encoding="utf-8") as f:
         json.dump(matched, f, indent=2, ensure_ascii=False)
     stats = {"fetched": len(all_papers), "arxiv": len(arxiv_papers), "huggingface": len(hf_papers),
-             "already_seen": len(all_papers) - len(new_papers), "matched": len(matched)}
+             "already_seen": len(all_papers) - len(new_papers), "matched": len(matched),
+             "per_topic": {t["slug"]: sum(t["name"] in p["matched_topics"] for p in matched) for t in config["topics"]}}
     with open(folder / "stats.json", "w", encoding="utf-8") as f:  # the email shows these numbers
         json.dump(stats, f, indent=2)
 
@@ -223,6 +224,8 @@ def main():
     print(f"Hugging Face: {len(hf_papers)} papers")
     print(f"Already seen on earlier days: {len(all_papers) - len(new_papers)}")
     print(f"Matched my topics: {len(matched)}")
+    for t in config["topics"]:
+        print(f"   {t['label']}: {stats['per_topic'][t['slug']]}")
     print(f"Saved to {folder / 'raw.json'}")
 
 

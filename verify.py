@@ -136,7 +136,22 @@ def check_papers(papers, config, groq_key, canary=False):
                                     for i, (src, text) in enumerate(sentences, 1)],
         })
 
-    verdicts, model = ask_checker(items, config, groq_key)
+    # Groq's free plan allows 8,000 tokens a minute, thinking and reply included.
+    # A normal day fits in one call; a long one is split so no single call gets too big.
+    groups, size = [[]], 0
+    for item in items:
+        n = len(json.dumps(item, ensure_ascii=False))
+        if groups[-1] and size + n > 14000:
+            groups.append([])
+            size = 0
+        groups[-1].append(item)
+        size += n
+    verdicts, model = {}, None
+    for k, group in enumerate(groups):
+        if k:
+            log.info(f"Checking part {k + 1} of {len(groups)}")
+        found, model = ask_checker(group, config, groq_key)
+        verdicts.update(found)
 
     # If the checker skipped any sentences, ask once more about just those
     missing = []
