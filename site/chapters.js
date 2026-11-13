@@ -1102,6 +1102,6 @@
         if (en.isIntersecting) tocLinks.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id); });
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["folio", "margins", "desk", "stacks", "colophon"].forEach(function (id) { spy.observe(document.getElementById(id)); });
+    ["folio", "margins", "desk", "stacks", "letters", "colophon"].forEach(function (id) { var el = document.getElementById(id); if (el) spy.observe(el); });
   }
 })();

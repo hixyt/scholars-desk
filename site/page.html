@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Courier+Prime:wght@400;700&display=swap">
 <link rel="stylesheet" href="site/hero.css?v={{VERSION}}">
 <link rel="stylesheet" href="site/chapters.css?v={{VERSION}}">
+<link rel="stylesheet" href="site/desk.css?v={{VERSION}}">
 </head>
 <body>
 <main class="stage" id="stage">
@@ -162,7 +163,9 @@
       <li><a href="#margins">II<span class="w">Margins</span></a></li>
       <li><a href="#desk">III<span class="w">Desk</span></a></li>
       <li><a href="#stacks">IV<span class="w">Stacks</span></a></li>
-      <li><a href="#colophon">V<span class="w">Colophon</span></a></li>
+      <li data-chapter="letters" hidden><a href="#letters">V<span class="w">Post</span></a></li>
+      <li><a href="#colophon">VI<span class="w">Colophon</span></a></li>
+      <li data-examiner hidden><a href="check.html" class="tb-ex">✦<span class="w">Examiner</span></a></li>
     </ul>
   </div>
 </header>
@@ -197,6 +200,7 @@
     </header>
     <div class="picker" id="picker"></div>
     <div class="mstage"><article class="mpage" id="mpage"></article></div>
+    <p class="examiner-note" data-examiner hidden>Saw a big claim about an AI paper on LinkedIn or in the news? Paste it into the desk’s own checker. <a href="check.html">Open the Examiner →</a></p>
   </section>
 
   <section class="chapter" id="desk">
@@ -322,10 +326,40 @@
     </div>
   </section>
 
-  <section class="chapter wrap" id="colophon">
+  <section class="chapter wrap" id="letters" hidden>
     <header class="ch-head">
       <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
       <span class="numeral">Chapter V</span>
+      <h2>By <em>Post</em></h2>
+      <p class="dek">Get the desk in your inbox at 6:17 AM India time, with only the topics you care about. Every line is still checked before it reaches you.</p>
+    </header>
+    <form class="letter" id="letterForm" novalidate>
+      <div class="lt-paper">
+        <p class="lt-date" id="ltDate"></p>
+        <p class="lt-dear">Dear Desk,</p>
+        <p class="lt-line">please send me the morning papers on</p>
+        <div class="lt-seals" id="ltSeals" role="group" aria-label="Topics to get by email"></div>
+        <p class="lt-line">at this address:</p>
+        <label class="lt-addr"><b>To</b><input type="email" id="ltEmail" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required></label>
+        <input class="lt-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="lt-sign">
+          <span class="lt-yours">Yours, a curious reader</span>
+          <button type="submit" class="lt-send" id="ltSend">Seal and send</button>
+        </div>
+        <p class="lt-msg" id="ltMsg" aria-live="polite"></p>
+        <p class="lt-small">Free. One email on mornings with new papers. A confirmation link comes first, and every email has a one-click unsubscribe. Your address is used for nothing else.</p>
+      </div>
+      <div class="envelope">
+        <div class="env-art" id="envArt"></div>
+        <div class="env-note" aria-live="polite"><h3>Sealed and sent.</h3><p>Check <b id="envTo"></b> for a letter from the desk (and the spam folder, just in case). One click there and your seat is saved.</p><p><button type="button" class="pv-link" id="ltAgain">Use another address</button></p></div>
+      </div>
+    </form>
+  </section>
+
+  <section class="chapter wrap" id="colophon">
+    <header class="ch-head">
+      <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal style="fill:var(--oxblood)"></polygon><circle cx="50" cy="50" r="36" style="fill:var(--wax-deep)"></circle><text x="50" y="61" style="fill:var(--gold-hi);font-family:var(--display);font-size:32px;font-style:italic;font-weight:600;text-anchor:middle">SD</text></svg><i></i></span>
+      <span class="numeral">Chapter VI</span>
       <h2><em>Colophon</em></h2>
     </header>
     <div class="colo" id="colo">
@@ -394,5 +428,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="site/hero.js?v={{VERSION}}"></script>
 <script src="site/chapters.js?v={{VERSION}}"></script>
+<script src="site/desk.js?v={{VERSION}}"></script>
 </body>
 </html>

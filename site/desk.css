@@ -1,0 +1,115 @@
+/* ================= Chapter V: By Post (subscribe) and the letter that opens from email links ================= */
+:root{
+  --paper-tex:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .26 0 0 0 0 .15 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  --sage:#3E6B4A;
+}
+#letters[hidden],.toc li[hidden]{display:none}
+
+.letter{position:relative;max-width:640px;margin:0 auto;perspective:1600px}
+.lt-paper{position:relative;padding:34px 38px 30px;border-radius:2px;color:var(--page-fg);background-color:var(--page);
+  background-image:var(--paper-tex),linear-gradient(180deg,rgba(255,250,235,.4),transparent 28%),radial-gradient(130% 100% at 50% 50%,transparent 55%,rgba(120,88,48,.22));
+  box-shadow:0 34px 60px -24px rgba(0,0,0,.95),0 0 0 1px rgba(43,33,24,.06) inset;transform-origin:50% 0;transition:transform .9s cubic-bezier(.5,0,.2,1),opacity .6s}
+.lt-paper::before{content:"";position:absolute;inset:12px;border:1px solid rgba(43,33,24,.12);pointer-events:none}
+.lt-date{margin:0 0 18px;text-align:right;font:italic 400 15px/1 var(--hand);color:var(--page-muted)}
+.lt-dear{margin:0 0 8px;font:italic 600 30px/1.1 var(--display)}
+.lt-line{margin:0 0 14px;font:400 19px/1.55 var(--body)}
+.lt-seals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px;margin:4px 0 22px}
+.tseal{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 2px;border:0;background:none;color:var(--page-fg);cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent}
+.tseal svg{width:58px;height:58px;overflow:visible;transform:rotate(var(--rot,-6deg));transition:transform .35s cubic-bezier(.3,1.6,.5,1),filter .3s}
+.tseal .ts-wax{fill:transparent;stroke:rgba(43,33,24,.35);stroke-width:1.4;stroke-dasharray:3 3;transition:fill .3s,stroke .3s}
+.tseal .ts-in{fill:transparent;transition:fill .3s}
+.tseal .ts-m{font:italic 600 26px/1 var(--display);text-anchor:middle;fill:rgba(43,33,24,.5);transition:fill .3s}
+.tseal .ts-l{font:600 10.5px/1.25 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-align:center;color:var(--page-muted);transition:color .3s}
+.tseal[aria-pressed="true"] svg{filter:drop-shadow(0 5px 6px rgba(0,0,0,.35))}
+.tseal[aria-pressed="true"] .ts-wax{fill:var(--oxblood);stroke:transparent}
+.tseal[aria-pressed="true"] .ts-in{fill:var(--wax-deep)}
+.tseal[aria-pressed="true"] .ts-m{fill:var(--gold-hi)}
+.tseal[aria-pressed="true"] .ts-l{color:var(--page-fg)}
+.tseal.pop svg{animation:tsPop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes tsPop{0%{transform:scale(1.5) rotate(-20deg)}100%{transform:scale(1) rotate(var(--rot,-6deg))}}
+.tseal:hover svg{transform:rotate(var(--rot,-6deg)) scale(1.06)}
+.tseal:focus-visible{outline:2px solid var(--red-ink);outline-offset:2px}
+
+.lt-addr{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;border-bottom:1px solid rgba(43,33,24,.35)}
+.lt-addr b{font:600 11px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--page-muted)}
+.lt-addr input{flex:1;min-width:0;padding:8px 2px 6px;border:0;background:transparent;color:var(--page-fg);font:italic 500 22px/1.2 var(--display);outline:none}
+.lt-addr input::placeholder{color:rgba(43,33,24,.28)}
+.lt-addr:focus-within{border-bottom-color:var(--red-ink)}
+.lt-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.lt-sign{margin:22px 0 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 18px}
+.lt-yours{font:italic 400 18px/1.3 var(--hand);color:var(--page-muted)}
+.chapters .lt-send{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 20px;border:1px solid var(--red-ink);border-radius:2px;background:var(--red-ink);color:var(--page);
+  font:600 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s,transform .25s}
+.chapters .lt-send:hover{background:#8A2A22}
+.chapters .lt-send:active{transform:translateY(1px)}
+.chapters .lt-send:disabled{opacity:.6;cursor:default}
+.lt-small{margin:16px 0 0;font:italic 400 14px/1.5 var(--body);color:var(--page-muted)}
+.lt-msg{min-height:1.5em;margin:12px 0 0;font:italic 400 16px/1.45 var(--body);color:var(--red-ink)}
+
+/* sent: the letter folds away and an envelope with a seal is left */
+.envelope{position:absolute;left:50%;top:40px;width:min(420px,86%);aspect-ratio:1.6;transform:translateX(-50%) translateY(30px) scale(.9);opacity:0;pointer-events:none;transition:opacity .6s .55s,transform .8s .55s cubic-bezier(.2,.8,.2,1)}
+.env-art,.env-art svg{display:block;width:100%;height:100%}
+.env-art svg{filter:drop-shadow(0 26px 30px rgba(0,0,0,.8))}
+.env-seal{transform-box:fill-box;transform-origin:center}
+.env-note .pv-link{color:var(--gold);font-size:15px}
+.env-note b{font-style:normal;color:var(--parchment);word-break:break-all}
+.env-note{position:absolute;left:0;right:0;top:calc(100% + 26px);text-align:center;color:var(--parchment)}
+.env-note h3{margin:0 0 8px;font:italic 600 26px/1.2 var(--display);color:var(--gold-hi)}
+.env-note p{margin:0 auto;max-width:440px;font:italic 400 17px/1.55 var(--body);color:var(--muted)}
+.letter.sent{min-height:520px}
+.letter.sent .lt-paper{transform:rotateX(78deg) translateY(-40px) scale(.7);opacity:0;pointer-events:none}
+.letter.sent .envelope{opacity:1;transform:translateX(-50%) translateY(0) scale(1);pointer-events:auto}
+.letter.sent .env-seal{animation:slam2 .6s 1.1s cubic-bezier(.3,1.5,.5,1) both}
+
+@media (max-width:560px){
+  .lt-paper{padding:26px 18px 22px}
+  .lt-dear{font-size:26px}
+  .lt-line{font-size:17px}
+  .lt-seals{gap:12px 4px}
+  .tseal svg{width:50px;height:50px}
+  .tseal .ts-l{font-size:9.5px;letter-spacing:.08em}
+  .lt-addr input{font-size:19px}
+  .lt-sign{flex-direction:column-reverse;align-items:stretch}
+  .chapters .lt-send{justify-content:center}
+  .letter.sent{min-height:470px}
+}
+
+/* the letter that opens when someone arrives from an email link (confirm, change topics, unsubscribe) */
+.post-veil{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px 16px;background:rgba(11,9,7,.82);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s}
+.post-veil.on{opacity:1}
+.post-card{position:relative;width:min(560px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:30px 30px 26px;border-radius:2px;color:var(--page-fg);background-color:var(--page);
+  background-image:var(--paper-tex),radial-gradient(130% 100% at 50% 50%,transparent 55%,rgba(120,88,48,.22));box-shadow:0 40px 80px -20px #000;transform:translateY(18px) rotate(-.6deg);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.post-veil.on .post-card{transform:none}
+.post-card,.post-card *{box-sizing:border-box}
+.pv-x{position:absolute;top:8px;right:10px;width:38px;height:38px;border:0;background:none;color:var(--page-muted);font:400 26px/1 var(--body);cursor:pointer}
+.pv-kicker{margin:0 0 8px;font:600 11px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--red-ink)}
+.post-card h3{margin:0 0 12px;font:italic 600 30px/1.15 var(--display)}
+.post-card h3:focus{outline:none}
+.pv-p{margin:0 0 14px;font:400 17px/1.55 var(--body)}
+.pv-p.quiet{font-style:italic;color:var(--page-muted);font-size:15.5px}
+.pv-wax{display:block;width:92px;height:92px;margin:0 0 14px;transform:rotate(-9deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));animation:slam2 .6s cubic-bezier(.3,1.5,.5,1) both}
+.pv-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pv-btn{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border:1px solid var(--page-fg);border-radius:2px;background:transparent;color:var(--page-fg);
+  font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.pv-btn.main{background:var(--page-fg);color:var(--page)}
+.pv-btn.red{border-color:var(--red-ink);background:var(--red-ink);color:var(--page)}
+.pv-btn:disabled{opacity:.55;cursor:default}
+.pv-link{border:0;background:none;padding:0;color:var(--page-muted);font:italic 400 15px/1.4 var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.pv-msg{min-height:1.4em;margin:10px 0 0;font:italic 400 15px/1.4 var(--body);color:var(--red-ink)}
+.post-card .lt-seals{margin:10px 0 6px}
+.pv-dots::after{content:"";animation:pvDots 1.2s steps(4) infinite}
+@keyframes pvDots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+@media (max-width:560px){.post-card{padding:26px 18px 22px}.post-card h3{font-size:26px}}
+@media (prefers-reduced-motion:reduce){
+  .lt-paper,.envelope,.post-veil,.post-card{transition:none}
+  .tseal.pop svg,.letter.sent .env-seal,.pv-wax{animation:none}
+}
+
+/* the claim checker's place on the main page */
+.examiner-note{margin:26px auto 0;max-width:640px;text-align:center;font:italic 400 17px/1.55 var(--body);color:var(--muted)}
+.examiner-note[hidden]{display:none}
+.examiner-note a{font-style:normal;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+
+/* top bar: the checker gets a gold mark; seven items still fit on small phones */
+.toc .tb-ex{color:var(--gold)}
+@media (max-width:420px){.toc a{padding:7px 5px;letter-spacing:.06em}}
