@@ -2,7 +2,7 @@
 
 The library reads itself. You just build.
 
-Every morning a small robot reads the new AI papers on arXiv and Hugging Face, keeps the ones about AI tools for non-programmers and LLM agents for everyday work, picks five, and explains each one in plain words with a project you can build over a weekend. Every sentence it writes has to be proven by a quote from the paper's own abstract. If it can't be proven, it gets cut before anyone reads it.
+Every morning a small robot reads the new AI papers on arXiv and Hugging Face, keeps the ones on six topics (no-code AI, AI agents at work, health, education, trust and safety, business and money), picks about one paper per topic, and explains each one in plain words with a project you can build over a weekend. Every sentence it writes has to be proven by a quote from the paper's own abstract. If it can't be proven, it gets cut before anyone reads it.
 
 It runs on free tiers and costs ₹0 a day.
 
@@ -12,13 +12,13 @@ It runs on free tiers and costs ₹0 a day.
 
 ## Why I built it
 
-I wanted to keep up with AI research without drowning in it. Around a thousand new papers land in these four arXiv categories every four days. So I built a desk that reads the new papers every morning and hands me one thing to build.
+I wanted to keep up with AI research without drowning in it. Over a thousand new papers land in these arXiv categories every four days. So I built a desk that reads the new papers every morning and hands me one thing to build.
 
 ## What happens every morning
 
-1. Fetch. `fetch.py` pulls the last four days of cs.AI, cs.CL, cs.HC and cs.LG papers from the arXiv API, plus the Hugging Face daily papers. Anything saved on an earlier morning is skipped, so nothing repeats.
-2. Filter. Papers are matched against the keywords for my two topics in `config.yaml`.
-3. Pick. `rank.py` asks Gemini to choose five and write them up: what they did, why it matters to a student, and a weekend project with a no-code version for people who use n8n or Google Sheets instead of Python.
+1. Fetch. `fetch.py` pulls the last four days of cs.AI, cs.CL, cs.HC, cs.LG and cs.CY papers from the arXiv API, plus the Hugging Face daily papers. Anything saved on an earlier morning is skipped, so nothing repeats.
+2. Filter. Papers are matched against the keywords for the six topics in `config.yaml`. Words that mean something else in ML papers are left out on purpose: "student" (as in student models), "bias" (as in inductive bias), "trading" (as in trading off).
+3. Pick. `rank.py` asks Gemini to choose about one paper per topic (six in all) and write them up: what they did, why it matters to a student, and a weekend project with a no-code version for people who use n8n or Google Sheets instead of Python.
 4. Check. `verify.py` sends every sentence to Groq (gpt-oss-120b) along with the abstract. Only proven sentences are kept.
 5. Deliver. `send_email.py` sends the email and `build_site.py` rebuilds the website from all the saved days. GitHub Actions commits the day's data back to this repo.
 
@@ -97,7 +97,7 @@ To run it every day on GitHub: fork the repo, add `GEMINI_API_KEY`, `GROQ_API_KE
 | Path | What it is |
 | --- | --- |
 | `fetch.py` | Gets new papers and keeps the ones on my topics |
-| `rank.py` | Picks five and writes them up |
+| `rank.py` | Picks about one paper per topic and writes them up |
 | `verify.py` | Fact-checks every sentence against the abstract |
 | `send_email.py`, `email_art.py` | Builds and sends the email and its picture |
 | `build_site.py`, `site/` | Builds the website from the saved days |
