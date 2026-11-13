@@ -347,9 +347,9 @@
     { title: "Planning", vol: "Vol. XV", css: "#3B1F33" }
   ];
   var SD = window.SD_DATA || { today: [], short: {} };
-  var ROMAN_N = ["I", "II", "III", "IV", "V"];
+  var ROMAN_N = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
   var PAPER_BOOKS = SD.today.map(function (p, i) {
-    return { title: SD.short[p.id] || p.title.split(":")[0], vol: "Today · " + ROMAN_N[i], css: ["#6B231E", "#1E3A2B", "#1B2A45", "#4A3020", "#3B1F33"][i], paper: i };
+    return { title: SD.short[p.id] || p.title.split(":")[0], vol: "Today · " + ROMAN_N[i], css: ["#6B231E", "#1E3A2B", "#1B2A45", "#4A3020", "#3B1F33", "#1E3B3F", "#5A4A1C", "#2D2A4A", "#4A1E2E", "#28382A"][i % 10], paper: i };
   });
   function wrapLines(g, text, maxW) {
     var words = String(text).split(/\s+/), lines = [], cur = "";

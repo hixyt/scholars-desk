@@ -2,9 +2,11 @@
   "use strict";
   var D = window.SD_DATA, papers = D.today;
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var ROMAN = ["I", "II", "III", "IV", "V"];
-  var COLORS = ["#6B231E", "#1E3A2B", "#1B2A45", "#4A3020", "#3B1F33"];
-  var TOPIC = { "AI tools for non-programmers": "Tools for non-programmers", "LLM agents for everyday work": "Agents at work" };
+  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+  var COLORS = ["#6B231E", "#1E3A2B", "#1B2A45", "#4A3020", "#3B1F33", "#1E3B3F", "#5A4A1C", "#2D2A4A", "#4A1E2E", "#28382A"];
+  var TOPIC = {};
+  (D.topics || []).forEach(function (t) { TOPIC[t.name] = t.label; });
+  function topicOf(p) { return TOPIC[p.topics[0]] || p.topics[0] || "The Scholar’s Desk"; }
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
   var sm = function (x, a, b) { x = clamp((x - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); };
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -52,8 +54,9 @@
 
   /* ================= I. Folio ================= */
   var row = document.getElementById("bookRow");
+  row.style.setProperty("--n", papers.length);
   row.innerHTML = papers.map(function (p, i) {
-    return book3d(COLORS[i], "Today · " + ROMAN[i], shortName(p), "The Scholar’s Desk", ROMAN[i] + " · " + shortName(p),
+    return book3d(COLORS[i], "Today · " + ROMAN[i], shortName(p), topicOf(p), ROMAN[i] + " · " + shortName(p),
       'data-i="' + i + '" aria-pressed="false" aria-label="Open paper ' + ROMAN[i] + ': ' + esc(p.title) + '"');
   }).join("");
 
@@ -61,13 +64,13 @@
   var LEAVES = 3, st = { i: 0, n: 0, side: "r" }, flipTimer = null;
 
   function pages(i) {
-    var p = papers[i], pr = p.project, t = tally(p), short = shortName(p), topic = TOPIC[p.topics[0]] || p.topics[0];
+    var p = papers[i], pr = p.project, t = tally(p), short = shortName(p), topic = topicOf(p);
     var proofItems = p.claims.map(function (c) {
       var note = c.ok ? "From the abstract: “" + esc(c.evidence) + "”" : "Struck. " + esc(c.note);
       return '<li class="' + (c.ok ? "" : "x") + '"><span class="t">' + esc(c.text) + '</span><span class="n">' + note + '</span></li>';
     }).join("");
     return {
-      cover: coverInner("Today · " + ROMAN[i], short, "The Scholar’s Desk"),
+      cover: coverInner("Today · " + ROMAN[i], short, topic),
       title:
         '<p class="pg-kicker">Vol. ' + ROMAN[i] + ' · ' + esc(topic) + '</p>' +
         '<h3 class="pg-h">' + esc(p.title) + '</h3>' +

@@ -73,7 +73,7 @@ html{scroll-behavior:smooth}
 /* ---------- I. folio ---------- */
 .row{display:flex;justify-content:center;align-items:flex-end;gap:clamp(10px,3vw,40px);perspective:1400px;perspective-origin:50% 20%;padding:30px 0 34px;position:relative}
 .row::after{content:"";position:absolute;left:4%;right:4%;bottom:22px;height:14px;background:linear-gradient(#3B2414,#24150C);box-shadow:0 18px 30px -8px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,214,170,.15);border-radius:2px;transform:translateZ(-40px);z-index:-1}
-.row .b3{--w:clamp(58px,10vw,124px);--h:calc(var(--w)*1.42);--t:calc(var(--w)*.24);transform:rotateY(30deg) rotateX(4deg)}
+.row .b3{--w:clamp(40px,min(10vw,calc((100vw - 40px) / (var(--n,5) * 1.42))),124px);--h:calc(var(--w)*1.42);--t:calc(var(--w)*.24);transform:rotateY(30deg) rotateX(4deg)}
 .row .b3:hover,.row .b3:focus-visible{transform:rotateY(10deg) rotateX(2deg) translateZ(40px) translateY(-14px)}
 .row .b3[aria-pressed="true"]{transform:rotateY(0deg) translateZ(60px) translateY(-26px)}
 .row .b3::after{content:"";position:absolute;left:10%;right:10%;bottom:-14px;height:14px;background:radial-gradient(closest-side,rgba(0,0,0,.7),transparent);transform:rotateX(90deg);pointer-events:none}

@@ -48,13 +48,14 @@ def load_days(data_dir):
     return days
 
 
-def page_paper(p):
+def page_paper(p, slugs=None):
     """A paper in the shape the page's scripts expect."""
     authors = p.get("authors") or []
     return {
         "id": p["id"],
         "title": p["title"],
         "topics": p.get("matched_topics") or [],
+        "slugs": [slugs[t] for t in p.get("matched_topics") or [] if t in (slugs or {})],
         "cat": p.get("primary_category") or "",
         "authors": authors[:3],
         "more_authors": max(0, len(authors) - 3),
@@ -103,7 +104,8 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     data = {
         "date": digest["date"],
         "dateLabel": day_text(date, "%d %b %Y"),
-        "today": [page_paper(p) for p in papers],
+        "today": [page_paper(p, {t["name"]: t["slug"] for t in config["topics"]}) for p in papers],
+        "topics": [{"slug": t["slug"], "label": t["label"], "name": t["name"]} for t in config["topics"]],
         "short": {p["id"]: spine_label(p["title"]) for p in papers},
         "days": shelf,
         "nextDays": [{"short": day_text(d, "%d %b"), "label": day_text(d, "%a %d %b")} for d in next_days],
@@ -111,6 +113,9 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     site_cfg = config.get("site") or {}
     if site_cfg.get("supabase_url") and site_cfg.get("supabase_key"):
         data["seals"] = {"url": site_cfg["supabase_url"].strip(), "key": site_cfg["supabase_key"].strip()}
+        data["desk"] = {"fn": site_cfg["supabase_url"].strip().rstrip("/") + "/functions/v1/desk",
+                        "key": site_cfg["supabase_key"].strip(),
+                        "subscribe": bool(site_cfg.get("subscribe")), "checker": bool(site_cfg.get("checker"))}
 
     def num(key):
         return f"{stats[key]:,}" if key in stats else "&mdash;"
