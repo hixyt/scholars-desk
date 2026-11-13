@@ -2,7 +2,7 @@
 
 A small robot that reads new AI papers every morning, picks about one paper per topic, explains it in simple words and gives you a weekend project for it. It costs ₹0.
 
-How it works: arXiv and Hugging Face → keep the papers on my 6 topics → Gemini picks about 6 and writes about them → Groq checks every line → email and website
+How it works: arXiv and Hugging Face-keep the papers on my 6 topics-Gemini picks about 6 and writes about them-Groq checks every line-email and website.
 
 ## Status
 - [x] Hero page
