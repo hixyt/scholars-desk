@@ -1,0 +1,47 @@
+{
+  "site_url": "https://hixyt.github.io/scholars-desk/",
+  "from_name": "The Scholar's Desk",
+  "allowed_origins": [
+    "https://hixyt.github.io",
+    "http://127.0.0.1:8765",
+    "http://localhost:8765"
+  ],
+  "topics": [
+    {
+      "slug": "no-code",
+      "label": "No-code AI"
+    },
+    {
+      "slug": "agents",
+      "label": "AI agents at work"
+    },
+    {
+      "slug": "health",
+      "label": "AI in health"
+    },
+    {
+      "slug": "education",
+      "label": "AI in education"
+    },
+    {
+      "slug": "trust",
+      "label": "Trust and safety"
+    },
+    {
+      "slug": "business",
+      "label": "Business and money"
+    }
+  ],
+  "models": {
+    "gemini": "gemini-3.5-flash-lite",
+    "gemini_fallback": "gemini-3.1-flash-lite",
+    "groq": "openai/gpt-oss-120b",
+    "groq_fallback": "openai/gpt-oss-20b"
+  },
+  "checker": {
+    "checks_per_day": 120,
+    "checks_per_visitor": 8,
+    "subscribes_per_visitor": 5,
+    "max_claims": 6
+  }
+}

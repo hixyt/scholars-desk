@@ -1,0 +1,7 @@
+# Settings the Supabase CLI reads when GitHub deploys the function (.github/workflows/deploy-function.yml).
+project_id = "scholars-desk"
+
+[functions.desk]
+# The website calls this function without a logged-in user, so Supabase's login check is off.
+# The function does its own checks: allowed websites, daily limits, and tokens for subscribers.
+verify_jwt = false
