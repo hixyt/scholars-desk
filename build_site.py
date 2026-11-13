@@ -173,6 +173,17 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
             "{{SD_DESK}}", json.dumps({"fn": desk.get("fn", ""), "checker": bool(desk.get("checker"))}).replace("</", "<\\/"))
         name = "check.html" if Path(out).name == "index.html" else f"{Path(out).stem}-check.html"
         Path(out).with_name(name).write_text(page2, encoding="utf-8")
+
+    # a small card of the latest papers for my GitHub profile (assets/today.svg), redrawn every morning
+    if Path(out).name == "index.html":
+        try:
+            from card_art import today_card
+            labels = {t["name"]: t["label"] for t in config["topics"]}
+            books = [(spine_label(p["title"]), labels.get((p.get("matched_topics") or [""])[0], "")) for p in papers]
+            card = today_card(day_text(date, "%a %d %b"), books, proven, len(claims), config["email"].get("site_url", ""))
+            Path(out).with_name("assets").joinpath("today.svg").write_text(card, encoding="utf-8")
+        except Exception as e:  # the website matters more than the card
+            log.warning(f"Could not draw the profile card: {e}")
     return digest["date"], len(papers), len(days)
 
 
