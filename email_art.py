@@ -11,7 +11,7 @@ from pathlib import Path
 FONTS = Path(__file__).parent / "assets" / "fonts"
 W, H = 1200, 540          # drawn at 2x, shown at 600 x 270 in the email
 DESK_Y = 430              # where the books stand
-SPINES = ["#5E1C17", "#1F3A2B", "#22305A", "#4A3020", "#3B1F33"]
+SPINES = ["#5E1C17", "#1F3A2B", "#22305A", "#4A3020", "#3B1F33", "#1E3B3F"]
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 
 
@@ -126,9 +126,10 @@ def banner_png(papers, day_label, issue_line, seed=7):
     img.alpha_composite(over)
 
     # today's books, with their shadows
-    x = 64
-    for i, p in enumerate(papers[:5]):
-        w, h = rnd.randint(68, 84), rnd.randint(300, 350)
+    x, shown = 64, papers[:6]
+    widest = min(84, (476 - 6 * (len(shown) - 1)) // max(1, len(shown)))  # six books still stop before the title
+    for i, p in enumerate(shown):
+        w, h = rnd.randint(widest - 14, widest), rnd.randint(300, 350)
         shadow = Image.new("RGBA", (w + 40, 40), (0, 0, 0, 0))
         ImageDraw.Draw(shadow).ellipse((0, 8, w + 40, 30), fill=(0, 0, 0, 150))
         img.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(6)), (x - 20, DESK_Y - 14))

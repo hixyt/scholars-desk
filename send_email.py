@@ -1,10 +1,13 @@
 """Turn the checked digest into the morning email and send it with Gmail.
 
-Run:  python send_email.py --preview    (writes data/<date>/email.html, sends nothing)
-      python send_email.py              (sends today's email)
+Run:  python send_email.py --preview                      (writes data/<date>/email.html, sends nothing)
+      python send_email.py --preview --topics health,trust (a subscriber's copy with only those topics)
+      python send_email.py                                (sends today's email)
 
 Needs GMAIL_ADDRESS and GMAIL_APP_PASSWORD in .env (or GitHub Secrets).
-EMAIL_TO is optional; without it the email goes to GMAIL_ADDRESS.
+EMAIL_TO is optional; without it the email goes to GMAIL_ADDRESS. Those addresses get every paper.
+With SUPABASE_SECRET_KEY set, confirmed subscribers get their own copy too, with only the
+papers on the topics they chose and their own links to change topics or unsubscribe.
 """
 
 import argparse
@@ -20,6 +23,7 @@ from email.message import EmailMessage
 from email.utils import formataddr
 from pathlib import Path
 
+import requests
 from dotenv import load_dotenv
 
 from common import load_config, log, run, tidy_title
@@ -28,6 +32,7 @@ from email_art import SPINES, banner_png, spine_label
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
 LEVELS = {"easy": 1, "medium": 2, "hard": 3}
+LABELS = {}  # topic name -> short label, filled from config.yaml in main()
 
 # Same colours as the website. Email apps ignore most CSS, so nearly every style is inline.
 INK, INK_2, PAGE, PAGE_2, TEXT, MUTED = "#0B0907", "#15100C", "#EFE6D0", "#E7DCC2", "#2B2118", "#6B5A45"
@@ -89,20 +94,76 @@ def kicker(text, color=MUTED, size=11):
 
 def day_numbers(digest, folder, data_dir):
     """What the email can honestly count for this day."""
-    papers = digest["papers"]
-    nums = {
-        "picked": len(papers),
-        "checked": sum(len(p.get("claims") or []) for p in papers + digest.get("left_out", [])),
-        "proven": sum(sum(1 for c in p.get("claims") or [] if c.get("supported")) for p in papers + digest.get("left_out", [])),
-        "issue": sum(1 for d in Path(data_dir).glob("*/digest.json")  # days that had an email
-                     if d.parent.name <= digest["date"] and json.loads(d.read_text(encoding="utf-8")).get("papers")),
-    }
+    nums = {"issue": sum(1 for d in Path(data_dir).glob("*/digest.json")  # days that had an email
+                         if d.parent.name <= digest["date"] and json.loads(d.read_text(encoding="utf-8")).get("papers"))}
     stats = folder / "stats.json"
     if stats.exists():
         nums.update(json.loads(stats.read_text(encoding="utf-8")))
     elif (folder / "raw.json").exists():
         nums["matched"] = len(json.loads((folder / "raw.json").read_text(encoding="utf-8")))
-    return nums
+    return numbers_for(nums, digest)
+
+
+def numbers_for(nums, digest):
+    """The picked and proven counts for this copy of the email (a subscriber's copy has fewer papers)."""
+    claims = [c for p in digest["papers"] + digest.get("left_out", []) for c in p.get("claims") or []]
+    return dict(nums, picked=len(digest["papers"]), checked=len(claims),
+                proven=sum(1 for c in claims if c.get("supported")))
+
+
+# ---------------------------------------------------------------- readers and their topics
+
+def topic_names(config, slugs):
+    """Topic names for a subscriber's chosen slugs. Nothing chosen means every topic."""
+    by_slug = {t["slug"]: t["name"] for t in config["topics"]}
+    return {by_slug[s] for s in slugs or [] if s in by_slug} or set(by_slug.values())
+
+
+def topic_labels(config, slugs):
+    chosen = set(slugs or []) & {t["slug"] for t in config["topics"]}
+    return [t["label"] for t in config["topics"] if not chosen or t["slug"] in chosen]
+
+
+def supabase_headers(key):
+    headers = {"apikey": key}
+    if key.count(".") == 2:  # an old-style JWT key also goes in the Authorization header
+        headers["Authorization"] = f"Bearer {key}"
+    return headers
+
+
+def fetch_subscribers(config):
+    """Confirmed subscribers from Supabase. Empty when SUPABASE_SECRET_KEY isn't set."""
+    key = (os.getenv("SUPABASE_SECRET_KEY") or "").strip()
+    url = ((config.get("site") or {}).get("supabase_url") or "").strip().rstrip("/")
+    if not key or not url:
+        log.info("No SUPABASE_SECRET_KEY, so only EMAIL_TO gets the email")
+        return []
+    try:
+        r = requests.get(f"{url}/rest/v1/subscribers", headers=supabase_headers(key), timeout=30,
+                         params={"select": "email,topics,token", "confirmed": "is.true", "order": "id"})
+        r.raise_for_status()
+        return [s for s in r.json() if s.get("email") and s.get("token")]
+    except Exception as e:  # never stop the owner's email because of the list
+        log.warning(f"Could not read the subscribers, so only EMAIL_TO gets the email: {e}")
+        return []
+
+
+def edition(digest, papers):
+    """The digest cut down to some of its papers. Left-out papers only show in the full copy."""
+    return dict(digest, papers=papers, left_out=[])
+
+
+def reader_links(config, sub):
+    """The bottom lines of a subscriber's copy: their topics and their own links. (html, text, unsubscribe url)"""
+    site = (config.get("email", {}).get("site_url") or "").rstrip("/") + "/"
+    manage, leave = f"{site}?manage={sub['token']}", f"{site}?unsub={sub['token']}"
+    labels = " &middot; ".join(esc(x) for x in topic_labels(config, sub.get("topics")))
+    html_part = (f'You chose: {labels}<br><a href="{esc(manage)}" style="color:{GOLD};">Change topics</a>'
+                 f' &middot; <a href="{esc(leave)}" style="color:{GOLD};">Unsubscribe</a>')
+    text_part = (f"You chose: {', '.join(topic_labels(config, sub.get('topics')))}\n"
+                 f"Change topics: {manage}\nUnsubscribe: {leave}")
+    fn = ((config.get("site") or {}).get("supabase_url") or "").rstrip("/")
+    return html_part, text_part, (f"{fn}/functions/v1/desk?unsub={sub['token']}" if fn else leave)
 
 
 def struck_lines(digest):
@@ -155,7 +216,8 @@ def contents(papers):
 
 def paper_block(n, p):
     proj = p.get("project_idea") or {}
-    topic = (p.get("matched_topics") or [""])[0]
+    topic = p.get("shown_topic") or (p.get("matched_topics") or [""])[0]
+    topic = LABELS.get(topic, topic)
     spine = SPINES[n % len(SPINES)]
     url = esc(p.get("url"))
     hf = (f' &middot; <span style="color:{RED};">trending on Hugging Face</span>'
@@ -240,7 +302,10 @@ def struck_block(lines):
             f'<table {TABLE}>{items}</table></td></tr></table></td></tr>')
 
 
-def build_html(digest, config, nums, banner_src=None):
+READER_SLOT = "<!--reader-links-->"
+
+
+def build_html(digest, config, nums, banner_src=None, for_subscriber=False):
     em = config.get("email", {})
     papers = digest["papers"]
     day = nice_date(digest["date"], "%A, %d %B %Y")
@@ -276,7 +341,7 @@ def build_html(digest, config, nums, banner_src=None):
 {top}
 <tr><td align="center" style="padding:0 0 6px;">{kicker(f"No. {nums['issue']} &nbsp;&middot;&nbsp; {esc(day)}", GOLD, 11)}</td></tr>
 <tr><td align="center" style="padding:6px 16px 24px;font-family:{SERIF};font-size:16px;line-height:1.65;font-style:italic;color:{DIM};">
-Good morning. {count_words(len(papers))} came off the press. The summaries below were checked line by line against each paper&rsquo;s own abstract, and every paper comes with a project you can build this weekend.{left_out_note(digest)}</td></tr>
+Good morning. {count_words(len(papers))}{" on your topics" if for_subscriber else ""} came off the press. The summaries below were checked line by line against each paper&rsquo;s own abstract, and every paper comes with a project you can build this weekend.{left_out_note(digest)}</td></tr>
 {ledger_row(nums)}
 {contents(papers)}
 {"".join(paper_block(n, p) for n, p in enumerate(papers))}
@@ -292,6 +357,7 @@ Good morning. {count_words(len(papers))} came off the press. The summaries below
 </tr></table></td></tr>
 <tr><td align="center" style="padding:0 20px;font-family:{SERIF};font-size:12.5px;line-height:1.7;color:{DIM};">
 Picked and written by Gemini, checked line by line by Groq, sent by a small robot for &#8377;0.<br>{" &middot; ".join(x for x in [signed and f"Made by {signed}"] + links if x)}</td></tr>
+{f'<tr><td align="center" style="padding:14px 20px 0;font-family:{SERIF};font-size:12.5px;line-height:1.7;color:{DIM};">{READER_SLOT}</td></tr>' if for_subscriber else ""}
 <tr><td align="center" style="padding:16px 0 0;font-family:{DISPLAY};font-size:15px;font-style:italic;color:{GOLD};">See you tomorrow morning.</td></tr>
 </table></td></tr></table>
 </body></html>"""
@@ -339,38 +405,70 @@ def build_subject(digest, config):
 
 # ---------------------------------------------------------------- sending
 
-def send(subject, text, body_html, config, banner=None):
-    """Send through Gmail. Returns how many people it went to (addresses stay out of the logs)."""
-    load_dotenv()
-    sender = os.getenv("GMAIL_ADDRESS", "").strip()
-    password = "".join(os.getenv("GMAIL_APP_PASSWORD", "").split())  # no spaces or line breaks; Google shows it in groups of four
-    to = [a.strip() for a in (os.getenv("EMAIL_TO") or sender).split(",") if a.strip()]
-    missing = [name for name, value in (("GMAIL_ADDRESS", sender), ("GMAIL_APP_PASSWORD", password)) if not value]
-    if missing:
-        raise SystemExit(f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'} missing. Add {'it' if len(missing) == 1 else 'them'} to .env (or GitHub Secrets).")
-
+def make_message(subject, text, body_html, config, sender, banner=None, unsubscribe=None, to=None):
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = formataddr((config.get("email", {}).get("from_name", "The Scholar's Desk"), sender))
-    msg["To"] = sender
+    msg["To"] = to or sender  # the full copy shows the sender here; the readers get blind copies
+    if unsubscribe:  # lets Gmail show its own "Unsubscribe" button, which works in one click
+        msg["List-Unsubscribe"] = f"<{unsubscribe}>, <mailto:{sender}?subject=unsubscribe>"
+        msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
     msg.set_content(text)
     msg.add_alternative(body_html, subtype="html")
     if banner:  # the picture travels inside the email, so it shows without loading anything
         msg.get_payload()[1].add_related(banner, "image", "png", cid="<banner>", filename="scholars-desk.png")
+    return msg
 
-    for attempt in (1, 2):
-        try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context(), timeout=30) as smtp:
-                smtp.login(sender, password)
-                smtp.send_message(msg, to_addrs=to)  # everyone else gets a blind copy
-            return len(to)
-        except smtplib.SMTPAuthenticationError:
-            raise SystemExit("Gmail refused the login. GMAIL_APP_PASSWORD must be an App Password, not your normal password.")
-        except (smtplib.SMTPException, OSError) as e:
-            if attempt == 2:
-                raise
-            log.warning(f"Sending failed ({e}), trying again in 15 seconds")
-            time.sleep(15)
+
+def gmail_login():
+    load_dotenv()
+    sender = os.getenv("GMAIL_ADDRESS", "").strip()
+    password = "".join(os.getenv("GMAIL_APP_PASSWORD", "").split())  # no spaces or line breaks; Google shows it in groups of four
+    missing = [name for name, value in (("GMAIL_ADDRESS", sender), ("GMAIL_APP_PASSWORD", password)) if not value]
+    if missing:
+        raise SystemExit(f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'} missing. Add {'it' if len(missing) == 1 else 'them'} to .env (or GitHub Secrets).")
+    return sender, password
+
+
+def send_all(batch, sender, password):
+    """Send (message, recipients) pairs over one Gmail connection. Returns (people reached, people missed).
+    Addresses stay out of the logs."""
+    smtp, reached, missed = None, 0, 0
+    try:
+        for n, (msg, to) in enumerate(batch):
+            for attempt in (1, 2):
+                try:
+                    if smtp is None:
+                        smtp = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context(), timeout=30)
+                        smtp.login(sender, password)
+                    smtp.send_message(msg, to_addrs=to)  # with several addresses, everyone gets a blind copy
+                    reached += len(to)
+                    break
+                except smtplib.SMTPAuthenticationError:
+                    raise SystemExit("Gmail refused the login. GMAIL_APP_PASSWORD must be an App Password, not your normal password.")
+                except (smtplib.SMTPException, OSError) as e:
+                    try:
+                        smtp and smtp.quit()
+                    except Exception:
+                        pass
+                    smtp = None
+                    if attempt == 2:
+                        if n == 0:  # the owner's copy has to arrive, so this one fails the run
+                            raise
+                        missed += len(to)
+                        log.warning(f"Could not send one copy ({e})")
+                    else:
+                        log.warning(f"Sending failed ({e}), trying again in 15 seconds")
+                        time.sleep(15)
+            if len(batch) > 2:
+                time.sleep(0.4)  # Gmail is happier with a short pause between many emails
+    finally:
+        if smtp:
+            try:
+                smtp.quit()
+            except Exception:
+                pass
+    return reached, missed
 
 
 def main():
@@ -379,6 +477,7 @@ def main():
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--config", default="config.yaml")
     parser.add_argument("--preview", action="store_true", help="write email.html next to the digest and send nothing")
+    parser.add_argument("--topics", help="with --preview: topic slugs, comma separated, to see a subscriber's copy")
     args = parser.parse_args()
 
     date = args.date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -396,27 +495,80 @@ def main():
 
     config = load_config(args.config)
     nums = day_numbers(digest, folder, args.data_dir)
-    n = len(digest["papers"])
-    banner = banner_png(digest["papers"], nice_date(date, "%A · %d %B %Y"),
-                        f"No. {nums['issue']} · " + ("one paper, one weekend project" if n == 1 else
-                        f"{WORDS[n].lower() if n < len(WORDS) else n} papers, {WORDS[n].lower() if n < len(WORDS) else n} weekend projects"))
-    if not banner:
-        log.warning("No picture today (Pillow or the fonts are missing), the email uses a text heading")
-    subject = build_subject(digest, config)
-    log.info(f"Subject: {subject}")
+    day_label = nice_date(date, "%A · %d %B %Y")
+
+    def issue_line(n):
+        return f"No. {nums['issue']} · " + ("one paper, one weekend project" if n == 1 else
+                f"{WORDS[n].lower() if n < len(WORDS) else n} papers, {WORDS[n].lower() if n < len(WORDS) else n} weekend projects")
+
+    LABELS.update({t["name"]: t["label"] for t in config["topics"]})
+
+    def papers_for(slugs):
+        """Today's papers on these topics, each tagged with the chosen topic it matched first."""
+        names = topic_names(config, slugs)
+        return [dict(p, shown_topic=next(t for t in p["matched_topics"] if t in names))
+                for p in digest["papers"] if names & set(p.get("matched_topics") or [])]
 
     if args.preview:
+        slugs = [s.strip() for s in (args.topics or "").split(",") if s.strip()]
+        copy = edition(digest, papers_for(slugs)) if slugs else digest
+        if not copy["papers"]:
+            raise SystemExit("No paper today is on those topics.")
+        banner = banner_png(copy["papers"], day_label, issue_line(len(copy["papers"])))
         if banner:
             (folder / "email-banner.png").write_bytes(banner)
-        body_html = build_html(digest, config, nums, "email-banner.png" if banner else None)
+        body_html = build_html(copy, config, numbers_for(nums, copy), "email-banner.png" if banner else None, for_subscriber=bool(slugs))
+        if slugs:
+            body_html = body_html.replace(READER_SLOT, reader_links(config, {"token": "PREVIEW", "topics": slugs})[0])
         out = folder / "email.html"
         out.write_text(body_html, encoding="utf-8")
+        log.info(f"Subject: {build_subject(copy, config)}")
         print(f"Preview saved to {out} ({len(body_html.encode('utf-8')) // 1024} KB). Open it in your browser.")
         return
 
-    body_html = build_html(digest, config, nums, "cid:banner" if banner else None)
-    count = send(subject, build_text(digest, config, nums), body_html, config, banner)
-    print(f"Sent the {date} email with {n} paper{'s' if n != 1 else ''} to {count} reader{'s' if count != 1 else ''}.")
+    sender, password = gmail_login()
+    owners = [a.strip() for a in (os.getenv("EMAIL_TO") or sender).split(",") if a.strip()]
+
+    # 1. the full copy, for EMAIL_TO (one email, blind copies)
+    banner = banner_png(digest["papers"], day_label, issue_line(len(digest["papers"])))
+    if not banner:
+        log.warning("No picture today (Pillow or the fonts are missing), the email uses a text heading")
+    log.info(f"Subject: {build_subject(digest, config)}")
+    batch = [(make_message(build_subject(digest, config), build_text(digest, config, nums),
+                           build_html(digest, config, nums, "cid:banner" if banner else None), config, sender, banner), owners)]
+
+    # 2. one copy per subscriber, with only their topics; people with the same topics share one build
+    limit = config.get("email", {}).get("max_subscriber_emails", 450)  # Gmail allows about 500 a day
+    subs = [s for s in fetch_subscribers(config) if s["email"].strip().lower() not in {o.lower() for o in owners}]
+    if len(subs) > limit:
+        log.warning(f"{len(subs)} subscribers but Gmail allows about 500 emails a day, so only the first {limit} get today's email")
+        subs = subs[:limit]
+    builds, skipped = {}, 0
+    for sub in subs:
+        papers = papers_for(sub.get("topics"))
+        if not papers:
+            skipped += 1  # nothing on their topics today
+            continue
+        key = tuple(p["id"] for p in papers)
+        if key not in builds:
+            copy = edition(digest, papers)
+            art = banner_png(papers, day_label, issue_line(len(papers)))
+            copy_nums = numbers_for(nums, copy)
+            builds[key] = (copy, art, build_html(copy, config, copy_nums, "cid:banner" if art else None, for_subscriber=True),
+                           build_text(copy, config, copy_nums))
+        copy, art, body_html, text = builds[key]
+        link_html, link_text, unsubscribe = reader_links(config, sub)
+        batch.append((make_message(build_subject(copy, config), f"{text}\n\n{link_text}", body_html.replace(READER_SLOT, link_html),
+                                   config, sender, art, unsubscribe, to=sub["email"].strip()), [sub["email"].strip()]))
+
+    reached, missed = send_all(batch, sender, password)
+    n = len(digest["papers"])
+    extra = f", {len(batch) - 1} of them subscribers" if len(batch) > 1 else ""
+    print(f"Sent the {date} email with {n} paper{'s' if n != 1 else ''} to {reached} reader{'s' if reached != 1 else ''}{extra}.")
+    if skipped:
+        log.info(f"{skipped} subscriber{'s' if skipped != 1 else ''} had no paper on their topics today")
+    if missed:
+        log.warning(f"{missed} subscriber cop{'ies' if missed != 1 else 'y'} could not be sent")
 
 
 if __name__ == "__main__":
