@@ -11,6 +11,7 @@ Saves data/YYYY-MM-DD/digest_draft.json, which verify.py then fact-checks.
 
 import argparse
 import json
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -26,25 +27,44 @@ STYLE_RULES = (
     "- NEVER use hype words like: crucial, essential, vital, powerful, game-changer, highly employable, cutting-edge.\n"
 )
 
+# Gemini says these when it is overloaded for a while. Waiting a bit usually fixes it.
+BUSY_SIGNS = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED", "high demand", "overloaded")
+
+
+gemini_busy = False  # True once both Gemini models stayed busy, so the next call goes straight to Groq
+
 
 def ask_ai(system, prompt, config, gemini_key, groq_key):
     """Try Gemini first, then Groq. Returns (parsed JSON list, model used)."""
+    global gemini_busy
     models = config["models"]
 
-    if gemini_key:
+    if gemini_key and not gemini_busy:
         from google import genai
         from google.genai import types
 
         client = genai.Client(api_key=gemini_key)
         settings = types.GenerateContentConfig(
             system_instruction=system, response_mime_type="application/json", temperature=0.3)
+        all_busy = True
         for model in (models["gemini"], models["gemini_fallback"]):
-            try:
-                log.info(f"Asking Gemini ({model})...")
-                reply = client.models.generate_content(model=model, contents=prompt, config=settings)
-                return parse_json_list(reply.text), f"Gemini ({model})"
-            except Exception as e:
-                log.warning(f"Gemini ({model}) failed: {e}")
+            for wait in (0, 30, 90):
+                if wait:
+                    log.info(f"Trying Gemini ({model}) again in {wait}s")
+                    time.sleep(wait)
+                try:
+                    log.info(f"Asking Gemini ({model})...")
+                    reply = client.models.generate_content(model=model, contents=prompt, config=settings)
+                    return parse_json_list(reply.text), f"Gemini ({model})"
+                except Exception as e:
+                    if not any(sign in str(e) for sign in BUSY_SIGNS):
+                        log.warning(f"Gemini ({model}) failed: {e}")
+                        all_busy = False
+                        break  # a wrong model name or a bad reply won't fix itself by waiting
+                    log.info(f"Gemini ({model}) is busy: {str(e)[:120]}")
+            else:
+                log.warning(f"Gemini ({model}) was still busy after 3 tries")
+        gemini_busy = all_busy
 
     if not groq_key:
         raise RuntimeError("Gemini failed and there is no GROQ_API_KEY to fall back on")
@@ -68,10 +88,11 @@ def pick_papers(papers, config, keys):
         + STYLE_RULES +
         "- Give a short, grounded one-line reason for each paper."
     )
+    want = min(5, len(catalog))  # a slow day can have fewer than 5 papers
     prompt = (
         f"Here are {len(catalog)} candidate papers:\n\n{json.dumps(catalog, ensure_ascii=False)}\n\n"
-        "Pick exactly 5. Return a JSON array of 5 objects:\n"
-        '[{"id": "<paper id from the list>", "reason": "<one short line>"}]'
+        f"Pick exactly {want}. Return a JSON object with a list of {want} picks:\n"
+        '{"papers": [{"id": "<paper id from the list>", "reason": "<one short line>"}]}'
     )
     picks, model = ask_ai(system, prompt, config, *keys)
 
@@ -82,8 +103,8 @@ def pick_papers(papers, config, keys):
         if pid in by_id and pid not in {p["id"] for p in chosen}:
             chosen.append(dict(by_id[pid], ranking_reason=clean_text(item.get("reason", ""))))
     chosen = chosen[:5]
-    if len(chosen) < 5:
-        log.warning(f"The AI returned only {len(chosen)} valid picks")
+    if len(chosen) < want:
+        log.warning(f"The AI returned only {len(chosen)} valid picks out of {want}")
 
     # In case the AI ignored the topic rule
     for topic in topics:
@@ -121,10 +142,10 @@ def write_details(chosen, config, keys):
     )
     prompt = (
         f"Write about these {len(papers_in)} papers:\n\n{json.dumps(papers_in, ensure_ascii=False)}\n\n"
-        "Return a JSON array with one object per paper:\n"
-        '[{"id": "<paper id>", "explanation": "...", "why_it_matters": "...", '
+        "Return a JSON object with one entry per paper in its list:\n"
+        '{"papers": [{"id": "<paper id>", "explanation": "...", "why_it_matters": "...", '
         '"project_idea": {"title": "...", "description": "...", "difficulty": "Easy or Medium", '
-        '"time_estimate": "...", "no_code_version": "..."}}]'
+        '"time_estimate": "...", "no_code_version": "..."}}]}'
     )
     details, model = ask_ai(system, prompt, config, *keys)
 

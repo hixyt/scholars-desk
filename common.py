@@ -101,6 +101,8 @@ def parse_json_list(text):
     data = json.loads(text)
     if isinstance(data, dict):
         data = next((v for v in data.values() if isinstance(v, list)), data)
+    if isinstance(data, dict) and "id" in data:  # a single paper sent on its own, without a list around it
+        data = [data]
     if not isinstance(data, list):
         raise ValueError("The AI reply has no list in it")
     return data
