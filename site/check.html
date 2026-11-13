@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>The Examiner · The Scholar's Desk</title>
+<meta name="description" content="Saw a big claim about an AI paper? Paste the post and the paper link. Every claim is checked against the paper's own abstract, with the exact line as proof.">
+<meta property="og:title" content="Is it really in the paper? · The Examiner">
+<meta property="og:description" content="Paste a post about an AI paper. Every claim is checked against the paper's own abstract, with the exact line as proof.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hixyt.github.io/scholars-desk/check.html">
+<meta property="og:image" content="https://hixyt.github.io/scholars-desk/assets/og-check.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A parchment card with two claims, one stamped In the paper and one stamped Not in the abstract, under the words Is it really in the paper?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0907">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap">
+<link rel="stylesheet" href="site/check.css?v={{VERSION}}">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="./">
+    <svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><polygon data-seal fill="#7A2620"></polygon><circle cx="50" cy="50" r="36" fill="#62201B"></circle><text x="50" y="60" text-anchor="middle" fill="#EDE3CC" style="font:italic 600 30px var(--display)">SD</text></svg>
+    The Scholar’s Desk
+  </a>
+  <a class="bar-link" href="./#folio">Today’s papers →</a>
+</header>
+
+<main class="wrap">
+  <header class="head">
+    <span class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 100 100"><polygon data-seal fill="#7A2620"></polygon><circle cx="50" cy="50" r="36" fill="#62201B"></circle><text x="50" y="61" text-anchor="middle" fill="#EBD29B" style="font:italic 600 32px var(--display)">SD</text></svg><i></i></span>
+    <span class="numeral">The Examiner</span>
+    <h1>Is it really in the <em>paper?</em></h1>
+    <p class="dek">Saw a big claim about an AI paper on LinkedIn or in the news? Paste the post and the paper’s link. Every claim gets checked against the paper’s own abstract, with the exact line as proof.</p>
+  </header>
+
+  <p class="closed" id="closed" hidden>The Examiner opens soon. Until then, every line in the <a href="./#margins">morning digest</a> is checked the same way.</p>
+
+  <form class="docket" id="docket" novalidate>
+    <label class="f-label" for="post">The post or claim</label>
+    <textarea id="post" rows="6" maxlength="3000" placeholder="Paste the LinkedIn post, tweet or headline here"></textarea>
+    <p class="count" id="count">0 / 3000</p>
+    <label class="f-label" for="paper">The paper</label>
+    <input id="paper" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="arxiv.org/abs/2611.16107 (or put the link in the post)">
+    <div class="f-actions">
+      <button type="submit" class="btn red" id="go">Examine it</button>
+      <button type="button" class="btn" id="example">Try an example</button>
+    </div>
+    <p class="f-msg" id="msg" aria-live="polite"></p>
+    <p class="f-small">Checked against the abstract only. Free, with a few checks a day for each visitor.</p>
+  </form>
+
+  <section class="work" id="work" hidden aria-live="polite">
+    <ol class="steps">
+      <li data-step="0">Fetching the abstract from arXiv</li>
+      <li data-step="1">Pulling the claims out of the post</li>
+      <li data-step="2">Checking each claim against the abstract</li>
+      <li data-step="3">Making sure every quote is really there</li>
+    </ol>
+  </section>
+
+  <section class="verdict" id="verdict" hidden></section>
+
+  <section class="how">
+    <h2>How the Examiner decides</h2>
+    <dl class="legend">
+      <div><dt><span class="stamp s-supported">In the paper</span></dt><dd>The abstract clearly says it.</dd></div>
+      <div><dt><span class="stamp s-overstated">Stretched</span></dt><dd>The abstract says something close, but the claim goes further: bigger numbers, stronger words, or a wider reach.</dd></div>
+      <div><dt><span class="stamp s-contradicted">Paper says otherwise</span></dt><dd>The abstract says the opposite.</dd></div>
+      <div><dt><span class="stamp s-not_in_abstract">Not in the abstract</span></dt><dd>The abstract doesn’t say it. That doesn’t make it false, but it needs a better source than this paper’s summary.</dd></div>
+    </dl>
+    <p>An AI model suggests each verdict and copies the line that proves it. Then plain code checks that the line really is in the abstract (word for word, numbers included) before anything is shown. A made-up quote can’t pass, so a claim without real proof never shows as proven. It’s the same check that guards the <a href="./#margins">morning digest</a>.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <a href="./">The Scholar’s Desk</a> · <a href="https://github.com/hixyt/scholars-desk">Source on GitHub</a> · Made by Himani Dalvi
+</footer>
+
+<script>window.SD_DESK = {{SD_DESK}};</script>
+<script src="site/check.js?v={{VERSION}}"></script>
+</body>
+</html>

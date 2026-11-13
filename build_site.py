@@ -1,8 +1,9 @@
 """Build the website (index.html) from the saved digests.
 
 Run:  python build_site.py
-It reads data/<date>/digest.json and stats.json, fills site/page.html and writes index.html.
-GitHub Pages serves index.html and the files in site/.
+It reads data/<date>/digest.json and stats.json, fills site/page.html and writes index.html,
+and fills site/check.html (the claim checker) into check.html.
+GitHub Pages serves both pages and the files in site/.
 """
 
 import argparse
@@ -131,7 +132,7 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     picked_from = f" from {stats['matched']}" if stats.get("matched", 0) > len(papers) else ""
 
     site = Path(template).parent
-    version = hashlib.sha1(b"".join((site / f).read_bytes() for f in ("hero.css", "chapters.css", "hero.js", "chapters.js"))).hexdigest()[:8]
+    version = hashlib.sha1(b"".join((site / f).read_bytes() for f in ("hero.css", "chapters.css", "desk.css", "hero.js", "chapters.js", "desk.js", "check.css", "check.js") if (site / f).exists())).hexdigest()[:8]
     values = {
         "SD_DATA": json.dumps(data, ensure_ascii=False).replace("</", "<\\/"),
         "VERSION": version,
@@ -163,6 +164,15 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     if "{{" in page:
         raise SystemExit(f"The template still has an unfilled placeholder near: {page[page.index('{{'):][:40]}")
     Path(out).write_text(page, encoding="utf-8")
+
+    # the claim checker's page (check.html), from site/check.html
+    template2 = site / "check.html"
+    if template2.exists():
+        desk = data.get("desk") or {}
+        page2 = template2.read_text(encoding="utf-8").replace("{{VERSION}}", version).replace(
+            "{{SD_DESK}}", json.dumps({"fn": desk.get("fn", ""), "checker": bool(desk.get("checker"))}).replace("</", "<\\/"))
+        name = "check.html" if Path(out).name == "index.html" else f"{Path(out).stem}-check.html"
+        Path(out).with_name(name).write_text(page2, encoding="utf-8")
     return digest["date"], len(papers), len(days)
 
 
