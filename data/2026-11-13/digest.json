@@ -1,0 +1,346 @@
+{
+  "date": "2026-11-13",
+  "verified_at": "2026-11-13T07:19:03.428870+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.17058",
+      "title": "Neural Representations as New Modes of Interactivity",
+      "abstract": "Human-AI interaction today runs almost entirely through prompts and outputs, keeping AI systems opaque to general users. We introduce Neural Representation Interaction (NRI), a paradigm that treats the internal representations of neural networks as an interaction material people can inspect, steer, and edit. Situating NRI alongside graphical, tangible, and bio-computer interaction, we argue that the concepts and algorithms models encode internally offer representational affordances for richer human-AI interaction. We synthesize actionable mechanistic interpretability methods and, drawing on General Morphological Analysis, construct a design space spanning Interaction, Target, Referent, and Purpose. Mapping existing interfaces onto this space reveals that most serve expert auditors, while few support lay users. We then present speculative applications in education, personal user modeling, and hiring audits, and discuss design principles, limitations, and sociotechnical risks. NRI offers HCI researchers abstractions for designing interactions that work with AI computation rather than only through its inputs and outputs.",
+      "authors": [
+        "Stanley Huang",
+        "Anthony Baez",
+        "Catherine Yeh",
+        "Pat Pataranutaporn"
+      ],
+      "published": "2026-11-12T16:36:58Z",
+      "url": "https://arxiv.org/abs/2611.17058",
+      "pdf_url": "https://arxiv.org/pdf/2611.17058.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "human-ai interaction"
+      ],
+      "ranking_reason": "Shows how users can directly inspect and edit internal neural network representations instead of only writing text prompts.",
+      "explanation": "This paper explores Neural Representation Interaction, a way for people to directly inspect, steer, and edit the internal features of a neural network instead of just typing prompts. It creates a framework to design user interfaces that work directly with the internal computations of an AI model.",
+      "why_it_matters": "It shows you that AI models are not just black boxes that take text and return text. You can look inside them to understand and change how they think.",
+      "project_idea": {
+        "title": "Latent Space Explorer",
+        "description": "Write a Python script using PyTorch to extract intermediate vector representations from a simple neural network. Build a basic dashboard using Streamlit to visualize and tweak these vectors.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets to track numerical embedding vectors and build a Looker Studio dashboard to filter and visualize them."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "Shows how users can directly inspect and edit internal neural network representations instead of only writing text prompts.",
+          "supported": true,
+          "evidence": "We introduce Neural Representation Interaction (NRI), a paradigm that treats the internal representations of neural networks as an interaction material people can inspect, steer, and edit.",
+          "reason": "The abstract states users can inspect, steer, and edit internal representations, matching the claim."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper explores Neural Representation Interaction, a way for people to directly inspect, steer, and edit the internal features of a neural network instead of just typing prompts.",
+          "supported": true,
+          "evidence": "We introduce Neural Representation Interaction (NRI), a paradigm that treats the internal representations of neural networks as an interaction material people can inspect, steer, and edit.",
+          "reason": "The abstract describes exactly this exploration of NRI for inspection, steering, and editing."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It creates a framework to design user interfaces that work directly with the internal computations of an AI model.",
+          "supported": true,
+          "evidence": "We synthesize actionable mechanistic interpretability methods and, drawing on General Morphological Analysis, construct a design space spanning Interaction, Target, Referent, and Purpose.",
+          "reason": "The abstract says a design space for interfaces working with internal computations is created."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.16693",
+      "title": "MobileProbe: Adaptive Security Evaluation of Mobile Agents via Trajectory-Aware Injection",
+      "abstract": "Mobile GUI agents read the screen of a phone and operate apps on a user's behalf to complete multi-step tasks such as online shopping or messaging. Because the agent acts on whatever the screen shows, an attacker can embed malicious instructions into ordinary UI content and redirect its actions. We refer to this threat as environmental injection attack (EIA). Existing benchmarks measure this risk by pinning hand-crafted payloads to a fixed step of a fixed task. This approach faces two limitations. First, each payload is bound to one task in one app and does not transfer without manual redesign. Second, agents given the same task may follow different routes, so an agent that never reaches the injected page is recorded as safe without being tested. This insufficient test coverage can cause fixed-point benchmarks to underestimate the security risk of deployed mobile agents. In this work, we propose MobileProbe, a trajectory-aware red-teaming framework that evaluates mobile agents adaptively. MobileProbe discovers attacker-controllable content surfaces through automated pentesting, localizes vulnerable decision points along the agent's trajectory, and iteratively refines context-aware payloads through a surrogate-filtered evolutionary loop. We construct a benchmark of 83 long-horizon attack instances spanning 12 mobile applications. Each is annotated with a Confidentiality, Integrity, or Availability (CIA) attack goal to cover the principal categories of security threats facing mobile agents. On three representative agent architectures, MobileProbe attains higher attack success rates than human-written, zero-shot LLM, and prior automated red-teaming baselines adapted to the mobile domain. MobileProbe can serve as a pre-deployment auditing tool to systematically uncover vulnerabilities and inform security hardening of mobile agents.",
+      "authors": [
+        "Yingbin Jin",
+        "Ji'an Wang",
+        "HaoYang Chai",
+        "Hanjun Luo",
+        "Li Hu",
+        "Xinfeng Li",
+        "Huadi Zheng",
+        "PeiZhao Hu",
+        "Qingqing Ye",
+        "Haibo Hu"
+      ],
+      "published": "2026-11-12T12:08:43Z",
+      "url": "https://arxiv.org/abs/2611.16693",
+      "pdf_url": "https://arxiv.org/pdf/2611.16693.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "Demonstrates how mobile GUI [graphical user interface, like phone apps and buttons] apps can be hijacked when AI agents blindly trust on-screen content.",
+      "explanation": "This paper investigates how mobile GUI [graphical user interface, like phone apps and buttons] agents can be hijacked when attackers hide malicious instructions inside normal app screens. It introduces an automated red-teaming tool called MobileProbe to find these security vulnerabilities before deploying agents.",
+      "why_it_matters": "As AI agents start using our phones and apps, they face security risks from unverified text on screens. Understanding this helps you build safer agent applications.",
+      "project_idea": {
+        "title": "Prompt Injection Tester",
+        "description": "Write a Python script that feeds mock app screenshots containing hidden text instructions to an LLM [large language model, an AI that understands text]. Test if the model follows the hidden malicious instruction instead of the user goal.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use an n8n workflow to send text containing hidden prompts to an OpenAI node and check if the output gets hijacked."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "Demonstrates how mobile GUI [graphical user interface, like phone apps and buttons] apps can be hijacked when AI agents blindly trust on-screen content.",
+          "supported": true,
+          "evidence": "Because the agent acts on whatever the screen shows, an attacker can embed malicious instructions into ordinary UI content and redirect its actions.",
+          "reason": "The abstract explains hijacking occurs when agents trust on‑screen content."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper investigates how mobile GUI [graphical user interface, like phone apps and buttons] agents can be hijacked when attackers hide malicious instructions inside normal app screens.",
+          "supported": true,
+          "evidence": "Because the agent acts on whatever the screen shows, an attacker can embed malicious instructions into ordinary UI content and redirect its actions.",
+          "reason": "The abstract describes the same hijacking scenario."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It introduces an automated red-teaming tool called MobileProbe to find these security vulnerabilities before deploying agents.",
+          "supported": true,
+          "evidence": "In this work, we propose MobileProbe, a trajectory-aware red-teaming framework that evaluates mobile agents adaptively.",
+          "reason": "The abstract introduces MobileProbe as an automated red‑teaming tool for finding vulnerabilities."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.16107",
+      "title": "Trained on What Screen Readers Cannot Read: Accessibility Debt in the GUI Corpora Behind Computer-Use Agents",
+      "abstract": "Computer-use agents learn to operate mobile interfaces from corpora of captured screens and accessibility trees. The same trees are what a screen reader consumes, so an agent trained on them inherits whatever labelling gaps the underlying applications carry. This paper measures one of those gaps, content-description coverage, in two Android corpora: Rico, collected in 2017, and AndroidControl, collected in 2024. Across 17,373,614 interface elements, 17.74% of the Rico elements that need a content description under our coding rule carry one, against 57.27% in AndroidControl. The difference of 39.5 percentage points holds under five alternative coding rules and when whole apps are resampled. It describes two datasets that also differ in app selection, capture method and platform version; it does not measure change over time. Input controls are the least labelled role in both corpora (2.20% and 27.21%, or 30.99% in AndroidControl if hint text counts as a name). Descriptions in the older corpus are also five times more likely to be placeholders (10.25% against 1.95%), so the difference is not an artefact of developers typing filler. Resolving 26,205 task actions to the elements they touched shows that, among tappable graphics with no text, demonstrations operate elements described 9.0 points more often than the others on the screens they visit, about 3.5 points of it from the choice of element within a screen. That is a selection effect inside the benchmark. A two-coder reliability check (kappa = 0.91 and 0.96) and the full pipeline accompany the paper.",
+      "authors": [
+        "Obada Kraishan",
+        "Kulsawasd Jitkajornwanich"
+      ],
+      "published": "2026-11-11T23:28:30Z",
+      "url": "https://arxiv.org/abs/2611.16107",
+      "pdf_url": "https://arxiv.org/pdf/2611.16107.pdf",
+      "categories": [
+        "cs.HC",
+        "cs.AI"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "Measures accessibility labelling gaps in mobile app datasets that computer-use AI agents rely on to learn.",
+      "explanation": "This paper measures missing text descriptions in mobile app accessibility trees, which are data structures that screen readers and computer-use AI agents read. It finds that many interface elements lack proper labels, making it harder for AI agents to interact with them reliably.",
+      "why_it_matters": "AI agents rely heavily on dataset quality. Knowing about missing labels helps you clean and prepare better data for your own machine learning projects.",
+      "project_idea": {
+        "title": "UI Dataset Auditor",
+        "description": "Write a Python script to parse a JSON dataset of mobile app UI screens. Count how many buttons and input fields are missing text labels or descriptions.",
+        "difficulty": "Easy",
+        "time_estimate": "2 hours",
+        "no_code_version": "Upload a CSV file of UI element metadata to Google Sheets and use formulas to calculate the percentage of missing descriptions."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "Measures accessibility labelling gaps in mobile app datasets that computer-use AI agents rely on to learn.",
+          "supported": true,
+          "evidence": "Computer-use agents learn to operate mobile interfaces from corpora of captured screens and accessibility trees.",
+          "reason": "The abstract states the paper measures labeling gaps in datasets used by such agents."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper measures missing text descriptions in mobile app accessibility trees, which are data structures that screen readers and computer-use AI agents read.",
+          "supported": true,
+          "evidence": "Computer-use agents learn to operate mobile interfaces from corpora of captured screens and accessibility trees.",
+          "reason": "The abstract links accessibility trees to screen readers and agents, and measures missing descriptions."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It finds that many interface elements lack proper labels, making it harder for AI agents to interact with them reliably.",
+          "supported": true,
+          "evidence": "Across 17,373,614 interface elements, 17.74% of the Rico elements that need a content description ... 57.27% in AndroidControl.",
+          "reason": "The abstract reports many elements lack proper labels, supporting the claim."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.14749",
+      "title": "Don't Match the Noise: Distribution Matching under Unknown Measurement Error with an Audit Sample",
+      "abstract": "Real-world machine learning systems often operate on imperfect measurements: sensors are noisy, annotations are produced by non-experts, and scientific observations are often indirect. In these settings, classic distribution comparison tools such as maximum mean discrepancy (MMD) can be systematically biased, matching artifacts of the measurement process rather than the underlying mechanisms of interest. We study a practical regime in which noisy observations are abundant, but only a small audited subset contains ground-truth measurements. We propose measurement-error-corrected MMD (MEC-MMD), an audit-based estimator that debiases kernel evaluations without requiring a noise model. MEC-MMD is exactly unbiased for the oracle MMD under simple random auditing, admits an explicit variance decomposition, and is consistent for the population MMD, achieving the standard $O_p(N^{-1/2})$ rate when the audit size scales with the dataset. We demonstrate the utility of distributional matching with MEC-MMD loss for both parameter estimation and unsupervised applications, showing that MEC-MMD consistently outperforms MMD and alternative methods. These results provide a principled foundation for robust distribution comparison, simulation-based inference, and learning in noisy real-world machine learning pipelines.",
+      "authors": [
+        "Arya Farahi",
+        "Ritwik Vashistha"
+      ],
+      "published": "2026-11-10T21:19:26Z",
+      "url": "https://arxiv.org/abs/2611.14749",
+      "pdf_url": "https://arxiv.org/pdf/2611.14749.pdf",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "stat.ME"
+      ],
+      "primary_category": "stat.ML",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-experts"
+      ],
+      "ranking_reason": "Explains how to compare data distributions accurately when using noisy measurements or non-expert annotations.",
+      "explanation": "This paper introduces a new statistical method to compare data distributions when your measurements are noisy or collected by non-experts. It corrects for measurement errors using a small audit sample without needing a complex noise model.",
+      "why_it_matters": "Real-world data is messy and full of errors. Knowing how to handle noisy data is important for building reliable machine learning models.",
+      "project_idea": {
+        "title": "Noisy Data Corrector",
+        "description": "Write a Python script using NumPy to simulate clean data, add random noise, and apply a correction formula to estimate the true data distribution.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets to generate random numbers, add noise columns, and calculate corrected averages using basic formulas."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "Explains how to compare data distributions accurately when using noisy measurements or non-expert annotations.",
+          "supported": true,
+          "evidence": "Real-world machine learning systems often operate on imperfect measurements... classic distribution comparison tools such as maximum mean discrepancy (MMD) can be systematically biased, matching artifacts of the measurement process rather than the underlying mechanisms of interest.",
+          "reason": "The abstract explains the need to compare distributions accurately with noisy measurements."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a new statistical method to compare data distributions when your measurements are noisy or collected by non-experts.",
+          "supported": true,
+          "evidence": "We propose measurement-error-corrected MMD (MEC-MMD), an audit-based estimator that debiases kernel evaluations without requiring a noise model.",
+          "reason": "The abstract introduces a new method for distribution comparison under noisy or non‑expert data."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It corrects for measurement errors using a small audit sample without needing a complex noise model.",
+          "supported": true,
+          "evidence": "We propose measurement-error-corrected MMD (MEC-MMD), an audit-based estimator that debiases kernel evaluations without requiring a noise model.",
+          "reason": "The abstract states the method uses a small audit sample and does not need a complex noise model."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.16526",
+      "title": "Lost in Delegation: Studying the Effectiveness of Task Orchestration in Generative Search",
+      "abstract": "LLMs have quickly evolved from models used in isolation to agentic systems that delegate tasks to external tools and other LLMs to solve complex assignments. This agentic augmentation has led to impressive capability gains. However, when and how delegation improves performance remains poorly understood. For example, it is unclear whether delegation helps when tasks involve post-cutoff information that the orchestrating LLM cannot reliably resolve from its own knowledge. In this work, we use purpose-built datasets with pre- and post-cutoff splits to compare various delegation modes. We find that delegation provides no consistent accuracy improvement over non-delegated setups, with effects varying across models and tasks. When tasks involve knowledge unavailable to the orchestrator, delegation can substantially degrade accuracy, while direct tool use with the same LLM performs much better. Our analysis identifies distorted delegated queries, inefficient tool use, and failures to preserve and use information between agents as recurring failure modes. These findings suggest that effective orchestration requires both well-calibrated delegation decisions and effective exchange of information between agents.",
+      "authors": [
+        "Tamara Stojanovska",
+        "Elisabeth Kirsten",
+        "Leon Swazinna",
+        "Muhammad Bilal Zafar"
+      ],
+      "published": "2026-11-12T09:25:33Z",
+      "url": "https://arxiv.org/abs/2611.16526",
+      "pdf_url": "https://arxiv.org/pdf/2611.16526.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "agentic"
+      ],
+      "ranking_reason": "Examines how well LLM [large language model, an AI that understands text] agents perform when they delegate tasks to external tools.",
+      "explanation": "This paper studies whether letting an LLM delegate subtasks to external tools or other AI models actually improves its answers. It discovers that delegation can often hurt accuracy and cause failures if information is lost between steps.",
+      "why_it_matters": "Building multi-agent systems is popular, but this paper warns you that adding more agents does not always make your AI smarter.",
+      "project_idea": {
+        "title": "Delegation Benchmark",
+        "description": "Write a Python script that tests a single LLM versus a multi-agent setup on a set of trivia questions. Compare their final accuracy and response times.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Build a workflow in Make or n8n that chains two AI prompts together and compare the output quality against a single prompt."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "Examines how well LLM [large language model, an AI that understands text] agents perform when they delegate tasks to external tools.",
+          "supported": true,
+          "evidence": "LLMs have quickly evolved from models used in isolation to agentic systems that delegate tasks to external tools and other LLMs to solve complex assignments.",
+          "reason": "The abstract describes studying LLM agents that delegate to external tools."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper studies whether letting an LLM delegate subtasks to external tools or other AI models actually improves its answers.",
+          "supported": true,
+          "evidence": "We use purpose-built datasets with pre- and post-cutoff splits to compare various delegation modes.",
+          "reason": "The abstract indicates the paper studies whether delegation improves answers."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It discovers that delegation can often hurt accuracy and cause failures if information is lost between steps.",
+          "supported": true,
+          "evidence": "We find that delegation provides no consistent accuracy improvement over non-delegated setups... delegation can substantially degrade accuracy... Our analysis identifies distorted delegated queries, inefficient tool use, and failures to preserve and use information between agents as recurring failure modes.",
+          "reason": "The abstract reports delegation often hurts accuracy and causes failures."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": []
+}
