@@ -74,10 +74,10 @@ settings:
 # Morning email (sent with Gmail; the address and app password live in .env / GitHub Secrets)
 email:
   from_name: "The Scholar's Desk"
-  subject: "The Scholar's Desk · {date} · {count} papers"
+  subject: "The Scholar's Desk · {date} · {count} {papers}"
   signed_by: "Himani Dalvi"
   repo_url: "https://github.com/hixyt/scholars-desk"
-  site_url: ""            # fill in once the website is live
+  site_url: "https://hixyt.github.io/scholars-desk/"
 
 # Website
 site:

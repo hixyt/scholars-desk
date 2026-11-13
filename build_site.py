@@ -83,6 +83,7 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
     claims = [c for p in papers + left_out for c in p.get("claims") or []]
     proven = sum(1 for c in claims if c.get("supported"))
     count_word = WORDS[len(papers)] if len(papers) < len(WORDS) else str(len(papers))
+    one = len(papers) == 1
 
     shelf = []
     for n, (d, _) in enumerate(days, 1):
@@ -122,17 +123,22 @@ def build(data_dir="data", config_path="config.yaml", template="site/page.html",
         ran = datetime.fromisoformat(digest["verified_at"]).astimezone(IST)
         run_time = ran.strftime("%I:%M %p").lstrip("0") + " IST"
     long_date = day_text(date, "%A, %d %B %Y")
-    picked_from = f" from {stats['matched']}" if stats.get("matched") else ""
+    picked_from = f" from {stats['matched']}" if stats.get("matched", 0) > len(papers) else ""
 
     site = Path(template).parent
     version = hashlib.sha1(b"".join((site / f).read_bytes() for f in ("hero.css", "chapters.css", "hero.js", "chapters.js"))).hexdigest()[:8]
     values = {
         "SD_DATA": json.dumps(data, ensure_ascii=False).replace("</", "<\\/"),
         "VERSION": version,
-        "DESCRIPTION": html.escape(f"{count_word.capitalize()} new AI papers for {long_date}, each explained in plain words "
-                                   "and checked against its abstract, with a weekend project for each one."),
-        "COUNT_WORD_LOWER": count_word,
-        "FOLIO_DEK": html.escape(f"{count_word.capitalize()} papers picked{picked_from} this morning. Take one off the shelf to read it."),
+        "DESCRIPTION": html.escape(
+            f"One new AI paper for {long_date}, explained in plain words and checked against its abstract, with a weekend project."
+            if one else
+            f"{count_word.capitalize()} new AI papers for {long_date}, each explained in plain words "
+            "and checked against its abstract, with a weekend project for each one."),
+        "COUNT_WORD_LOWER": "paper" if one else count_word,
+        "FOLIO_DEK": html.escape(
+            f"One paper this morning{picked_from}. Take it off the shelf to read it." if one else
+            f"{count_word.capitalize()} papers picked{picked_from} this morning. Take one off the shelf to read it."),
         "LONG_DATE": html.escape(long_date),
         "ARXIV_RANGE": html.escape(arxiv_range),
         "RUN_TIME": run_time,

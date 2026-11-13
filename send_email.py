@@ -244,7 +244,7 @@ def build_html(digest, config, nums, banner_src=None):
     em = config.get("email", {})
     papers = digest["papers"]
     day = nice_date(digest["date"], "%A, %d %B %Y")
-    preheader = "Today: " + ", ".join(short_title(p["title"]) for p in papers) + ". Each one comes with a weekend project."
+    preheader = "Today: " + ", ".join(short_title(p["title"]) for p in papers) + (". It comes with a weekend project." if len(papers) == 1 else ". Each one comes with a weekend project.")
     links = [f'<a href="{esc(em.get("repo_url"))}" style="color:{GOLD};">Source on GitHub</a>'] if em.get("repo_url") else []
     if em.get("site_url"):
         links.insert(0, f'<a href="{esc(em["site_url"])}" style="color:{GOLD};">The website</a>')
@@ -332,8 +332,9 @@ def build_text(digest, config, nums):
 
 
 def build_subject(digest, config):
-    template = config.get("email", {}).get("subject", "The Scholar's Desk · {date} · {count} papers")
-    return template.format(date=nice_date(digest["date"], "%a %d %b"), count=len(digest["papers"]))
+    template = config.get("email", {}).get("subject", "The Scholar's Desk · {date} · {count} {papers}")
+    n = len(digest["papers"])
+    return template.format(date=nice_date(digest["date"], "%a %d %b"), count=n, papers="paper" if n == 1 else "papers")
 
 
 # ---------------------------------------------------------------- sending
@@ -397,7 +398,8 @@ def main():
     nums = day_numbers(digest, folder, args.data_dir)
     n = len(digest["papers"])
     banner = banner_png(digest["papers"], nice_date(date, "%A · %d %B %Y"),
-                        f"No. {nums['issue']} · {WORDS[n].lower() if n < len(WORDS) else n} papers, {WORDS[n].lower() if n < len(WORDS) else n} weekend projects")
+                        f"No. {nums['issue']} · " + ("one paper, one weekend project" if n == 1 else
+                        f"{WORDS[n].lower() if n < len(WORDS) else n} papers, {WORDS[n].lower() if n < len(WORDS) else n} weekend projects"))
     if not banner:
         log.warning("No picture today (Pillow or the fonts are missing), the email uses a text heading")
     subject = build_subject(digest, config)
@@ -414,7 +416,7 @@ def main():
 
     body_html = build_html(digest, config, nums, "cid:banner" if banner else None)
     count = send(subject, build_text(digest, config, nums), body_html, config, banner)
-    print(f"Sent the {date} email with {n} papers to {count} reader{'s' if count != 1 else ''}.")
+    print(f"Sent the {date} email with {n} paper{'s' if n != 1 else ''} to {count} reader{'s' if count != 1 else ''}.")
 
 
 if __name__ == "__main__":
