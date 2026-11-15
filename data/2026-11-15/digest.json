@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-15",
+  "verified_at": "2026-11-15T00:47:26.708662+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.10439",
+      "title": "Who Remembers What? Multi-Granularity Memory Extraction for Multi-User, Multi-Agent Interaction",
+      "abstract": "Self-evolving agents improve their own skills, memory, and harness code from experience without retraining the base LLM, and group-evolving agents go further by sharing these lessons across agents. Yet most such systems overlook that sharing across users and heterogeneous agents requires deciding who can benefit from each lesson and what information must remain private. We present MixUA, a memory system that distills independent user-agent trajectories into lessons and assigns each lesson to a user-agent pair, user, agent, or global scope according to whom it benefits and what it may disclose. For evaluation, we introduce CrossLearnBench, a mixed-user-agent benchmark that pairs established agent tasks with user preferences and privacy probes that test whether private facts leak into memory other users can read. With five users and seven agents, MixUA raises pass rates by up to 16 points over no memory and 5 over a single global memory, even on tasks previously tried only by other users on other agents. It retains up to 90% of previously stated preferences, and at most 0.02% of privacy probes find a planted private fact in a forbidden scope. We hope MixUA offers a scalable path toward a global system where users and agents co-evolve.",
+      "authors": [
+        "Yunzhe Wang",
+        "Mesut Erhan Unal",
+        "Sheng Zhang",
+        "Shabnam Ghadar",
+        "Peng Tang"
+      ],
+      "published": "2026-11-07T00:00:00.000Z",
+      "url": "https://arxiv.org/abs/2611.10439",
+      "pdf_url": "https://arxiv.org/pdf/2611.10439.pdf",
+      "categories": [],
+      "primary_category": "cs.AI",
+      "sources": [
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 7,
+        "num_comments": 3,
+        "discussion_id": "6af7be765b183a63f4f1c636"
+      },
+      "matched_topics": [
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "privacy"
+      ],
+      "ranking_reason": "This paper shows how AI agents [computer programs that act on their own] can share memories while keeping private data safe.",
+      "explanation": "This paper introduces a memory system called MixUA for AI agents [computer programs that act on their own]. It lets different agents and users share helpful lessons while keeping private facts safe from people who should not see them.",
+      "why_it_matters": "As a 2nd-year student, you will soon build apps where multiple users share AI tools. Knowing how to manage shared memory and data privacy is a very practical skill.",
+      "project_idea": {
+        "title": "Private Chat Memory",
+        "description": "Build a simple chat script that stores user preferences in separate text files. Make sure one user can never read the memory file of another user.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Set up a Google Sheets database with strict permission rows for different users. Use Google Apps Script to filter what each user can read."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper shows how AI agents [computer programs that act on their own] can share memories while keeping private data safe.",
+          "supported": true,
+          "evidence": "MixUA ... assigns each lesson to a user-agent pair, user, agent, or global scope according to whom it benefits and what it may disclose. ... at most 0.02% of privacy probes find a planted private fact in a forbidden scope.",
+          "reason": "The abstract states the system shares memories with scoped access and reports very low leakage of private facts."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a memory system called MixUA for AI agents [computer programs that act on their own].",
+          "supported": true,
+          "evidence": "We present MixUA, a memory system that distills independent user-agent trajectories into lessons ...",
+          "reason": "The abstract explicitly introduces MixUA as a memory system for agents."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It lets different agents and users share helpful lessons while keeping private facts safe from people who should not see them.",
+          "supported": true,
+          "evidence": "assigns each lesson to a user-agent pair, user, agent, or global scope according to whom it benefits and what it may disclose. ... at most 0.02% of privacy probes find a planted private fact in a forbidden scope.",
+          "reason": "The abstract describes sharing helpful lessons across agents/users while protecting private facts."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": []
+}
