@@ -1,0 +1,355 @@
+{
+  "date": "2026-11-17",
+  "verified_at": "2026-11-17T00:48:15.634513+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.17915",
+      "title": "SWIFT: Sample-Wise Instance Fine-Tuning of Time-Series Foundation Models for Forecasting",
+      "abstract": "While current few-shot adaptation strategies for time series forecasting foundation models are predominantly dataset-centric, the necessity of obtaining an additional dataset for the finetuning process poses a significant hurdle for adoption. To address this constraint, we propose Sample-Wise Instance Fine-Tuning (SWIFT), a novel forecasting adaptation framework that achieves fine-grained specialization by leveraging structural priors from the target instance's own history. This shift allows the fine-tuning process to be entirely transparent to the end-user, which significantly enhances the ease of adoption. To implement this framework, SWIFT synergizes Self-Retrieval for historical mining and Frequency-Aware Loss for spectral consistency, while employing Deviation-Aware Dynamic Fusion to balance adaptation with general knowledge preservation. Extensive experiments across four TSFM backbones and three long-history benchmark subsets validate SWIFT, yielding average MASE and WQL reductions of 6.41% and 4.83% across 24 combinations of four backbones and six Chronos Benchmark II datasets. To the best of our knowledge, SWIFT is the first framework to investigate sample-wise instance fine-tuning of time-series foundation models, specializing the model for an individual prediction window using only the corresponding forecasting sample's own observed history.",
+      "authors": [
+        "Yang Chen",
+        "Feifan Tian",
+        "Cong Wang",
+        "Cheng Feng",
+        "Wenbin Li",
+        "Yang Gao"
+      ],
+      "published": "2026-11-13T08:56:51Z",
+      "url": "https://arxiv.org/abs/2611.17915",
+      "pdf_url": "https://arxiv.org/pdf/2611.17915.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "end-user"
+      ],
+      "ranking_reason": "It lets people adapt time-series forecasting models using only the target data history without needing complex training setups.",
+      "explanation": "This paper introduces SWIFT, a way to update time-series forecasting models using only the past data of the item you want to predict. It avoids the need to gather large extra training datasets.",
+      "why_it_matters": "As an AI student, you learn that finding good training data is hard. This paper shows how to adapt pre-trained forecasting models using just a single historical data sequence.",
+      "project_idea": {
+        "title": "Single-Series Forecasting Adapter",
+        "description": "Write a Python script that takes a single stock price or weather history file. Fine-tune a small forecasting model using only the historical patterns found inside that specific file.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use Google Sheets to track a simple moving average and standard deviation of your target metric to adjust your future forecasts without writing any Python code."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It lets people adapt time-series forecasting models using only the target data history without needing complex training setups.",
+          "supported": true,
+          "evidence": "leveraging structural priors from the target instance's own history ... using only the corresponding forecasting sample's own observed history",
+          "reason": "The abstract states the method uses only the target instance's own history for adaptation"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces SWIFT, a way to update time-series forecasting models using only the past data of the item you want to predict.",
+          "supported": true,
+          "evidence": "we propose Sample-Wise Instance Fine-Tuning (SWIFT), a novel forecasting adaptation framework that achieves fine-grained specialization by leveraging structural priors from the target instance's own history",
+          "reason": "The paper introduces SWIFT which updates models using only the past data of the target item"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It avoids the need to gather large extra training datasets.",
+          "supported": true,
+          "evidence": "necessity of obtaining an additional dataset for the finetuning process poses a significant hurdle ... leveraging structural priors from the target instance's own history",
+          "reason": "The abstract implies the method avoids needing extra training datasets"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.17966",
+      "title": "From Images to Grounded Edits: A Real-World Benchmark for Chinese Grammatical Error Correction in Handwritten Essays",
+      "abstract": "Chinese Grammatical Error Correction (CGEC) is typically formulated as a text-to-text problem. While suitable for digital texts, this formulation falls short in real-world K-12 education, where AI-assisted corrections are expected directly on essay images, which are primarily handwritten and exhibit many irregularities. To bridge this gap, we introduce Grounded Chinese Grammatical Error Correction (G-CGEC), an image-to-grounded-edit task requiring systems to predict both corrections and their positions on essay images. We propose G-CGEC-Eval, a benchmark comprising real-world images of K-12 Chinese essays with fine-grained annotations. For evaluation, we adapt IoU-based metrics from object detection and propose a more tolerant alternative based on center-distance matching. Using this benchmark, we evaluate open-source and proprietary vision-language models under a direct single-pass setting, as well as settings with auxiliary components (OCR and character grounding) coordinated via pipelining or agentic harnessing. Results show that even top-tier proprietary models perform surprisingly poorly in the single-pass setting, while pipelining and agentic harnessing yield meaningful improvements. Notably, an error-type-based multi-agent workflow achieves the best performance, establishing it as the strongest baseline for future G-CGEC research. Through ablations and fine-grained analysis, we find the task remains far from solved, with linguistic error discovery and character-level grounding as the primary bottlenecks. This underscores the need for models that better integrate visual perception with linguistic reasoning and visual grounding.",
+      "authors": [
+        "Weiru Zhang",
+        "Yuzhong Hong",
+        "Junwei Bao",
+        "Lemao Liu",
+        "Dejing Dou"
+      ],
+      "published": "2026-11-13T09:55:57Z",
+      "url": "https://arxiv.org/abs/2611.17966",
+      "pdf_url": "https://arxiv.org/pdf/2611.17966.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI in education"
+      ],
+      "matched_keywords": [
+        "agentic",
+        "education",
+        "k-12"
+      ],
+      "ranking_reason": "It introduces a dataset for correcting handwritten K-12 student essays directly on images rather than digital text.",
+      "explanation": "This paper introduces a benchmark for correcting grammar mistakes directly on images of handwritten student essays. Instead of just fixing digital text, the system must find the exact physical location on the page where the error occurs.",
+      "why_it_matters": "It teaches you that real-world AI problems often combine computer vision with text processing. You learn how models must map text coordinates back to pixel spaces.",
+      "project_idea": {
+        "title": "Handwritten Correction Finder",
+        "description": "Write a Python script using an OCR [optical character recognition, converting images of text into machine-readable text] library to find misspelled words in an image. Draw bounding boxes around the errors using OpenCV.",
+        "difficulty": "Medium",
+        "time_estimate": "4-6 hours",
+        "no_code_version": "Use an online workflow tool like Make to pass a photo of handwritten text to an OCR API and save the extracted text into a Google Sheet."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It introduces a dataset for correcting handwritten K-12 student essays directly on images rather than digital text.",
+          "supported": true,
+          "evidence": "introduce Grounded Chinese Grammatical Error Correction (G-CGEC), an image-to-grounded-edit task ... real-world images of K-12 Chinese essays",
+          "reason": "The abstract introduces a dataset for correcting handwritten K-12 essays directly on images"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a benchmark for correcting grammar mistakes directly on images of handwritten student essays.",
+          "supported": true,
+          "evidence": "introduce Grounded Chinese Grammatical Error Correction (G-CGEC), an image-to-grounded-edit task ... real-world images of K-12 Chinese essays",
+          "reason": "The paper presents a benchmark for correcting grammar mistakes on images of handwritten essays"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "Instead of just fixing digital text, the system must find the exact physical location on the page where the error occurs.",
+          "supported": true,
+          "evidence": "systems to predict both corrections and their positions on essay images",
+          "reason": "The abstract states the system must locate the exact position of each error on the page"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.18293",
+      "title": "PrivacyPR: A Dataset of Real-World Privacy Fixes for Benchmarking Privacy-Aware Code Review",
+      "abstract": "Coding agents increasingly review code, yet whether they catch the privacy defects that laws such as the GDPR require software to avoid remains largely untested, partly because few datasets connect real privacy defects to their accepted fixes and review context. We present PrivacyPR, a dataset of 4,131 merged GitHub pull requests (PRs) from 1,469 repositories, created between June 2018 and January 2024. Each PR includes its commits, diffs, review discussion, and LLM-generated labels for privacy relevance, fix type, and GDPR principles. PrivacyPR provides 1,169 high-confidence privacy fixes and 1,643 non-fix PRs, together with Verified, a manually checked split of 250 privacy fixes and 250 non-fix PRs, and Small, a 100 + 100 subset for evaluation. On Verified, both annotators endorsed 72% of the LLM's GDPR-principle assignments. Beyond supporting empirical study of how privacy defects arise and are fixed, PrivacyPR provides a benchmark for privacy-aware code review on real, developer-accepted fixes. Its evaluation harness reverts each fix to reintroduce the defect. On Small, two coding agents detect only 42-51% of defects under a generic review prompt, but 88-91% when explicitly asked to check privacy, while flagging 11-15% of non-fix PRs. These results show that privacy defects can be detected by coding agents, but that detection depends strongly on review intent and comes with false alarms. Data, code, reviews, judge verdicts, and an extensible evaluation harness are publicly available at https://doi.org/10.5281/zenodo.23744765.",
+      "authors": [
+        "Hua Yang",
+        "Aditya Bhardwaj",
+        "Shidong Pan",
+        "Bowen Xu"
+      ],
+      "published": "2026-11-13T15:18:33Z",
+      "url": "https://arxiv.org/abs/2611.18293",
+      "pdf_url": "https://arxiv.org/pdf/2611.18293.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.SE"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "privacy"
+      ],
+      "ranking_reason": "It creates a dataset of real GitHub pull requests to check if coding models catch required privacy defects.",
+      "explanation": "This paper releases PrivacyPR, a dataset of real GitHub pull requests that fix privacy issues like GDPR compliance. It tests whether coding assistants can catch privacy bugs when reviewing code.",
+      "why_it_matters": "Writing secure code is just as important as making it work. This helps you understand how to evaluate AI models for security and privacy flaws in software engineering.",
+      "project_idea": {
+        "title": "Privacy Bug Scanner",
+        "description": "Write a Python script that uses regular expressions to scan code files for hard-coded API keys or unencrypted database passwords. Output a warning report for any matches found.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use a no-code repository scanner tool or GitHub's built-in secret scanning alerts to flag privacy issues in your code files automatically."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It creates a dataset of real GitHub pull requests to check if coding models catch required privacy defects.",
+          "supported": true,
+          "evidence": "PrivacyPR, a dataset of 4,131 merged GitHub pull requests ... to benchmark privacy‑aware code review",
+          "reason": "The abstract describes creating a dataset of real PRs for evaluating whether models catch privacy defects"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper releases PrivacyPR, a dataset of real GitHub pull requests that fix privacy issues like GDPR compliance.",
+          "supported": true,
+          "evidence": "Each PR includes ... LLM‑generated labels for privacy relevance, fix type, and GDPR principles",
+          "reason": "The paper releases a dataset containing PRs that fix privacy issues and are linked to GDPR principles"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It tests whether coding assistants can catch privacy bugs when reviewing code.",
+          "supported": true,
+          "evidence": "On Small, two coding agents detect only 42‑51% of defects under a generic review prompt, but 88‑91% when explicitly asked to check privacy",
+          "reason": "The abstract reports experiments testing coding assistants' ability to detect privacy bugs"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.17696",
+      "title": "Co-Sight Harness: Externalized Control Assets and Deterministic Enforcement for Long-Horizon Business Agents",
+      "abstract": "Long-horizon business workflows fail in two ways: errors accumulate as a chain of activities lengthens, and the knowledge an activity needs is written in a different vocabulary from the user's request. We study whether such workflows can be made reliable without changing the language model. Our method keeps the backbone fixed and moves the workflow definition, state and domain knowledge into versioned control assets outside the model. A state machine and machine-checkable acceptance gates enforce these assets during execution; an independent auditor grades the resulting trace. The assets are updated only after a regression check and human approval .We evaluate the method on three deployed workflows exceeding 200 steps. On Domain A, a 120-case end-to-end evaluation set shows unattended completion rising from 50% to 100%, retrieval recall from 56% to 91.67%, and end-to-end latency dropping from 440 to 159 minutes, with scenario-analysis recall rising from 45% to 93%. Two other domains were taken over by teams that did not write the assets, one in four days and one in seven days. A controlled ablation separates the two failure sources. The code is available at https://github.com/ZTE-AICloud/Co-Sight/tree/master/Co-Sight%20Harness.",
+      "authors": [
+        "Luyao Wang",
+        "Xijun Zhu",
+        "Zhaohui Hao",
+        "Xiwen Zhang",
+        "Xingyu Wen",
+        "Weishan Li",
+        "Yuyang Liao",
+        "Yanqin Gao",
+        "Yongsheng Du",
+        "Lingjun Huang",
+        "Shaowei Zhao",
+        "Gang Li",
+        "Qifan Yu",
+        "Baoli Wang"
+      ],
+      "published": "2026-11-13T03:21:33Z",
+      "url": "https://arxiv.org/abs/2611.17696",
+      "pdf_url": "https://arxiv.org/pdf/2611.17696.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "business"
+      ],
+      "ranking_reason": "It shows how to make long business workflows reliable by moving process rules outside the language model.",
+      "explanation": "This paper shows that long business workflows work better when you keep process rules outside the language model. By using a strict state machine and external rules, AI agents make fewer mistakes over long tasks.",
+      "why_it_matters": "It teaches you that relying only on prompt engineering is not enough for complex workflows. You learn to combine language models with traditional software logic like state machines.",
+      "project_idea": {
+        "title": "Step-by-Step Task Runner",
+        "description": "Write a Python state machine that forces a user or LLM to complete three specific steps in order. Prevent the script from moving forward if a step fails validation.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Build a multi-step approval workflow in n8n where data must pass through a strict validation node before moving to the next action."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It shows how to make long business workflows reliable by moving process rules outside the language model.",
+          "supported": true,
+          "evidence": "moves the workflow definition, state and domain knowledge into versioned control assets outside the model",
+          "reason": "The abstract explains reliability is achieved by moving process rules outside the language model"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper shows that long business workflows work better when you keep process rules outside the language model.",
+          "supported": true,
+          "evidence": "moves the workflow definition, state and domain knowledge into versioned control assets outside the model",
+          "reason": "The paper shows improved workflow performance when process rules are kept outside the model"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "By using a strict state machine and external rules, AI agents make fewer mistakes over long tasks.",
+          "supported": true,
+          "evidence": "A state machine and machine‑checkable acceptance gates enforce these assets during execution ... results show improvements",
+          "reason": "The abstract indicates a strict state machine and external rules reduce errors in long tasks"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": [
+    {
+      "id": "2611.17766",
+      "title": "GDP.xlsx: Benchmarking Frontier Models on Professional Workbooks",
+      "url": "https://arxiv.org/abs/2611.17766",
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It tests how well AI models handle real professional spreadsheet tasks using complete workplace workbooks.",
+          "supported": true,
+          "evidence": "benchmark of 70 realistic workplace requests written by professionals ... each paired with ... the complete workbook or CSV file it refers to",
+          "reason": "The abstract describes testing AI on real professional spreadsheet tasks using complete workbooks"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper presents GDP.xlsx, a benchmark of 70 real workplace tasks that test how well AI models handle messy professional spreadsheets.",
+          "supported": false,
+          "evidence": "",
+          "reason": "The abstract does not mention the spreadsheets being \"messy\""
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It checks whether AI can correctly modify spreadsheets according to strict business rules.",
+          "supported": false,
+          "evidence": "",
+          "reason": "The abstract does not explicitly state that AI must modify spreadsheets according to strict business rules"
+        }
+      ]
+    },
+    {
+      "id": "2611.17968",
+      "title": "TotalSegmentator Aorta Report: Automated Aortic Diameter Measurement at 11 Standardized Landmarks on CT Images",
+      "url": "https://arxiv.org/abs/2611.17968",
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "It builds an automated tool to measure aortic diameters from medical scans following standard clinical guidelines.",
+          "supported": true,
+          "evidence": "develop and evaluate a fully automated, open-source tool that measures aortic diameters at 11 standardized landmarks ... following current guideline recommendations",
+          "reason": "The abstract says the tool measures diameters following clinical guidelines"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper builds an open-source tool that automatically measures aorta sizes at 11 standard points from medical CT scans.",
+          "supported": false,
+          "evidence": "tool ... measures the maximum diameter at each ... 11 landmarks ... open source",
+          "reason": "Its proof quote is not in the abstract."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It follows official clinical guidelines to help doctors read scans faster and more accurately.",
+          "supported": false,
+          "evidence": "",
+          "reason": "The abstract does not claim the tool helps doctors read scans faster or more accurately; it only reports measurement accuracy"
+        }
+      ]
+    }
+  ]
+}
