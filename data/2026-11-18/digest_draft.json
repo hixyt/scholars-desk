@@ -1,0 +1,275 @@
+{
+  "date": "2026-11-18",
+  "generated_at": "2026-11-18T00:47:34.350993+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.20753",
+      "title": "UIAnchor: Anchoring UI Perception and Action Execution for Reliable Service-Composed Mobile Task Automation with GUI Agents",
+      "abstract": "Mobile task automation aims to streamline multi-step, cross-app interactions on smartphones and in-vehicle systems. Recent LLM-based GUI agents have advanced rapidly, yet reliability remains limited because modern mobile workflows are increasingly service-composed (app switching, forms, pop-ups/permissions, copy-paste), requiring fine-grained operations on dense, dynamic, and heterogeneous UIs, often in distraction-sensitive contexts (e.g., hands-busy or attention-limited use). Through an in-the-wild failure analysis of deployable GUI agents, we identify two dominant bottlenecks: agents often miss or misread actionable UI elements, and they execute actions without verifying target correctness or outcomes. We present UIAnchor, a modular multi-agent system that improves mobile GUI automation by anchoring both perception and execution. UIAnchor combines a two-stage UI parser for high-recall element capture and context-aware semantics with a meta-controller that performs pre-action verification, post-action outcome perception, per-step state tracking, and targeted recovery. We further introduce an L1-L5 task taxonomy based on step length, cross-app scope, and UI granularity, showing that L5 remains beyond today's practical frontier. On the hardest practical tier, L4 tasks (20-30 steps, multi-app, targets < 100 x 100 px, ~5 mm on typical phones), UIAnchor improves success by 31.5% over GPT-4o and 16.6% over Mobile-Agent-v3. With edge/cloud assistance, UIAnchor runs at ~2 s per step, comparable to human operation, while reducing per-step latency by up to 75.5% and energy by 52.4%. It also generalizes to unseen apps and cross-platform GUIs.",
+      "authors": [
+        "Wentao Zhou",
+        "Sicong Liu",
+        "Zimu Zhou",
+        "Yimeng Duan",
+        "Yongyan Cai",
+        "Weiye Wu",
+        "Teng Li",
+        "Daqing Zhang",
+        "Zhiwen Yu"
+      ],
+      "published": "2026-11-16T09:01:47Z",
+      "url": "https://arxiv.org/abs/2611.20753",
+      "pdf_url": "https://arxiv.org/pdf/2611.20753.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "gui",
+        "task automation"
+      ],
+      "ranking_reason": "This paper shows how AI agents can reliably operate phone screens and apps without needing any coding skills.",
+      "explanation": "This paper introduces a system called UIAnchor that helps AI agents control smartphone apps more reliably. It fixes common problems like missing small buttons or clicking the wrong place by checking the screen before and after each action.",
+      "why_it_matters": "When you build mobile apps with AI features, you need to know how agents interact with screens. This paper shows how to make those interactions accurate instead of random.",
+      "project_idea": {
+        "title": "Simple Screen Clicker",
+        "description": "Write a Python script that takes a screenshot, finds a specific button using template matching, and prints out its coordinates. You can use OpenCV to spot the target element on a mock phone screen image.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Zapier or Make to trigger an automated workflow whenever a specific image file uploads to Google Drive, sending a notification to Slack."
+      }
+    },
+    {
+      "id": "2611.20012",
+      "title": "Offline-First Quantized AI: Design and Evaluation of an On-Device Maternal-Health Assistant for Low-Connectivity Environments",
+      "abstract": "Offline language models could extend access to maternal-health information where internet connectivity is unreliable, but deployment requires both clinically appropriate responses and feasible local execution. This study presents an offline Android assistant integrating ready-made quantized language models, a clinically validated local knowledge package, conversational context, and model-initiated local retrieval. Gemma 4 E2B and Qwen3.5 0.8B were compared across 45 conversations and 312 turns per configuration, including a dedicated offline agentic benchmark. Gemma achieved higher response-quality, context-retention, and safety scores; Qwen offered faster generation and lower memory use. Clinician assessment of 150 Gemma responses across nine clinical domains yielded a mean quality score of 3.80/4, with 147 responses meeting the acceptance criterion. A paired RAG-on/off experiment evaluated 74 questions: retrieval improved 11 responses, left 56 neutral, produced four adverse response changes, and left three pairs unassessable. RAG-on had descriptively higher mean usefulness, safety, correctness, and actionability in the conditional 70-pair subset excluding the four flagged pairs from both conditions. Physical-device testing demonstrated offline responses on a 6 GB Android handset, with a 14.3 s median latency, alongside successful reconnection synchronization in the integrated application. Together, the findings document clinical response quality and practical performance of the integrated offline maternal-health assistant.",
+      "authors": [
+        "Okenla AbdulQahhar Abimbola",
+        "Maurice Abraham John",
+        "Adepoju Jeremiah Moyondafoluwa",
+        "Omolaiye Samuel",
+        "Oko-Oba Sandra Chioma",
+        "Owoo Oluwamayowa Emmanuel",
+        "Thanni Adewuyi",
+        "Lily Aimas-Love",
+        "Benson Eniola",
+        "Abdulquddus Ajibade",
+        "Sylvia Essessien",
+        "Anyanwu Princess Emmanuella",
+        "Adereni Abiodun"
+      ],
+      "published": "2026-11-15T13:42:56Z",
+      "url": "https://arxiv.org/abs/2611.20012",
+      "pdf_url": "https://arxiv.org/pdf/2611.20012.pdf",
+      "categories": [
+        "cs.CL"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "agentic",
+        "clinical",
+        "clinician"
+      ],
+      "ranking_reason": "This paper presents an offline AI assistant that provides maternal health guidance in low-connectivity settings.",
+      "explanation": "This paper explores running small, offline AI models on cheap smartphones to help with maternal health in places without internet. It proves that lightweight models can give accurate medical answers directly on a phone without cloud servers.",
+      "why_it_matters": "As an AI student, you should know how to run smaller models locally on your own devices. This skill lets you build apps that work offline and respect user privacy.",
+      "project_idea": {
+        "title": "Local Phone AI Chat",
+        "description": "Download a small quantized model like Gemma using Ollama on your computer. Write a Python script using the local API to answer offline text queries.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use Google Sheets with built-in Gemini extensions to process rows of text data offline or semi-offline without managing model weights."
+      }
+    },
+    {
+      "id": "2611.20061",
+      "title": "Turning Errors into Successes: Designing LLM Tutoring Around Scaffolded Error Correction",
+      "abstract": "Large language models (LLMs) could make personalized tutoring available at scale, but it remains unclear how they can best support the instructional processes that make one-on-one instruction effective. We compared two ways of using LLMs after students make errors: providing personalized explanations of those errors, or engaging students in additional cycles of scaffolded practice and feedback, with a Socratic tutor guiding students toward the correct answer. In a preregistered online experiment, 400 adults practiced setting up constraint equations and, after each attempt, received the correct answer, a generic explanation, a personalized LLM explanation of their error, or Socratic tutoring. Socratic tutoring helped: participants resolved 64% of their errors through the dialogue and scored 0.24 SD higher on practice-aligned posttest questions than those who received generic or personalized explanations. Socratic participants also found the session more interesting, less frustrating, and less costly, even though it took nearly twice as long. In contrast, we found no evidence of a benefit of personalized explanations over generic ones, and neither type of explanation reliably outperformed simply seeing the correct answer. These findings suggest that LLM tutors may add the most value not by explaining errors more precisely but by helping students correct those errors themselves through scaffolded practice. This pattern fits a mastery-experience account of tutoring, in which an effective tutor notices when a student is struggling, steps in with guidance, and works with the student until the struggle resolves into success. AI tutors may be most effective when designed around this principle.",
+      "authors": [
+        "Michael W. Asher",
+        "Meng Cao",
+        "Paulo F. Carvalho"
+      ],
+      "published": "2026-11-15T15:09:53Z",
+      "url": "https://arxiv.org/abs/2611.20061",
+      "pdf_url": "https://arxiv.org/pdf/2611.20061.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in education"
+      ],
+      "matched_keywords": [
+        "tutor",
+        "tutors",
+        "tutoring"
+      ],
+      "ranking_reason": "This paper compares different ways LLM tutors can help students learn from their mistakes using scaffolded feedback.",
+      "explanation": "This paper compares different ways AI tutors can help students learn from mistakes. It finds that asking guiding questions like a Socratic teacher works much better than just giving away the correct answer.",
+      "why_it_matters": "If you build educational chatbots, this paper proves that prompting the model to ask follow-up questions helps users learn better than giving direct answers.",
+      "project_idea": {
+        "title": "Socratic Study Bot",
+        "description": "Build a prompt template in Python that forces an LLM to respond with a hint instead of an answer when a user inputs a wrong math problem. Test it by having the bot guide you to a solution.",
+        "difficulty": "Easy",
+        "time_estimate": "3-5 hours",
+        "no_code_version": "Set up a customized chatbot in Voiceflow or Poe, configuring the system prompt to never reveal direct answers and only ask guiding questions."
+      }
+    },
+    {
+      "id": "2611.20423",
+      "title": "FinVerify: A Verification Framework for Financial Agents",
+      "abstract": "Financial agents produce numerical claims that can be wrong even when their calculations execute correctly, due to mismatched reporting periods, unsupported sources, incompatible units, or incorrect financial definitions. We introduce FinVerify, an evidence-grounded framework for verifying financial agents' numerical claims. Based on an analysis of 190 incorrect trajectories from the Agent Finance Reasoning dataset, we define five error categories--temporal integrity, source fidelity, comparability, accounting integrity, and financial-model fidelity--and operationalize them as verification protocols. An LLM structures claims and supporting evidence, while deterministic validators check financial requirements; when authoritative formulas are available, Z3 checks consistency with grounded inputs. FinVerify accepts only if all applicable checks pass, rejects proven violations, and abstains when evidence is insufficient. We evaluate the framework against a Direct baseline and an LLM judge across five fixed-candidate benchmarks. On Agent Finance Reasoning, accepted-claim precision increases from 56.4% for the LLM judge to 76.7% at 81.2% coverage. On XBRLFiling, FinVerify achieves 99.8% accepted-claim precision and 97.0% decision accuracy; on FinanceBench-67, it reaches 87.9% accepted-claim precision versus 69.7% for the judge. Improvements are smaller on FinQA and TAT-QA, where authoritative evidence is limited. These results suggest that explicit, evidence-backed verification can improve financial-agent reliability while exposing trade-offs between correctness, false rejection, and abstention.",
+      "authors": [
+        "Mao Guan",
+        "Qian Chen",
+        "Ge Meng",
+        "Xiao-Yang Liu"
+      ],
+      "published": "2026-11-16T02:37:53Z",
+      "url": "https://arxiv.org/abs/2611.20423",
+      "pdf_url": "https://arxiv.org/pdf/2611.20423.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "finance",
+        "financial"
+      ],
+      "ranking_reason": "This paper introduces a verification framework to catch and fix calculation errors made by financial AI agents.",
+      "explanation": "This paper presents FinVerify, a framework that checks numerical claims made by financial AI agents. It uses rule-based validators to catch math and logic errors before trusting the agent's output.",
+      "why_it_matters": "AI models often hallucinate numbers. Learning how to add hard code checks behind an LLM is a practical way to build trustworthy AI applications.",
+      "project_idea": {
+        "title": "Number Checker Guardrail",
+        "description": "Write a Python function that intercepts an LLM output containing financial numbers and cross-checks them against a simple dictionary of real values. If the numbers do not match, the script flags an error.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build an automated Google Sheet where formulas validate the AI-generated numbers in one column against source data in another column, flagging mismatches with conditional formatting."
+      }
+    },
+    {
+      "id": "2611.19388",
+      "title": "SARGO: Agreement-Gated Reinforcement and Suppression via On-Policy Self-Guidance for Visual Hallucination Mitigation",
+      "abstract": "Vision-language models remain susceptible to visual hallucinations, often mixing grounded information with unsupported claims in the same response. Response-level reinforcement learning assigns a shared advantage to all tokens in a response, causing negative updates to suppress correct information alongside unsupported claims. To reduce hallucination while preserving useful visual information, we introduce SARGO (Self-guided Advantage-Routed Grounding Optimization), a post-training framework for selective reinforcement and suppression through on-policy self-guidance. Direct and reciprocal weighting gives better-supported tokens stronger reinforcement on positive updates and weaker penalties on negative updates. Agreement between overall and hallucination-specific advantages selects when to apply this guidance. At the response level, a reference-calibrated reward couples factuality with the retention and expansion of grounded information, discouraging lower hallucination scores obtained through omission. Experiments on Qwen3-VL-4B, Qwen3-VL-8B, and Gemma3-4B demonstrate that SARGO outperforms the evaluated mitigation baselines across Obj-Hal, AMBER, THRONE, and SHR evaluations. SARGO achieves these gains while preserving useful visual information and general multimodal capabilities.",
+      "authors": [
+        "Jinyu Li",
+        "Zhiming Zhang",
+        "Hao Fang",
+        "Hongyao Yu",
+        "Bin Chen",
+        "Albert Ma",
+        "Shu-Tao Xia"
+      ],
+      "published": "2026-11-14T12:53:00Z",
+      "url": "https://arxiv.org/abs/2611.19388",
+      "pdf_url": "https://arxiv.org/pdf/2611.19388.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "hallucination",
+        "hallucinations",
+        "factuality"
+      ],
+      "ranking_reason": "This paper presents a technique to reduce visual hallucinations in AI models while preserving correct information.",
+      "explanation": "This paper introduces SARGO, a training method that stops vision-language models from hallucinating things in images. It gives stronger rewards to correct visual descriptions while softly penalizing mistakes without ruining the good parts.",
+      "why_it_matters": "Multimodal models often make things up when looking at images. Understanding how to tune these models helps you build better image-to-text tools.",
+      "project_idea": {
+        "title": "Image Fact Checker",
+        "description": "Write a Python script that asks a vision model to describe an image, then runs a second prompt asking it to quote the exact region of the image supporting each claim. Compare the responses to spot unsupported details.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Create an n8n workflow that sends an uploaded image to two different vision models and compares their text descriptions for matching keywords."
+      }
+    },
+    {
+      "id": "2611.20144",
+      "title": "HEAMS: Holistic Evaluation of Agent Memory Systems",
+      "abstract": "Memory systems allow AI agents to persist information across interactions, making them more personalized and more capable on long-horizon tasks. This persistence introduces new risks: stored information can be disclosed in inappropriate contexts, resist correction or deletion, be retained beyond what users desire, or be poisoned to influence later agent behaviour. Yet memory systems are typically evaluated on task performance and efficiency alone. We argue that a memory system should instead be understood as the custodian of its user's persistent information, with responsibilities that extend beyond helping an agent complete its tasks, and that it should be evaluated holistically against all such responsibilities. We present Holistic Evaluation of Agent Memory Systems (HEAMS), an open-source framework for evaluating agent memory systems in this way. First, we state the responsibilities of agent memory systems as explicit behavioural desiderata spanning performance, efficiency, security, privacy, and user sovereignty. Second, we assemble a benchmark suite that covers these desiderata and acknowledge the gaps that remain. Third, we develop MilaMem, a prototype memory system, and a governance layer that can wrap any memory system, enabling controlled study of memory system design choices. Fourth, we compare memory systems across the full HEAMS benchmark suite. We find that no memory system leads every performance benchmark, and strong performance scores may coexist with poor privacy, user-sovereignty, and security scores. Governance strongly influences results: recall policies can reduce inappropriate disclosure at a cost in helpfulness, while both recall and retention policies improve poisoning resistance. Performance and efficiency benchmarks alone therefore cannot reveal how well a memory system meets its responsibilities. Code: https://github.com/milatechtransfer/heams",
+      "authors": [
+        "Chirag Goel",
+        "Jacob Lavoie",
+        "Amirhossein Naghshzan",
+        "Jordan Bannister",
+        "Marzia Nouri",
+        "Mehar Bhatia",
+        "Matt Harris",
+        "Siva Reddy",
+        "Arsène Fansi Tchango",
+        "Gaétan Marceau Caron"
+      ],
+      "published": "2026-11-15T17:26:34Z",
+      "url": "https://arxiv.org/abs/2611.20144",
+      "pdf_url": "https://arxiv.org/pdf/2611.20144.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CR"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "ai agents",
+        "privacy"
+      ],
+      "ranking_reason": "This paper evaluates AI agent memory systems to prevent privacy leaks and unauthorized data retention.",
+      "explanation": "This paper looks at how AI agents remember past chats and points out that memory systems can leak private data or get poisoned. It introduces a framework called HEAMS to test the safety, privacy, and performance of agent memories.",
+      "why_it_matters": "When you store user data for long-running AI agents, privacy and security matter just as much as speed. This paper teaches you to think about memory safety early on.",
+      "project_idea": {
+        "title": "Secure Chat Memory",
+        "description": "Write a Python script that stores user chat history in a local SQLite database, but adds a filter function to strip out passwords or emails before saving the text.",
+        "difficulty": "Medium",
+        "time_estimate": "4-6 hours",
+        "no_code_version": "Use Airtable to store user inputs with a built-in automation script that runs regex checks to delete sensitive personal data before it saves."
+      }
+    }
+  ]
+}
