@@ -1,0 +1,434 @@
+{
+  "date": "2026-11-20",
+  "verified_at": "2026-11-20T00:47:49.102878+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.24810",
+      "title": "LAaDT-DSS: decision support for non-experts on rooftop PV, incentive and grid simulations under Turkish tariff rules",
+      "abstract": "Rooftop photovoltaics raise three questions: should a household invest, which incentive costs the state least, and does the feeder stay within limits? Those who ask are rarely modellers. We present LAaDT-DSS, decision-support software that answers all three under Turkish tariff rules from one simulation core. Non-experts reach it by clicking a house on a 3D map or by asking in plain words; a language model is asked to call the simulation tools, not to compute. Each entry of its 125-entry parameter registry is marked as sourced or estimated. Case studies test the system. Its PV yield lies within $\\pm$3.6% of two independent tools at equal losses. Across 2,048 draws of its estimated inputs, the answer for PV alone held in all but one; with a battery, it changed in 31-41% of the draws. Four scripted chat scenarios ran end to end; no user study was run.",
+      "authors": [
+        "Baran Kaynak"
+      ],
+      "published": "2026-11-18T17:45:52Z",
+      "url": "https://arxiv.org/abs/2611.24810",
+      "pdf_url": "https://arxiv.org/pdf/2611.24810.pdf",
+      "categories": [
+        "cs.CE",
+        "cs.AI",
+        "eess.SY"
+      ],
+      "primary_category": "cs.CE",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-experts"
+      ],
+      "ranking_reason": "This paper shows how non-programmers can use plain words to run complex simulations through an LLM.",
+      "explanation": "This paper introduces a software tool that helps everyday people run complex solar power and electricity grid simulations using normal words. An LLM [large language model, an AI that understands text] acts as a bridge to understand what the user wants and runs the math tools safely.",
+      "why_it_matters": "It teaches you how to combine LLMs with backend engineering so users can run heavy math or simulations without touching code.",
+      "project_idea": {
+        "title": "Natural Language Calculator",
+        "description": "Build a small Python script where a user types a math problem in plain English. Use a local LLM to parse the request and call the correct Python function to calculate the answer.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an n8n workflow to take text input from a Google Form, parse it with an OpenAI node, and write the calculated result back to a Google Sheet."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper shows how non-programmers can use plain words to run complex simulations through an LLM.",
+          "supported": true,
+          "evidence": "Non-experts reach it by clicking a house on a 3D map or by asking in plain words; a language model is asked to call the simulation tools, not to compute.",
+          "reason": "The abstract states non‑experts can use plain words and an LLM calls the tools, supporting the claim."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a software tool that helps everyday people run complex solar power and electricity grid simulations using normal words.",
+          "supported": true,
+          "evidence": "Non-experts reach it by clicking a house on a 3D map or by asking in plain words; a language model is asked to call the simulation tools, not to compute.",
+          "reason": "The abstract describes a software tool that lets everyday people run simulations using normal words."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "An LLM [large language model, an AI that understands text] acts as a bridge to understand what the user wants and runs the math tools safely.",
+          "supported": true,
+          "evidence": "a language model is asked to call the simulation tools, not to compute.",
+          "reason": "The abstract says the LLM acts as a bridge to invoke the math tools, matching the description."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.23257",
+      "title": "StatePortal: Agentic Checkpoint Synthesis for Testing Deep States in Interactive Software",
+      "abstract": "Large language models have reduced the effort to generate code for interactive software with graphical user interfaces (GUIs). For such software, a key testing bottleneck is reaching a deep state, one that requires a long interaction history. The cost of reaching it recurs across commits, and the GUI automation that could amortize it assumes a DOM or accessibility tree that self-rendered engines do not expose. We introduce StatePortal, an agent that synthesizes a checkpoint, an artifact that restores that state and can be versioned and replayed, from a natural-language functional test case and read-only access to the target's source code. The checkpoint is restored through a per-application hook that an onboarding agent binds or synthesizes once without hand-written hook code. Because a checkpoint can satisfy state checks while rendering incorrectly, checkpoints are scored by hybrid programmatic-state and visual evaluation: acceptance requires both a programmatic-state oracle and a visual oracle to pass. We calibrate the visual oracle against a blinded cross-VLM reference. We release DeepStateBench, 61 deep-state tasks across 10 interactive applications that span five language families and six rendering stacks, with source sizes from 874 to 7.2M lines. Across three registered models, a GUI agent seeded with synthesized checkpoints completes 10.4% of trials, compared with 0% without seeding under the same pixel action space, while StatePortal, which also delivers the target action through the hook, completes 27.5%. Over 1,361 replays of 112 checkpoints, 98.90% reproduce the original verdict with zero model calls, and the hybrid oracle detects 96.25% (77/80) of controlled visual faults invisible to programmatic-state checks alone. We open-source our code at https://github.com/pzy2000/State_Portal and website at https://stateportal.mineyosemite.chatgpt.site",
+      "authors": [
+        "Zhiyuan Peng",
+        "Wei Tao",
+        "Chenhao Ying",
+        "Yuan Luo",
+        "Yiwen Guo"
+      ],
+      "published": "2026-09-29T00:00:00.000Z",
+      "url": "https://arxiv.org/abs/2611.23257",
+      "pdf_url": "https://arxiv.org/pdf/2611.23257.pdf",
+      "categories": [],
+      "primary_category": "cs.AI",
+      "sources": [
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 9,
+        "num_comments": 2,
+        "discussion_id": "6afeeba357206fe06d71e57e"
+      },
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "LLM agents for everyday work"
+      ],
+      "matched_keywords": [
+        "gui",
+        "agentic"
+      ],
+      "ranking_reason": "This paper introduces an agent that tests interactive software by automatically reaching deep states.",
+      "explanation": "Testing interactive software with screens can take a long time if you have to click through many menus to reach a specific hidden state. This paper builds an agent that automatically creates save points to instantly jump to those deep states for testing.",
+      "why_it_matters": "It shows how AI agents can save time in software testing by automating repetitive navigation steps.",
+      "project_idea": {
+        "title": "State Jump Bot",
+        "description": "Write a Python automation script using Playwright to navigate a web app and save browser storage snapshots at deep menu pages. Then write a function to restore those snapshots instantly.",
+        "difficulty": "Medium",
+        "time_estimate": "5-6 hours",
+        "no_code_version": "Use a browser automation tool like Make to record a sequence of clicks and save page states as screenshots in Google Drive."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper introduces an agent that tests interactive software by automatically reaching deep states.",
+          "supported": true,
+          "evidence": "We introduce StatePortal, an agent that synthesizes a checkpoint, an artifact that restores that state and can be versioned and replayed, from a natural-language functional test case and read‑only access to the target's source code.",
+          "reason": "The abstract explicitly says the paper introduces an agent that helps test interactive software by synthesizing checkpoints to reach deep states."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "Testing interactive software with screens can take a long time if you have to click through many menus to reach a specific hidden state.",
+          "supported": true,
+          "evidence": "Large language models have reduced the effort to generate code for interactive software with graphical user interfaces (GUIs). For such software, a key testing bottleneck is reaching a deep state, one that requires a long interaction history.",
+          "reason": "The abstract mentions that reaching deep states can require a long interaction history, supporting the explanation."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "This paper builds an agent that automatically creates save points to instantly jump to those deep states for testing.",
+          "supported": true,
+          "evidence": "We introduce StatePortal, an agent that synthesizes a checkpoint, an artifact that restores that state and can be versioned and replayed, from a natural-language functional test case and read‑only access to the target's source code.",
+          "reason": "The abstract describes the agent creating checkpoints to instantly restore deep states for testing."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.23779",
+      "title": "TabBioMed: A Large-Scale Benchmark for Biomedical Tabular Learning",
+      "abstract": "Recent advances in machine learning have accelerated biomedical prediction, but evaluation on structured biomedical data remains fragmented, especially for datasets with high dimensionality, large sample size, missingness, and class imbalance. We introduce TabBioMed, a large-scale benchmark of 94 curated public biomedical tabular datasets spanning electronic health records, drug discovery, genomics, transcriptomics, proteomics, metabolomics, single-cell omics, and systems biology. TabBioMed unifies these datasets through a standardized, dataset-aware preprocessing and evaluation framework, enabling reproducible comparison across classification, regression, and multi-target tasks. We benchmark 23 models across classical baselines, gradient-boosted trees, neural tabular architectures, and tabular foundation models. Foundation models deliver the strongest family-level predictive performance. However, their gains are regime-dependent: tree-based models and tuned multilayer perceptrons remain highly competitive, often dominating under inference-time or training-cost constraints. Overall, TabBioMed shows that biomedical tabular learning is strongly context-dependent, with optimal model choice depending on data regime, task type, and computational budget. We release TabBioMed with curated datasets and splits, preprocessing code, baselines, and results, providing a reproducible benchmark for practical model selection and future methods development in biomedical machine learning, available at https://github.com/AI-sandbox/TabBioMed.",
+      "authors": [
+        "Pau Mateo-Bernadó",
+        "Saivenkata Nagavyjayanthi Polapragada",
+        "David Bonet",
+        "Pol Arbiol Rakuljic",
+        "Laia Mogas Pladevall",
+        "Marçal Comajoan Cara",
+        "Jesus Gonzalez-Ferrer",
+        "Jordi Abante",
+        "Daniel Mas Montserrat",
+        "David Haussler",
+        "Alexander G. Ioannidis"
+      ],
+      "published": "2026-11-18T03:35:35Z",
+      "url": "https://arxiv.org/abs/2611.23779",
+      "pdf_url": "https://arxiv.org/pdf/2611.23779.pdf",
+      "categories": [
+        "cs.LG"
+      ],
+      "primary_category": "cs.LG",
+      "sources": [
+        "arxiv",
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 7,
+        "num_comments": 1,
+        "discussion_id": "6aff45118c0c69ddd0a9477c"
+      },
+      "matched_topics": [
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "electronic health records",
+        "biomedical",
+        "drug discovery"
+      ],
+      "ranking_reason": "This paper provides a large benchmark to improve biomedical prediction tasks using tabular data.",
+      "explanation": "This paper collects 94 biomedical datasets into one big benchmark to see which machine learning models predict health outcomes best. It finds that older tree-based models often beat expensive new AI models when working with tabular spreadsheet data.",
+      "why_it_matters": "It proves you do not always need complex neural networks to win machine learning tasks, especially when working with tables of numbers.",
+      "project_idea": {
+        "title": "Medical Data Benchmark",
+        "description": "Download a public health dataset from Kaggle and train both a simple decision tree and a neural network on it. Compare their accuracy and training times in a Jupyter notebook.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Upload a health dataset to Google Sheets, use the built-in analysis tools to train a basic regression model, and compare its predictions against a simple rule."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper provides a large benchmark to improve biomedical prediction tasks using tabular data.",
+          "supported": true,
+          "evidence": "We introduce TabBioMed, a large‑scale benchmark of 94 curated public biomedical tabular datasets spanning electronic health records, drug discovery, genomics, transcriptomics, proteomics, metabolomics, single‑cell omics, and systems biology.",
+          "reason": "The abstract states the paper provides a large benchmark for biomedical prediction with tabular data."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper collects 94 biomedical datasets into one big benchmark to see which machine learning models predict health outcomes best.",
+          "supported": true,
+          "evidence": "We introduce TabBioMed, a large‑scale benchmark of 94 curated public biomedical tabular datasets ...",
+          "reason": "The abstract explicitly mentions 94 biomedical datasets collected into one benchmark."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It finds that older tree-based models often beat expensive new AI models when working with tabular spreadsheet data.",
+          "supported": true,
+          "evidence": "Foundation models deliver the strongest family‑level predictive performance. However, their gains are regime‑dependent: tree‑based models and tuned multilayer perceptrons remain highly competitive, often dominating under inference‑time or training‑cost constraints.",
+          "reason": "The abstract says tree‑based models remain highly competitive and often dominate under certain constraints, supporting the claim."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.23613",
+      "title": "MANGO Arena: Same Seeds, Different Chains Evaluating LLM Agents in a Disrupted Supply Chain",
+      "abstract": "We introduce MANGO Arena, an open-source testbed in which four LLM agents each run one company in a serial supply chain adapted from MANGO, a classroom factory-management game. The environment enforces hard rules (a truck limit, a no-credit cash constraint and production capacity), logs every blocked attempt to break them, and gives agents a public message board on which side payments are explicitly forbidden. This lets one environment measure three things at once: an economic outcome (the bullwhip effect), rule adherence under pressure, and proposals to collude. In a pilot with three small reasoning models, two scripted reference policies, two conditions (with and without a supplier fire) and three demand seeds, all LLM agents amplified demand variability as it moved upstream, by 7 to 25 times at the Retailer and 13 to 179 times at the Supplier, often more than a textbook order-up-to policy. They did so largely by ordering in batches (zero orders in up to 60% of decisions). Real rule violations were rare (at most 7 of 288 decisions per model) and no agent proposed a money side deal. The pilot's main lesson concerns evaluation method. API failures (rate limits and runaway hidden reasoning) entered the metrics silently as \"no order\" decisions. And when we reran games with the same seeds and no failed calls, upstream bullwhip changed by up to 17 times between runs. With three seeds, conclusions about how a disruption affects a given model did not survive a rerun. We report these failures in full and propose reporting practices for multi-agent evaluations of this kind. Code, prompts and every logged decision are public.",
+      "authors": [
+        "Sara Amar"
+      ],
+      "published": "2026-11-17T23:05:05Z",
+      "url": "https://arxiv.org/abs/2611.23613",
+      "pdf_url": "https://arxiv.org/pdf/2611.23613.pdf",
+      "categories": [
+        "cs.MA",
+        "cs.AI"
+      ],
+      "primary_category": "cs.MA",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI in education",
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "llm agents",
+        "classroom",
+        "economic",
+        "supply chain"
+      ],
+      "ranking_reason": "This paper evaluates LLM agents managing a supply chain in a classroom management game.",
+      "explanation": "The authors created a virtual supply chain game where multiple AI agents run different companies like factories and stores. They found that AI agents often order way too much stock at once, which causes massive supply chain disruptions.",
+      "why_it_matters": "It highlights how multi-agent systems can fail in unexpected ways when they interact in a shared economic environment.",
+      "project_idea": {
+        "title": "Supply Chain Simulator",
+        "description": "Create a simple Python script with two agents representing a store and a warehouse passing inventory messages back and forth. Simulate how random customer demand changes their stock orders over ten turns.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Set up a Google Sheets spreadsheet with formulas that simulate inventory depletion and reordering based on random customer purchases."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper evaluates LLM agents managing a supply chain in a classroom management game.",
+          "supported": true,
+          "evidence": "We introduce MANGO Arena, an open‑source testbed in which four LLM agents each run one company in a serial supply chain adapted from MANGO, a classroom factory‑management game.",
+          "reason": "The abstract directly states the paper evaluates LLM agents managing a supply chain in a classroom game."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "The authors created a virtual supply chain game where multiple AI agents run different companies like factories and stores.",
+          "supported": true,
+          "evidence": "We introduce MANGO Arena, an open‑source testbed in which four LLM agents each run one company in a serial supply chain adapted from MANGO, a classroom factory‑management game.",
+          "reason": "The abstract describes a virtual supply chain game with multiple AI agents running different companies."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "They found that AI agents often order way too much stock at once, which causes massive supply chain disruptions.",
+          "supported": true,
+          "evidence": "all LLM agents amplified demand variability as it moved upstream, by 7 to 25 times at the Retailer and 13 to 179 times at the Supplier, often more than a textbook order‑up‑to policy. They did so largely by ordering in batches (zero orders in up to 60% of decisions).",
+          "reason": "The abstract reports agents ordering in large batches, causing amplified demand variability, matching the claim."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.24313",
+      "title": "AutoPI: Taxonomy-Guided Adaptive Red Teaming for Prompt Injection in LLM Agents",
+      "abstract": "Prompt injection is the dominant unsolved security risk for LLM agents, and the community now agrees that robustness must be measured against adaptive attackers rather than fixed benchmark injections. Many adaptive red teamers exist, and most are built to maximize attack success rate (ASR). Yet ASR counts how often a target breaks, not in how many different ways. A red teamer can achieve a high ASR by reusing a few techniques that work, leaving the others untested and absent from the attacks used to harden models. We present AutoPI, an adaptive red teamer designed to find many different ways to break a target, not just to break it often. AutoPI uses PIAtlas, a taxonomy of prompt-injection techniques, both to guide its search and to measure coverage. For each scenario, an attacker LLM writes an injection for every sub-technique in the taxonomy and then reworks the ones that fail using feedback from an LLM judge. The method is black-box and training-free, it plugs into existing benchmarks in place of their fixed attack templates, and it stays up to date as the taxonomy evolves. We evaluate AutoPI on AgentDojo and IPI Arena against open-weight and proprietary target models. Alongside ASR, we report technique coverage, the fraction of taxonomy classes, techniques, and sub-techniques that yield at least one successful injection. On AgentDojo, AutoPI finds a successful injection against Qwen3.6-35B in all six classes of the taxonomy and for more than 90% of its techniques. Against Claude Haiku 5.5, the most robust target we evaluate, it achieves between 20% and 50% higher ASR and between 25% and 400% higher class-level coverage than recent state-of-the-art adaptive red teamers, while requiring no training. We release our code and the generated attacks to support reproducible, coverage-aware evaluation.",
+      "authors": [
+        "Stavros Damianakis",
+        "Konstantinos Psounis"
+      ],
+      "published": "2026-11-18T12:20:58Z",
+      "url": "https://arxiv.org/abs/2611.24313",
+      "pdf_url": "https://arxiv.org/pdf/2611.24313.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "llm agents",
+        "prompt injection",
+        "red teaming"
+      ],
+      "ranking_reason": "This paper targets automated security testing to find prompt injection vulnerabilities in LLM agents.",
+      "explanation": "This paper introduces an automated security tester that finds many different ways to trick AI agents using prompt injection.",
+      "why_it_matters": "It teaches you how to systematically test your AI applications for security vulnerabilities before deploying them.",
+      "project_idea": {
+        "title": "Prompt Injection Tester",
+        "description": "Write a Python script that loops through a list of known malicious jailbreak strings against your own local LLM chatbot. Log which strings successfully bypass your safety rules.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build an n8n workflow that sends a list of test prompts from a Google Sheet to an AI model and logs whether the response contains forbidden words."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper targets automated security testing to find prompt injection vulnerabilities in LLM agents.",
+          "supported": true,
+          "evidence": "Prompt injection is the dominant unsolved security risk for LLM agents, and the community now agrees that robustness must be measured against adaptive attackers rather than fixed benchmark injections.",
+          "reason": "The abstract states the paper focuses on automated security testing for prompt‑injection vulnerabilities in LLM agents."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces an automated security tester that finds many different ways to trick AI agents using prompt injection.",
+          "supported": true,
+          "evidence": "We present AutoPI, an adaptive red teamer designed to find many different ways to break a target, not just to break it often.",
+          "reason": "The abstract describes an automated tester that finds many different prompt‑injection techniques."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "Instead of just checking if an agent breaks once, it tries a wide variety of attack techniques to find all hidden flaws.",
+          "supported": false,
+          "evidence": "AutoPI uses PIAtlas, a taxonomy of prompt‑injection techniques, both to guide its search and to measure coverage. ... it tries a wide variety of attack techniques to find all hidden flaws.",
+          "reason": "Its proof quote is not in the abstract."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 2
+    },
+    {
+      "id": "2611.24845",
+      "title": "Vibe-Trading: Towards Agent-Native Trading",
+      "abstract": "Existing AI agents can retrieve information, call tools, run experiments, and produce multi-step outputs. Yet most are built around relatively static workflows and struggle to preserve reliable state as the environment changes. Financial trading makes this limitation especially consequential: prices, news, market conditions, portfolio positions, and available capital evolve continuously. A result is useful only when it remains tied to the correct time, data snapshot, and execution context. We present Vibe-Trading, a comprehensive agent-native trading framework and all-in-one workspace for building, evaluating, and evolving agents for financial trading. It unifies market research, financial data, strategy generation, backtesting, portfolio analysis, paper trading, multi-agent collaboration, and optional broker execution. Its central contribution is an architecture that keeps results, evidence, research history, and trading authority connected throughout the research-to-action process. Each result retains its source, temporal scope, configuration, and producing run. Shared evidence grounding enables verification, versioned research records support reproducible continuation, and an explicit authority gate separates strategy research from live execution. Together, these designs provide a practical foundation for trading agents whose results can be traced, reproduced, and acted on only under explicit authority.",
+      "authors": [
+        "Haozhe Wu",
+        "Zhonghang Li",
+        "Chao Huang"
+      ],
+      "published": "2026-11-18T18:07:57Z",
+      "url": "https://arxiv.org/abs/2611.24845",
+      "pdf_url": "https://arxiv.org/pdf/2611.24845.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.MA",
+        "q-fin.CP",
+        "q-fin.TR"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "ai agents",
+        "financial"
+      ],
+      "ranking_reason": "This paper builds AI agents that adapt to continuous changes in financial trading environments.",
+      "explanation": "Trading financial markets requires AI agents to keep track of fast-moving prices, news, and capital without losing their memory or state. This paper builds an all-in-one framework that keeps research, data history, and trading actions safely connected.",
+      "why_it_matters": "It shows how to build AI systems that track their sources and maintain reliable state over time instead of hallucinating steps.",
+      "project_idea": {
+        "title": "Paper Trading Log",
+        "description": "Write a Python script that fetches daily stock prices using a free API, runs a simple moving average strategy, and logs the buy or sell decision with a timestamp in a local database.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use Make to connect a financial news RSS feed to a Google Sheet, and use conditional formatting to log simulated trade signals."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper builds AI agents that adapt to continuous changes in financial trading environments.",
+          "supported": true,
+          "evidence": "Yet most are built around relatively static workflows and struggle to preserve reliable state as the environment changes. Financial trading makes this limitation especially consequential ...",
+          "reason": "The abstract notes that existing agents struggle with changing environments and that Vibe‑Trading addresses this, supporting the claim."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "Trading financial markets requires AI agents to keep track of fast-moving prices, news, and capital without losing their memory or state.",
+          "supported": true,
+          "evidence": "Financial trading makes this limitation especially consequential: prices, news, market conditions, portfolio positions, and available capital evolve continuously.",
+          "reason": "The abstract lists fast‑moving prices, news, and capital as challenges, matching the explanation."
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "This paper builds an all-in-one framework that keeps research, data history, and trading actions safely connected.",
+          "supported": true,
+          "evidence": "We present Vibe‑Trading, a comprehensive agent‑native trading framework and all‑in‑one workspace for building, evaluating, and evolving agents for financial trading. ... Its central contribution is an architecture that keeps results, evidence, research history, and trading authority connected throughout the research‑to‑action process.",
+          "reason": "The abstract describes an all‑in‑one framework that links research, data history, and trading actions."
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": []
+}
