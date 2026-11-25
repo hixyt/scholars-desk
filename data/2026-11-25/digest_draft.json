@@ -1,0 +1,261 @@
+{
+  "date": "2026-11-25",
+  "generated_at": "2026-11-25T00:47:47.250350+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.30983",
+      "title": "MedUIGym: Evaluating and Training GUI Agents for Clinical Workflows",
+      "abstract": "Automating clinical workflows requires vision-language agents that can navigate dense graphical user interfaces (GUIs) in electronic health records (EHRs) and execute precise actions, yet many medical agents still rely on text or structured tool calls. In this work, we introduce MedUIGym, a scalable interactive environment comprising 15,739 tasks from 17 benchmark sources across six clinical task families for training and evaluating clinical GUI agents. In MedUIGym, agents perceive EHR states from screenshots and execute mouse-and-keyboard actions, as well as a paired native-tool interface over identical clinical data. The environment verifies both final answers and required clinical actions, and supports parallel trajectory collection for training. Benchmarking twelve vision-language models shows that current agents struggle across diverse clinical workflows, and simply increasing reasoning effort fails to yield consistent gains. Furthermore, MedUIGym supports offline learning from GUI trajectories and online reinforcement learning from task rewards. After training, both Qwen3.5 models perform better on in-domain clinical tasks and generalize to tasks from external sources. By unifying tasks from existing benchmarks, dual-interface evaluation, and GUI trajectory collection, MedUIGym provides a testbed for studying how vision-language agents complete clinical tasks through the EHR's graphical interface. Our project page is available at https://github.com/yitong-qiao/MedUIGym.",
+      "authors": [
+        "Yitong Qiao",
+        "Lei Liu",
+        "Yue Shen",
+        "Jian Wang",
+        "Jinjie Gu",
+        "Zhixuan Chu"
+      ],
+      "published": "2026-11-23T16:41:20Z",
+      "url": "https://arxiv.org/abs/2611.30983",
+      "pdf_url": "https://arxiv.org/pdf/2611.30983.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers",
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "gui",
+        "clinical",
+        "medical",
+        "electronic health records"
+      ],
+      "ranking_reason": "This paper evaluates AI agents that use computer screens and buttons just like humans do for hospital tasks.",
+      "explanation": "This paper built a new testing ground called MedUIGym to see how well AI agents can click, type, and look at hospital computer screens. It tests different vision-language models [AI that can understand both images and text] on real clinical tasks.",
+      "why_it_matters": "As a 2nd-year student, it is important to see that AI is moving past simple text chats and learning to use actual software interfaces like humans do.",
+      "project_idea": {
+        "title": "Web Clicker Bot",
+        "description": "Write a Python script using Selenium to automatically open a hospital sample form and fill in patient names. Take screenshots at each step to track what the browser did.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use a browser automation tool like Make or an extension like UI Vision to record yourself filling a form, and replay it automatically."
+      }
+    },
+    {
+      "id": "2611.29698",
+      "title": "Managing Uncertainty in Teacher Vibe Coding: A Comparison of Teacher and Expert Workflows",
+      "abstract": "Vibe coding, or natural language software development, enables teachers to become creators of digital teaching artifacts. However, novice educators oftentimes face different barriers. This qualitative study examined the workflows of pre-service teachers, in-service teachers, and expert developers through think-aloud protocols. Findings reveal vibe coding operates through a loop of problem framing, development, and verification governed by uncertainty management. Teachers reduced uncertainty by grounding designs in authentic needs: pre-service teachers drew on pedagogical principles, whereas in-service teachers relied on everyday teaching challenges. Conversely, Experts reduced ambiguity by constraining requirements, decomposing artifacts into testable modules, and automating tests. These differences reveal complementary forms of pedagogical, contextual, and technical expertise. Future work may be about supporting nontechnical teachers in developing reliable and educational applications.",
+      "authors": [
+        "Jiaju Lin",
+        "Ellen Wenting Zou"
+      ],
+      "published": "2026-11-22T18:58:19Z",
+      "url": "https://arxiv.org/abs/2611.29698",
+      "pdf_url": "https://arxiv.org/pdf/2611.29698.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in education"
+      ],
+      "matched_keywords": [
+        "educational",
+        "educators",
+        "pedagogical"
+      ],
+      "ranking_reason": "This study shows how teachers use everyday language to build their own digital tools and lessons.",
+      "explanation": "This study looked at how teachers use everyday plain language to build digital tools without deep coding skills. It found that teachers manage uncertainty by focusing on real classroom problems rather than technical rules.",
+      "why_it_matters": "It shows that natural language programming allows non-coders to create useful software, changing how we think about software development.",
+      "project_idea": {
+        "title": "Prompt-Based Quiz Maker",
+        "description": "Write a Python script that takes a topic name from the user, calls an LLM [large language model, an AI that understands text] API, and generates a multiple-choice quiz. Save the output as a neat text file.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Set up an automation in Google Sheets using an AI add-on to generate quiz questions automatically when you type a topic name into a cell."
+      }
+    },
+    {
+      "id": "2611.29151",
+      "title": "Medical Specialty Prediction from Bangla Patient Narratives: A Comparative Study of ML, DL, Transformers, and LLMs",
+      "abstract": "Timely access to appropriate medical specialists remains a bottleneck in Bangladesh's healthcare system, as patients describe symptoms in informal Bangla rather than clinical terms, leading to ineffective referrals. This paper compares four model families for predicting medical specialties from Bangla patient narratives: six machine learning (ML) models using hybrid TF-IDF features, four deep learning (DL) models using Word2Vec embeddings trained on the corpus, four fine-tuned transformers, and five large language models (LLMs) evaluated zero-shot. From a corpus of 3798 patient records covering 20 specialties, we retained the five with the most records (Medicine, Gynecology, Dermatology, Pediatrics, Gastroenterology) and split the resulting 2730 records 80:20 into training and test sets shared by all families. The best transformer was XLM-RoBERTa (86.26% accuracy, 86.21% macro-F1), the best ML model was SVM (84.98%, 84.92%), the best DL model was Bidirectional GRU (80.77%, 80.83%), and the best LLM was Gemini (90.29%, 90.15%). Holm-corrected paired McNemar tests show SVM significantly outperforming Bi-LSTM (adjusted p = 0.004), whereas the Gemini-versus-Grok gap does not survive correction (adjusted p = 0.104), and neither the strongest transformer versus the weakest LLM (Grok) nor SVM versus the strongest transformer reaches significance. A tuned classical model is thus statistically indistinguishable from the strongest transformer, so accuracy rankings alone should not be read as evidence of one family's superiority. The findings provide a comparative baseline for Bangla medical text classification.",
+      "authors": [
+        "Tasnin Tabassum Ali",
+        "Faisal Ahmed",
+        "Muhammad Anwarul Azim"
+      ],
+      "published": "2026-11-22T02:18:18Z",
+      "url": "https://arxiv.org/abs/2611.29151",
+      "pdf_url": "https://arxiv.org/pdf/2611.29151.pdf",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "clinical",
+        "medical",
+        "medicine",
+        "healthcare",
+        "patient",
+        "patients"
+      ],
+      "ranking_reason": "This paper compares different machine learning models to help route patient symptoms to the right medical specialist.",
+      "explanation": "This paper compared different machine learning and deep learning models at reading informal patient symptoms written in Bangla and guessing the right medical specialist. It showed that traditional models like Support Vector Machines can perform just as well as giant transformer [a type of AI architecture good at understanding language] models.",
+      "why_it_matters": "It teaches you that you do not always need the biggest, most expensive AI model to solve a text classification problem.",
+      "project_idea": {
+        "title": "Symptom Classifier",
+        "description": "Write a Python script using Scikit-learn to train a simple text classifier on a small dataset of patient symptoms and medical fields. Test it with new text inputs.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Upload a symptom dataset to Google Cloud Vertex AI or a similar no-code platform to train a text classifier without writing any code."
+      }
+    },
+    {
+      "id": "2611.29642",
+      "title": "Reducing Authorship Attribution Risk in Student Texts Through Style-Conditioned Rewriting",
+      "abstract": "Building NLP applications for education is constrained by data scarcity due to student privacy concerns and data regulations. To address this, we propose a style-aware approach to rewriting student forum posts that retains analytical value while reducing identifiability. Our method isolates content, structure, and style as separate conditioning channels and aggregates over student-disjoint exemplar partitions within style clusters, extending Differentially Private In-context Learning (DP-ICL) with cluster-restricted retrieval. Across three educational NLP datasets, our approach achieves high style fidelity, preserves downstream task performance, and reduces authorship attribution risk relative to the original student-written texts, including against a dedicated authorship-attribution model.",
+      "authors": [
+        "Li Siyan",
+        "Zhen Xu",
+        "Jiayi Chen",
+        "Shopnil Shahriar",
+        "Alessandro Sayad",
+        "Xuanming Zhang",
+        "Renzhe Yu",
+        "Zhou Yu"
+      ],
+      "published": "2026-11-22T17:41:11Z",
+      "url": "https://arxiv.org/abs/2611.29642",
+      "pdf_url": "https://arxiv.org/pdf/2611.29642.pdf",
+      "categories": [
+        "cs.CL"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in education",
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "education",
+        "educational",
+        "privacy"
+      ],
+      "ranking_reason": "This paper explains how to rewrite student writing to protect privacy while keeping the educational content useful.",
+      "explanation": "This paper explains a method to rewrite student forum posts so they keep the useful learning content while hiding who wrote them. It breaks down text into style, structure, and content to protect student privacy.",
+      "why_it_matters": "Privacy is a major concern in AI applications, and learning how to scrub personal traits from text is a practical data skill.",
+      "project_idea": {
+        "title": "Anonymizing Text Rewriter",
+        "description": "Write a Python script that uses a local LLM prompt to rewrite student paragraphs in a neutral, uniform tone. Check that the original meaning remains intact.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use an AI spreadsheet formula in Google Sheets to pass student text through a prompt that strips out unique writing styles."
+      }
+    },
+    {
+      "id": "2611.28610",
+      "title": "Agent Money Benchmark: Can AI Agents Be Trusted to Spend Money?",
+      "abstract": "Giving an AI agent a wallet lets it buy data and services on a client's behalf. Trust then depends on how it spends money and what that spending achieves. We introduce Agent Money Benchmark (AMB) to test whether agents spend a client's money well, starting with purchases of information for financial decisions. We link seller quotes and payments to final answers, evaluating 12 models on 80 payment tasks with simulated sellers and 76 research questions using live data. Purchases settled in USDC on Solana mainnet via x402, a protocol for paying per web request. Three of the 12 models passed 79 of 80 payment tasks without payment or budget errors. Nine fell for a seller's trap at least once; repeat charges and above-list quotes accounted for 79% of scam events. We estimate waste from data and inference costs, counting failed payment tasks in full and research answers in proportion to missed points. With spending split equally between tracks, estimated waste ranged from \\$21.0 per \\$100 for Claude Fable 5.2 to \\$70.8 for GPT-6 Luna.",
+      "authors": [
+        "Zhe Chen",
+        "Emma Hsieh",
+        "Vicky Fu"
+      ],
+      "published": "2026-11-21T06:43:13Z",
+      "url": "https://arxiv.org/abs/2611.28610",
+      "pdf_url": "https://arxiv.org/pdf/2611.28610.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "ai agent",
+        "ai agents",
+        "financial"
+      ],
+      "ranking_reason": "This paper tests whether AI agents can be trusted to handle and spend money wisely on behalf of users.",
+      "explanation": "This paper tests whether AI agents can be trusted with digital wallets to buy information and pay for web requests. It found that many AI models fall for scams, overpay, or waste money when handling transactions.",
+      "why_it_matters": "As AI agents start performing real-world economic tasks, understanding their financial reliability and security limits is helpful.",
+      "project_idea": {
+        "title": "Budget-Capped API Caller",
+        "description": "Write a Python script that tracks how much money or API credits an LLM spends while answering a multi-step research question. Stop the loop if it exceeds a hard spending limit.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Build an automation flow in n8n that sets a strict counter on how many times paid AI nodes can run before stopping the workflow."
+      }
+    },
+    {
+      "id": "2611.28487",
+      "title": "PatchLens: Adapting Mechanistic Interpretability Techniques for Non-Expert Audiences",
+      "abstract": "A chat interface presents a reply as finished text, concealing a model that predicts at every position and reruns. Mechanistic interpretability can show how a large language model produces text, but its tools are built for researchers. We present PatchLens, a browser interface that runs logit lens and activation patching on remotely served research-scale models. Each layer's state appears as the tokens it comes closest to, laid out by layer and input position; an intervention is a drag from one cell onto another. The tokens a learner reads are the tokens they manipulate. In a between-subjects study with 61 non-experts, the comparison against Transformer Explainer was inconclusive on post-test knowledge. PatchLens participants wrote their own prompts (21 of 32 against 1 of 29), reported lower mental demand, and located their difficulty in the interface rather than the material. We read the null as evidence about what such an instrument measures.",
+      "authors": [
+        "Gwenyth Lincroft",
+        "Yik Su Chan",
+        "Adam Belfki",
+        "Emma Bortz",
+        "Jonathan Bell"
+      ],
+      "published": "2026-11-21T02:08:31Z",
+      "url": "https://arxiv.org/abs/2611.28487",
+      "pdf_url": "https://arxiv.org/pdf/2611.28487.pdf",
+      "categories": [
+        "cs.HC"
+      ],
+      "primary_category": "cs.HC",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-expert",
+        "non-experts"
+      ],
+      "ranking_reason": "This paper creates a visual browser tool so people without coding skills can see inside how AI models make choices.",
+      "explanation": "This paper created a visual browser tool called PatchLens that lets regular people see inside how large language models make choices. It helps users understand model layers and internal tokens through simple drag-and-drop actions.",
+      "why_it_matters": "Interpretability tools make black-box AI models easier to understand for students who are just starting out.",
+      "project_idea": {
+        "title": "Token Probability Viewer",
+        "description": "Write a Python script using the Hugging Face transformers library to extract and print the top five predicted next words and their probabilities from a model.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an online playground like Hugging Face Spaces to test different prompts and view token generation probabilities visually without writing code."
+      }
+    }
+  ]
+}
