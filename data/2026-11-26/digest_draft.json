@@ -1,0 +1,277 @@
+{
+  "date": "2026-11-26",
+  "generated_at": "2026-11-26T00:47:46.010564+00:00",
+  "providers_used": [
+    "Gemini (gemini-3.5-flash-lite)",
+    "Gemini (gemini-3.5-flash-lite)"
+  ],
+  "status": "draft_unchecked",
+  "papers": [
+    {
+      "id": "2611.32649",
+      "title": "ICLWorld: Benchmarking In-Context Learning of Agents from Digital to Physical Worlds",
+      "abstract": "In-context learning (ICL) lets agents acquire new rules from context and adapt to user-specific requirements at inference time. The same frontier agents now operate both computers and robots, yet their ICL remains insufficiently assessed: existing benchmarks are largely offline, rely on text or static images, and risk training-data contamination, while robot evaluations are limited to method-level ablations. We present ICLWorld, an online benchmark that evaluates the ICL of agents from digital to physical worlds, covering computer use and robot use, together with UIverse, a unified harness that turns every environment into a user interface. We build 30 environments, record 630 demonstration videos (10+ hours), and design 160 tasks with customized, often counter-intuitive rules that cannot be satisfied without learning from the context. Each task comes with three rule versions, given as text or video, and we test generalization at three levels, from replaying the demonstration to new instances and unseen environments. Across six frontier models, the strongest agents, Claude Opus 5.5 and GPT-6 Astra, succeed on 82% and 76% of computer-use runs but only 27% and 26% of robot-use runs, and a no-rule control reduces success to at most 8%. GPT-6 Astra succeeds under all three rule versions on only 38% of computer-use tasks, half its rate under a single rule, and answers 98% of robot rule questions correctly yet completes only 20% of these tasks. Frontier agents learn rules comparably well from video and from text and transfer them across environments, whereas weaker agents rely on text and lose most of their video-based success once the demonstrated situation is resampled. These findings reveal substantial gaps between the digital and the physical world and between identifying a rule and acting on it.",
+      "authors": [
+        "Qingle Liu",
+        "Jieming Li",
+        "Pei-lin Li",
+        "Shenghan Zheng",
+        "Ruize Yang",
+        "Sunqi Fan",
+        "Deyao Hong",
+        "Huan-ang Gao",
+        "Meng-Hao Guo",
+        "Shuojin Yang"
+      ],
+      "published": "2026-11-24T14:07:17Z",
+      "url": "https://arxiv.org/abs/2611.32649",
+      "pdf_url": "https://arxiv.org/pdf/2611.32649.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv",
+        "huggingface"
+      ],
+      "huggingface": {
+        "upvotes": 20,
+        "num_comments": 1,
+        "discussion_id": "6b06aa04ea91637d11fcef1d"
+      },
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "user interface"
+      ],
+      "ranking_reason": "This paper shows how AI programs can quickly learn new rules from context instead of needing retraining.",
+      "explanation": "This paper tested how well AI agents can learn new rules on the fly from text or videos, both on computers and robots. It found that top models are great at learning rules for computers, but struggle badly when those rules need to be physically executed by robots.",
+      "why_it_matters": "As a developer, you need to know that an AI model can memorize instructions in a prompt, but that does not mean it can successfully perform physical actions in the real world.",
+      "project_idea": {
+        "title": "Rule-Following Chatbot",
+        "description": "Write a Python script using an LLM API that takes three bizarre conversation rules as input text. Then, test if the model follows these rules when answering tricky user questions.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Make or Google Sheets to send a prompt with custom instructions to an OpenAI module and check if the output matches your rules."
+      }
+    },
+    {
+      "id": "2611.32194",
+      "title": "LLM Agent Authorization Across Context Compaction",
+      "abstract": "Request-derived authorizers such as Progent protect LLM agents from prompt injection by deriving what an agent may do from the user's request. Their guarantee rests on attribution: the request is taken to be what the user said. Compaction breaks it. At every automatic compaction we observed, Claude Code and Codex placed a model-written summary of earlier turns as a user message, so the compactor's quotation of the user, documents and injected text reads as the user speaking. Because a policy frozen at the first request lets the agent finish few later tasks, we let Progent derive its policy for each request, and find that what it grants then follows what the compactor wrote. Even a payee the user stated is not safe: when an attacker's notice states another account as plain data and the user asks to pay the rent, the policy derived from a frontier compactor's summary admits the notice's account in 91% of cases, and the one derived from the user's own words in none. The cause is general: we prove that an authorizer that cannot see who wrote which bytes cannot treat a forged record differently from the legitimate one it imitates by more than the two are distinguishable, and that the bound is tight. Frontier compactors bear this out: they mark injected instructions, which have no legitimate twin, but rarely injected data, which does. What a compactor keeps, and how it marks it, is a security parameter. The fix follows from attribution: the authorizer credits only what the user said, authenticated on arrival and carried verbatim across the boundary, while the agent still reads the summary. We prove that it then receives exactly that text or nothing, so an attacker can block the policy but cannot shape it, and adaptive attacks on our implementation confirm it. In 40 attacked AgentDojo episodes re-run with the fix, no attacker action completes while the agent reads the summary.",
+      "authors": [
+        "Zeming Fei",
+        "Hongming Fei",
+        "Yi Xu",
+        "Xiaoyang Wang",
+        "Ying Zhang"
+      ],
+      "published": "2026-11-24T08:44:15Z",
+      "url": "https://arxiv.org/abs/2611.32194",
+      "pdf_url": "https://arxiv.org/pdf/2611.32194.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "llm agent",
+        "llm agents",
+        "prompt injection"
+      ],
+      "ranking_reason": "This paper explores how memory storage can accidentally trick AI safety guards into trusting bad inputs.",
+      "explanation": "This paper discovered that when AI systems summarize old chat messages to save memory, they accidentally mix up user instructions with untrusted data. This trick fools safety filters into letting malicious commands through.",
+      "why_it_matters": "Memory management is a big part of building real-world AI applications, and sloppy text compression can create major security holes.",
+      "project_idea": {
+        "title": "Secure Chat Summary Guard",
+        "description": "Build a small script that takes a long chat transcript, creates a summary, and flags any text that tries to mimic a user command. Test it by feeding it fake malicious summaries.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Use an n8n workflow to parse incoming chat logs, split trusted user inputs from external text blocks, and block strings that contain unauthorized keywords."
+      }
+    },
+    {
+      "id": "2611.32734",
+      "title": "ASCENT: A Benchmark for Evaluating and Advancing Stepwise Diagnostic Reasoning in Large Language Models on Common Clinical Scenarios",
+      "abstract": "Large language models (LLMs) excel at medical question answering yet are rarely evaluated on the stepwise diagnostic reasoning that defines real clinical workflows, where impressions are revised as information accumulates. We build Annotated Stepwise Clinical rEasoning for NaturalisTic Diagnosis (ASCENT), a clinician-annotated benchmark and training resource of 3,078 stepwise problems derived from MedQA-USMLE that decomposes each vignette into EMR-aligned steps (Findings, Impression, supporting Rationale), enabling evaluation of intermediate reasoning under incomplete information. Experiments and training with ASCENT revealed insights into how current LLMs handle stepwise diagnostic reasoning. Even strong reasoning models that perform well on MedQA-USMLE leave substantial headroom on ASCENT, and general-purpose frontier models trail further, exposing a persistent gap between fully informed and stepwise diagnosis. Fine-tuning Qwen2.5-7B and 32B on ASCENT yields measurable F1 gains over both pre-trained and HuatuoGPT-o1 CoT-trained baselines, with gains driven primarily by precision. Complementary robustness analyses (counterfactual perturbation, format-vs-content control, judge agreement, and rollout) further show that ASCENT-fine-tuned models rely on the diagnostic content of prior impressions rather than imitating their output format, while error propagation under rollout remains a key challenge for clinical deployment.",
+      "authors": [
+        "Yera Choi",
+        "Yeong Hwa Kim",
+        "Jaedeok Lee",
+        "Taekang Kim",
+        "Sangdoo Yun",
+        "Seong-Eun Moon"
+      ],
+      "published": "2026-11-24T14:49:50Z",
+      "url": "https://arxiv.org/abs/2611.32734",
+      "pdf_url": "https://arxiv.org/pdf/2611.32734.pdf",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "clinical",
+        "clinician",
+        "medical"
+      ],
+      "ranking_reason": "This paper evaluates how AI models handle step-by-step medical diagnoses just like real doctors do.",
+      "explanation": "This paper created a benchmark to test how well AI models do step-by-step medical diagnoses as new symptoms appear. It showed that current models are much worse at diagnosing step-by-step than they are at answering static medical questions.",
+      "why_it_matters": "Real-world AI tools must process information over time, not just give a single final answer. This paper shows the limits of current models in dynamic workflows.",
+      "project_idea": {
+        "title": "Step-by-Step Detective",
+        "description": "Code a simple terminal program that feeds a case story to an LLM one sentence at a time, asking for an updated hypothesis at each step. Track how the model changes its mind.",
+        "difficulty": "Easy",
+        "time_estimate": "3 hours",
+        "no_code_version": "Set up a multi-step prompt chain in Google Sheets using an LLM extension where each row feeds new clues into the next model call."
+      }
+    },
+    {
+      "id": "2611.31429",
+      "title": "Leaks by Installments: Cross-Session Answer Disclosure in LLM Tutors and a Ledger-Based Defense",
+      "abstract": "Tutors built on large language models (LLMs) are told not to give away answers, but a learner does not have to ask for the answer all at once. Existing safeguards judge each reply within the current conversation, so a learner can open a new session, reword the problem, or request a worked solution to the same problem with different numbers. We call this cross-session disclosure and propose a defense: a persistent, per-learner disclosure ledger. For every problem a learner brings, the system builds a typed solution graph. Before a reply is released, a gate matches the reply's own content, not the learner's wording, against the ledger by result values and by type-labeled solution structure, then computes which steps the learner could now derive. The reply is withheld if that set reaches the final answer or exceeds a budget. In a simulation of 3,000 problems, the ledger reduced leakage through renumbered practice variants from 100% to 10.6% while honest learners completed 94-99.5% of problems. With two real LLM tutors (Qwen2.5-3B-Instruct and Phi-3.5-mini-instruct) on 60 problems, leakage through renumbered variants fell from 0.58 to 0.08 and from 1.00 to 0.18, with 98% honest completion. The ledger did not reduce split requests beyond a per-session gate in the live runs. All acceptance criteria were fixed before each run.",
+      "authors": [
+        "Venkata Muttineni",
+        "Karthik Narayan",
+        "Christopher David"
+      ],
+      "published": "2026-11-23T19:15:18Z",
+      "url": "https://arxiv.org/abs/2611.31429",
+      "pdf_url": "https://arxiv.org/pdf/2611.31429.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.CL",
+        "cs.CY"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in education"
+      ],
+      "matched_keywords": [
+        "tutors"
+      ],
+      "ranking_reason": "This paper looks at how students try to trick AI tutors into giving away homework answers across multiple chat sessions.",
+      "explanation": "This paper studied how students trick AI homework tutors into revealing final answers by opening new chat sessions or changing the numbers slightly. It introduced a ledger system to track what hints a student has already received across all sessions.",
+      "why_it_matters": "When you build educational AI tools, students will try to bypass guardrails. You need cross-session tracking to keep the AI helpful without doing the homework for them.",
+      "project_idea": {
+        "title": "Homework Hint Tracker",
+        "description": "Create a Python dictionary-based ledger that tracks which problem types a user has asked about. Block the bot from giving direct answers if the user crosses a hint limit.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use a Google Sheets database to log user IDs and question counts, stopping an n8n chatbot flow from replying with answers if the user exceeds three attempts."
+      }
+    },
+    {
+      "id": "2611.32663",
+      "title": "Economic World Model",
+      "abstract": "Can artificial intelligence reproduce the economic dynamics that emerge as households, firms and governments interact and adapt through markets and institutions? To answer this question, we define an economic world model (EWM) as an agent's internal representation of how an economic system works, enabling counterfactual simulation and decision-making under resource constraints. We then propose a general framework for studying EWMs that links three tasks: simulating agent behaviour, learning economic transitions and systematically evaluating the dynamics. As an initial implementation, we learn household policies from microeconomic data and calibrate a structural economic transition model using macroeconomic data, linking individual decisions to aggregate dynamics. Our micro-to-macro evaluation framework compares simulated individual actions and group distributions with observed microdata and assesses macroeconomic dynamics through forecasting and counterfactual experiments. Results show that simulated and observed household consumption distributions overlap by 94.9%, while EWM forecasts closely track real GDP and several other aggregate levels. In government-borrowing counterfactuals, the EWM reproduces the benchmark life-cycle model's short-run transmission from borrowing to consumption. For ex ante planning, the EWM enables an LLM agent to achieve 10.29% higher simulated GDP under the epidemic shock than direct LLM decisions. This initial EWM is only a starting point. We invite economists and AI researchers to build a stronger EWM together. Economists can contribute richer economic models and knowledge, while AI researchers can develop stronger data-driven methods for simulating agent behaviour and learning economic transitions. Together, we aim not only to reproduce real economic dynamics, but also to discover and test new mechanisms that support better decisions and benefit society.",
+      "authors": [
+        "Qirui Mi",
+        "Yujia Ming",
+        "Bo Li",
+        "Haifeng Zhang"
+      ],
+      "published": "2026-11-24T14:14:40Z",
+      "url": "https://arxiv.org/abs/2611.32663",
+      "pdf_url": "https://arxiv.org/pdf/2611.32663.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "llm agent",
+        "economic"
+      ],
+      "ranking_reason": "This paper builds an internal economic simulator to test how AI agents make financial decisions under limited resources.",
+      "explanation": "This paper built an economic world model to simulate how households, firms, and governments interact in a marketplace. It proved that simulating these actions helps AI make better financial decisions during shocks like epidemics.",
+      "why_it_matters": "Complex AI systems often need an internal simulator of their environment to test choices before executing them in reality.",
+      "project_idea": {
+        "title": "Simple Market Simulator",
+        "description": "Write a Python script where simple agent functions buy and sell a virtual item based on changing prices over ten simulation steps. Plot the resulting price trends using matplotlib.",
+        "difficulty": "Medium",
+        "time_estimate": "5 hours",
+        "no_code_version": "Build a basic spreadsheet model in Google Sheets where formulas adjust household savings and spending based on a random economic shock variable."
+      }
+    },
+    {
+      "id": "2611.31590",
+      "title": "GoldiBench: Right Tools, Wrong Amount -- Benchmarking Agents on Effect Judgement in Professional Editing",
+      "abstract": "Real editing requests describe a look, not the steps to reach it, so an agent that serves them must judge how much of each tool the look takes. Existing benchmarks do not measure this: their tasks either state the tools and values, or leave the amount open and are scored by VLM judges that pass more than half of half- and triple-strength results. We introduce GoldiBench, a benchmark of 500 editing tasks in five professional applications (darktable, RawTherapee, GIMP, Inkscape, Blender), solvable by writing a program or by operating the GUI. Each task pairs a START image with a TARGET rendered from a hidden program, so the amount is fixed by a known target; the agent's edit is re-rendered and compared with TARGET, and the same task is posed with the tools and values, the tools only, or the goal only, separating operation from effect judgement. Across 25 open, GUI and closed models, agents operate well (99-100% with programs from 4B up when told the values) but fall off a cliff when they must judge the amount: given only the tools, the best model passes 19% of the tasks with programs and 33% through the GUI, and scale does not close the gap. Manuals barely help; the measured TARGET-START difference more than doubles the pass rate, but the same difference shown as an image does not for open models. Allowed four renders, agents almost always stop after the first; forced to compare, the strong models double their pass rate. Agents know the tools, but neither read nor check the amount.",
+      "authors": [
+        "Wang Yang",
+        "Xinpeng Li",
+        "Yanyan Zhang",
+        "Chaoda Song",
+        "Shouren Wang",
+        "Debargha Ganguly",
+        "Vikash Singh",
+        "Chuang Ma",
+        "Xiaoran Cai",
+        "Kai Ye",
+        "Xiaotian Han",
+        "Vipin Chaudhary"
+      ],
+      "published": "2026-11-23T21:37:22Z",
+      "url": "https://arxiv.org/abs/2611.31590",
+      "pdf_url": "https://arxiv.org/pdf/2611.31590.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.SE"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper tests whether AI tools can figure out the right amount of editing to apply when given vague creative requests.",
+      "explanation": "This paper tested whether AI image editing tools know how much adjustment to apply when given vague creative requests. It found that while models know which tools to use, they struggle to figure out the correct intensity for those tools.",
+      "why_it_matters": "Knowing which tool to call is only half the battle in AI engineering. Passing the correct numerical parameters is often where models fail.",
+      "project_idea": {
+        "title": "Parameter Guessing Game",
+        "description": "Write a script that asks an LLM to guess the numerical brightness and contrast values needed to fix a washed-out image description, then check its accuracy against target values.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use Make to connect a form where users type a photo style, send it to an LLM, and parse the returned JSON numbers to ensure they stay within valid ranges."
+      }
+    }
+  ]
+}
