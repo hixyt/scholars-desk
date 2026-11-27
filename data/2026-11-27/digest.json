@@ -1,0 +1,418 @@
+{
+  "date": "2026-11-27",
+  "verified_at": "2026-11-27T00:47:43.969117+00:00",
+  "verifier": "Groq (openai/gpt-oss-120b)",
+  "status": "verified",
+  "papers": [
+    {
+      "id": "2611.33760",
+      "title": "GlassGround: GUI Grounding Beyond Native Screenshots with Egocentric Wearable Vision",
+      "abstract": "Wearable assistants must localize interface elements from camera observations when direct screenshot access is unavailable, yet existing GUI grounding benchmarks primarily evaluate native screenshots. We introduce GlassGround, a new benchmark that pairs native screenshots with wearable camera observations while holding GUI states, instructions, and targets fixed. GlassGround contains 3,250 tasks across Android and iOS, captured using four wearable devices under four viewing conditions. Across ten open-source models, mean grounding accuracy drops from 94.8% on screenshots to 48.5% on camera images. Further analysis reveals that changes in target scale, screen geometry, and background cannot fully explain this performance degradation. We then study two ways to narrow this gap. At inference time, local zooming and screen rectification help but leave most of the gap. For training-time adaptation, we build on GlassGround's paired-view design and introduce PairDistill, a baseline that aligns target representations across views alongside coordinate supervision. Trained on independently collected data and using no screenshots at inference, it improves camera-image accuracy by 9.4 and 12.2 points on two backbones and transfers to unseen devices and operating systems. Combined with local zooming, it reaches 69.6% and 64.4%, but does not close the gap. The GlassGround dataset and code are available at https://github.com/yunnw/GlassGround.",
+      "authors": [
+        "Yun Wang",
+        "Siyue Sun",
+        "Jiaying Du",
+        "Xinyi Wei",
+        "Xiaoming Zhai",
+        "Zhenlin An",
+        "Ninghao Liu"
+      ],
+      "published": "2026-11-25T04:18:15Z",
+      "url": "https://arxiv.org/abs/2611.33760",
+      "pdf_url": "https://arxiv.org/pdf/2611.33760.pdf",
+      "categories": [
+        "cs.CV",
+        "cs.HC"
+      ],
+      "primary_category": "cs.CV",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "gui"
+      ],
+      "ranking_reason": "This paper looks at how wearable cameras can locate buttons and screens when direct phone screenshots are missing.",
+      "explanation": "This paper looks at how AI models struggle to find buttons and icons on a phone screen when looking through a wearable camera instead of a direct digital screenshot. The authors built a new dataset and a training method to help AI bridge this visual gap.",
+      "why_it_matters": "As a 2nd-year student, understanding how input data changes model performance is key. It teaches you that models trained on clean data often fail in messy, real-world camera views.",
+      "project_idea": {
+        "title": "Webcam UI Finder",
+        "description": "Write a Python script that takes a photo of your phone screen using your laptop webcam and uses template matching to find a specific app icon. This introduces you to basic computer vision tasks without needing complex neural networks.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use an automated workflow tool like Make to trigger a mobile notification whenever a specific photo is uploaded to a shared Google Drive folder."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper looks at how wearable cameras can locate buttons and screens when direct phone screenshots are missing.",
+          "supported": true,
+          "evidence": "Wearable assistants must localize interface elements from camera observations when direct screenshot access is unavailable",
+          "reason": "The abstract explicitly states the paper studies wearable cameras locating interface elements without screenshots"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper looks at how AI models struggle to find buttons and icons on a phone screen when looking through a wearable camera instead of a direct digital screenshot.",
+          "supported": true,
+          "evidence": "Across ten open-source models, mean grounding accuracy drops from 94.8% on screenshots to 48.5% on camera images",
+          "reason": "The drop in accuracy shows AI models struggle to find UI elements from wearable camera views versus screenshots"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "The authors built a new dataset and a training method to help AI bridge this visual gap.",
+          "supported": true,
+          "evidence": "We introduce GlassGround, a new benchmark that pairs native screenshots with wearable camera observations ... we build on GlassGround's paired-view design and introduce PairDistill, a baseline that aligns target representations across views alongside coordinate supervision",
+          "reason": "The abstract describes both a new dataset and a training method (PairDistill) to bridge the visual gap"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.33821",
+      "title": "RadOncGym: An Agent-Based Framework for Radiotherapy Dose-Mimicking Optimization",
+      "abstract": "AI dose-prediction models generate patient-specific 3D dose distributions from patient anatomy, providing an important intermediate representation for automated radiotherapy planning. However, an AI-predicted dose must undergo downstream optimization to produce a physically constrained treatment plan, a process that requires balancing competing planning objectives. We present RadOncGym, an agent-based framework that enables an LLM agent to iteratively tune 12 planning-objective weights for dose-mimicking optimization. To reduce iterative evaluation cost, RadOncGym incorporates a surrogate verifier that provides rapid feedback while allowing the agent to decide when to request a full planning solve within a fixed solve budget. We evaluate RadOncGym on 60 OpenKBP head-and-neck patients, each paired with 10 predictions from OpenKBP-Opt dose-prediction sets, yielding 600 patient-prediction contexts per experimental configuration. Under RadOncGym's 16-turn setting with a three-solve budget, a GPT-5.6 Sol agent reduces mean clinical-criterion violation by 0.6131 Gy and improves DVH and dose scores by 0.5986 and 0.2204 Gy relative to leaving all 12 weights fixed at 1, outperforming all evaluated non-agent weight-tuning methods under the same solve budget. It remains competitive with the 16-solve variants of these methods while requiring 75.0-77.6% less normalized runtime. RadOncGym demonstrates the potential of LLM agents as optimization planners in downstream radiotherapy plan optimization and provides a public testbed for their systematic evaluation. Code and configurations are available at https://github.com/miaot-usc/RadOncGym.",
+      "authors": [
+        "Tong Miao",
+        "Shupeng Cheng",
+        "Xiwen Chen",
+        "Ruishan Liu"
+      ],
+      "published": "2026-11-25T05:50:03Z",
+      "url": "https://arxiv.org/abs/2611.33821",
+      "pdf_url": "https://arxiv.org/pdf/2611.33821.pdf",
+      "categories": [
+        "cs.AI"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "AI in health"
+      ],
+      "matched_keywords": [
+        "llm agent",
+        "llm agents",
+        "clinical",
+        "patient",
+        "patients"
+      ],
+      "ranking_reason": "This study shows how autonomous AI programs can help set up precise radiation therapy plans for cancer patients.",
+      "explanation": "This study uses an LLM [large language model, an AI that understands text] as an autonomous agent to adjust treatment parameters for cancer radiation therapy.",
+      "why_it_matters": "It shows you how LLMs can do more than just chat. They can act as decision-making agents that optimize complex numerical parameters in specialized fields.",
+      "project_idea": {
+        "title": "LLM Budget Optimizer",
+        "description": "Build a simple Python script where an LLM tries to guess the best settings for a math function by looking at past error feedback over a few turns. You will practice writing loops that feed model outputs back into the prompt.",
+        "difficulty": "Medium",
+        "time_estimate": "4-5 hours",
+        "no_code_version": "Set up an n8n workflow where an AI node evaluates a text description of a budget and iteratively suggests adjustments until it fits a target limit."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This study shows how autonomous AI programs can help set up precise radiation therapy plans for cancer patients.",
+          "supported": true,
+          "evidence": "We present RadOncGym, an agent-based framework that enables an LLM agent to iteratively tune 12 planning-objective weights for dose-mimicking optimization",
+          "reason": "The abstract says an autonomous AI (LLM agent) helps set up radiation therapy plans"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This study uses an LLM [large language model, an AI that understands text] as an autonomous agent to adjust treatment parameters for cancer radiation therapy.",
+          "supported": true,
+          "evidence": "We present RadOncGym, an agent-based framework that enables an LLM agent to iteratively tune 12 planning-objective weights for dose-mimicking optimization",
+          "reason": "The abstract explicitly mentions using an LLM as an autonomous agent to adjust treatment parameters"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "The agent iteratively tweaks settings to find the best balance between killing cancer cells and protecting healthy tissue.",
+          "supported": false,
+          "evidence": "",
+          "reason": "The abstract does not mention killing cancer cells or protecting healthy tissue; it only discusses balancing planning objectives"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 2
+    },
+    {
+      "id": "2611.34042",
+      "title": "Too Smart for Its Own Good? Cognitive Fidelity and Competence Leakage in LLM Simulations of Young Learners",
+      "abstract": "LLM-based interactive learner simulators are increasingly used in educational applications, including teacher training and tutoring system development. A critical requirement for those simulations is cognitive fidelity: the simulated learner should maintain the assigned knowledge, misconceptions, and reasoning procedures throughout interaction. However, LLMs may express knowledge or problem-solving skills beyond the assigned learner's cognitive status, a phenomenon we refer to as competence leakage. In this exploratory study, we examine 3,339 simulated learner utterances from 130 teacher-learner simulator transcripts across three learning scenarios and identify over-competence as a prominent direction of cognitive-profile misalignment during interaction. We then investigate the recurrence of previously observed competence leakage cases under four matched-trigger evaluation protocols, ranging from isolated questioning to multi-turn interactions, across five model configurations. Overall, we observe higher violation recurrence under multi-turn protocols than under isolated question answering. More capable models generally show lower recurrence, whereas increased reasoning effort does not consistently improve cognitive fidelity and is even associated with slightly higher recurrence under multi-turn protocols in our matched-model comparison. These findings provide exploratory evidence of competence leakage phenomena in interactive learner simulation and suggest that single-turn question-answering type of evaluations alone may be insufficient, motivating the development of more systematic and reliable multi-turn protocols for evaluating cognitive fidelity in learner simulation.",
+      "authors": [
+        "Zhen Xu",
+        "Beata Beigman Klebanov",
+        "Jamie N. Mikeska"
+      ],
+      "published": "2026-11-25T09:22:32Z",
+      "url": "https://arxiv.org/abs/2611.34042",
+      "pdf_url": "https://arxiv.org/pdf/2611.34042.pdf",
+      "categories": [
+        "cs.CL"
+      ],
+      "primary_category": "cs.CL",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI in education"
+      ],
+      "matched_keywords": [
+        "educational",
+        "tutoring"
+      ],
+      "ranking_reason": "This work explores how AI simulators used for teacher training sometimes act too smart for their own good.",
+      "explanation": "This paper investigates how AI models pretending to be students in teaching simulations often act too smart. Instead of making typical human mistakes, these AI models reveal advanced knowledge they should not possess.",
+      "why_it_matters": "It highlights a common pitfall in AI development called data leakage or over-competence, reminding you that models often need extra constraints to act like real humans.",
+      "project_idea": {
+        "title": "Persona Simulator Checker",
+        "description": "Prompt an LLM to act like a struggling 2nd-grade math student and write a script that quizzes it across five turns to see if it accidentally uses calculus terms. You will learn how multi-turn prompt behavior differs from single answers.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Create a Google Sheet with a prompt template that tests an AI chatbot with tricky questions, and manually log how many times it breaks character."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This work explores how AI simulators used for teacher training sometimes act too smart for their own good.",
+          "supported": true,
+          "evidence": "LLM-based interactive learner simulators ... However, LLMs may express knowledge or problem-solving skills beyond the assigned learner's cognitive status, a phenomenon we refer to as competence leakage",
+          "reason": "The abstract describes AI simulators showing competence leakage, i.e., acting too smart"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper investigates how AI models pretending to be students in teaching simulations often act too smart.",
+          "supported": true,
+          "evidence": "LLM-based interactive learner simulators ... However, LLMs may express knowledge or problem-solving skills beyond the assigned learner's cognitive status",
+          "reason": "The abstract investigates AI models pretending to be students that exhibit over‑competence"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "Instead of making typical human mistakes, these AI models reveal advanced knowledge they should not possess.",
+          "supported": true,
+          "evidence": "LLM-based interactive learner simulators ... LLMs may express knowledge or problem-solving skills beyond the assigned learner's cognitive status",
+          "reason": "The abstract notes that models reveal knowledge they should not possess"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.33605",
+      "title": "The Detour Is the Danger: Preserving Security During LLM Agent Recovery",
+      "abstract": "LLM agents increasingly rely on external tools and reusable Skills to execute complex workflows, autonomously replanning when operations fail. However, such recovery may preserve task functionality while silently discarding the security protections required by the original workflow. In this paper, we investigate workflow security downgrade, a failure-induced security threat in which agents execute sensitive operations without satisfying their original protection requirements. Unlike prompt injection, this threat exploits autonomous recovery decisions triggered by execution failures, without modifying instructions or tool definitions. We systematically evaluate this behavior through fault injection in an executable MCP/Skill environment spanning seven LLMs, twelve task templates, and three security-sensitive domains. To address this threat, we propose ARGUS, an obligation-preserving recovery framework that combines resource-bound security evidence, isolated recovery-plan validation, and execution-time enforcement. In a separate 864-run evaluation, ARGUS prevents all observed protection-loss events under enforcement, while recovery assistance yields model-dependent improvements in protected task completion over blocking alone. Our findings demonstrate that secure agent recovery requires preserving security obligations across workflow changes, rather than merely restoring task functionality.",
+      "authors": [
+        "Boyang Ma",
+        "Jinku Li",
+        "Hao Wu",
+        "Sheng Gao",
+        "Man Zhou",
+        "Minghui Xu",
+        "Yue Zhang"
+      ],
+      "published": "2026-11-25T01:23:57Z",
+      "url": "https://arxiv.org/abs/2611.33605",
+      "pdf_url": "https://arxiv.org/pdf/2611.33605.pdf",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "primary_category": "cs.CR",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "LLM agents for everyday work",
+        "Trust and safety"
+      ],
+      "matched_keywords": [
+        "llm agent",
+        "llm agents",
+        "prompt injection"
+      ],
+      "ranking_reason": "This research explains how software agents can accidentally lose their security protections when trying to fix a failed task.",
+      "explanation": "This research reveals that when autonomous AI agents hit an error and try to fix themselves, they sometimes skip important security rules. The authors then introduce a framework to make sure security checks are never bypassed during recovery.",
+      "why_it_matters": "When you start building AI agents that use external tools, security is a major concern. This paper teaches you to think about edge cases where error handling creates vulnerabilities.",
+      "project_idea": {
+        "title": "Secure Tool Wrapper",
+        "description": "Write a Python function that executes user commands, but wrap it with a security check that runs even if the main command throws an error. This helps you practice defensive programming for AI workflows.",
+        "difficulty": "Medium",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Build an n8n workflow with an error handler branch that forces a mandatory approval step before retrying any failed automated action."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This research explains how software agents can accidentally lose their security protections when trying to fix a failed task.",
+          "supported": true,
+          "evidence": "such recovery may preserve task functionality while silently discarding the security protections required by the original workflow",
+          "reason": "The abstract explains agents can lose security protections during recovery"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This research reveals that when autonomous AI agents hit an error and try to fix themselves, they sometimes skip important security rules.",
+          "supported": true,
+          "evidence": "such recovery may preserve task functionality while silently discarding the security protections required by the original workflow",
+          "reason": "The abstract states that error‑driven recovery can skip important security rules"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "The authors then introduce a framework to make sure security checks are never bypassed during recovery.",
+          "supported": true,
+          "evidence": "we propose ARGUS, an obligation-preserving recovery framework that combines resource-bound security evidence, isolated recovery-plan validation, and execution-time enforcement",
+          "reason": "The abstract introduces a framework (ARGUS) to prevent security‑check bypass during recovery"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    },
+    {
+      "id": "2611.33652",
+      "title": "Self-supervised Clipped-objective Reinforcement Leaning Framework for Risk-aware Portfolio Management",
+      "abstract": "Portfolio management involves balancing diverse financial assets, a critical yet challenging task in quantitative trading. Although deep reinforcement learning has emerged as an active research domain for solving complex sequential decision-making problems over the past decade, deploying reinforcement learning frameworks in non-stationary financial markets raises formidable difficulties. Most existing reinforcement learning-based portfolio management models fail to account for tick-level intraday market dynamics (e.g., order flow imbalances and liquidity fluctuations), which reflect rapid capital movements. Simultaneously, these models suffer from unstable learning processes due to reinforcement learning's inherent high variance. This paper presents a Self-supervised Clipped-objective Portfolio management framework (SCP), which addresses these limitations through a two-phase architecture. Market feature integration phase (application contribution) integrates micro-level market microstructure patterns with macro-level financial indicators to enhance sensitivity to intraday asset trend dynamics. Policy optimization Phase (AI contribution) employs intermediate asset state representations to derive optimal portfolio allocations via a self-supervised clipped-objective policy-learner, ensuring both effectiveness and computational efficiency. Extensive evaluations on three major index datasets from China's A-share market demonstrate that SCP's superior performance in balancing risk-return trade-offs compared to state-of-the-art baselines. Exploratory and ablation studies further validate the contributions of SCP's key components.",
+      "authors": [
+        "Zongshen Mu"
+      ],
+      "published": "2026-11-25T02:19:18Z",
+      "url": "https://arxiv.org/abs/2611.33652",
+      "pdf_url": "https://arxiv.org/pdf/2611.33652.pdf",
+      "categories": [
+        "cs.LG"
+      ],
+      "primary_category": "cs.LG",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI for business and money"
+      ],
+      "matched_keywords": [
+        "financial"
+      ],
+      "ranking_reason": "",
+      "explanation": "This paper introduces a new machine learning framework to manage financial portfolios safely in fast-moving markets. It combines quick market trend data with a stable training method to balance risk and return.",
+      "why_it_matters": "It demonstrates how reinforcement learning [learning by trial and error with rewards and penalties] can be adapted to handle high-variance real-world data without breaking down.",
+      "project_idea": {
+        "title": "Simple Risk Balancer",
+        "description": "Write a Python script that simulates buying and selling a fake stock based on moving averages, adding a strict penalty rule if losses exceed a certain limit. You will learn how to code basic risk management logic.",
+        "difficulty": "Easy",
+        "time_estimate": "3-4 hours",
+        "no_code_version": "Use Google Sheets formulas to track a mock stock portfolio and set up conditional formatting alerts when portfolio drawdown drops past a threshold."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This paper tests a machine learning method to manage financial portfolios safely in fast-changing markets.",
+          "supported": false,
+          "evidence": "This paper presents a Self-supervised Clipped-objective Portfolio management framework (SCP), which addresses these limitations ... in non‑stationary financial markets",
+          "reason": "Its proof quote is not in the abstract."
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This paper introduces a new machine learning framework to manage financial portfolios safely in fast-moving markets.",
+          "supported": true,
+          "evidence": "This paper presents a Self-supervised Clipped-objective Portfolio management framework (SCP)",
+          "reason": "The abstract introduces a new ML framework for portfolio management in volatile markets"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "It combines quick market trend data with a stable training method to balance risk and return.",
+          "supported": true,
+          "evidence": "Market feature integration phase ... integrates micro-level market microstructure patterns ... Policy optimization Phase ... employs ... clipped-objective policy-learner, ensuring both effectiveness and computational efficiency",
+          "reason": "The abstract states the method combines rapid market trend data with a stable clipped‑objective training approach to balance risk and return"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 2
+    },
+    {
+      "id": "2611.33594",
+      "title": "Aligned Machine: A Benchmark for Evaluating Multimodal Embedding Similarity via Human Comparative Judgements",
+      "abstract": "Embedding models increasingly inform how people search, recommend, and retrieve information, yet we lack credible ways to test whether these similarity judgments reflect how humans understand meaning. Existing benchmarks typically rely on static, expert-labeled pairs with coarse Likert-style annotations, limiting scalability and making it difficult to obtain consistent, high-confidence annotations. We introduce Aligned Machine, an interactive, public-facing platform that transforms broad participation into a continuously growing Human-Aligned Similarity Benchmark (HASB) for evaluating semantic alignment in embedding-based systems. Participants complete a cognitively-natural, forced-choice task, comparing two pairs of items (text or images) and selecting which pair is more similar. This comparative design is accessible to non-experts, yields clean preference data, and supports robust aggregation. We report results from an initial deployment with 115 participants contributing 2,875 total labeled pairs and 872 unique pairs. Using HASB, we evaluated 12 widely used embedding models and found only partial alignment between embedding similarity and human judgments. Text-only models consistently achieve higher overall agreement than multimodal models, while multimodal performance varies systematically by task type: alignment is strongest for image-image comparisons, weaker for image-text comparisons, and lowest for text-text comparisons. Aligned Machine is designed to evolve over time as participation grows, supporting longitudinal analysis, domain-specific studies, bias detection, and measurement of concept drift across model versions. By combining accessible public participation with rigorous comparative evaluation, HASB provides a scalable and accountable framework for auditing semantic alignment in embedding models.",
+      "authors": [
+        "Jiechen Li",
+        "Hannah Groos",
+        "Brinnae Bent"
+      ],
+      "published": "2026-11-25T01:09:44Z",
+      "url": "https://arxiv.org/abs/2611.33594",
+      "pdf_url": "https://arxiv.org/pdf/2611.33594.pdf",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "primary_category": "cs.AI",
+      "sources": [
+        "arxiv"
+      ],
+      "huggingface": null,
+      "matched_topics": [
+        "AI tools for non-programmers"
+      ],
+      "matched_keywords": [
+        "non-experts"
+      ],
+      "ranking_reason": "This study introduces a public platform to test if AI search models actually understand meaning the same way humans do.",
+      "explanation": "This study tests whether AI embedding models [vector representations that capture the meaning of words or images] actually measure similarity the same way humans do. The authors built a public platform where people compare pairs of items to create a human-aligned benchmark.",
+      "why_it_matters": "Embeddings are the foundation of modern search and retrieval systems. Knowing how to evaluate if your embeddings match human intuition is helpful for building good AI applications.",
+      "project_idea": {
+        "title": "Mini Embedding Comparator",
+        "description": "Write a Python script using a pre-trained embedding model to compare three sentences and find which two are closest, then print the cosine similarity score. You will practice using vector math for semantic search.",
+        "difficulty": "Easy",
+        "time_estimate": "2-3 hours",
+        "no_code_version": "Use a no-code vector database tool to upload a few text snippets and test similarity search queries using keyword distance."
+      },
+      "claims": [
+        {
+          "sentence_id": "s1",
+          "source": "reason",
+          "claim": "This study introduces a public platform to test if AI search models actually understand meaning the same way humans do.",
+          "supported": true,
+          "evidence": "We introduce Aligned Machine, an interactive, public-facing platform that transforms broad participation into a continuously growing Human-Aligned Similarity Benchmark (HASB) for evaluating semantic alignment in embedding-based systems",
+          "reason": "The abstract says the study introduces a public platform to test if AI models align with human meaning"
+        },
+        {
+          "sentence_id": "s2",
+          "source": "explanation",
+          "claim": "This study tests whether AI embedding models [vector representations that capture the meaning of words or images] actually measure similarity the same way humans do.",
+          "supported": true,
+          "evidence": "We introduce Aligned Machine, an interactive, public-facing platform ... for evaluating semantic alignment in embedding-based systems",
+          "reason": "The abstract describes testing whether embedding models measure similarity like humans do"
+        },
+        {
+          "sentence_id": "s3",
+          "source": "explanation",
+          "claim": "The authors built a public platform where people compare pairs of items to create a human-aligned benchmark.",
+          "supported": true,
+          "evidence": "Participants complete a cognitively‑natural, forced‑choice task, comparing two pairs of items (text or images) and selecting which pair is more similar",
+          "reason": "The abstract explains the platform lets people compare item pairs to build a human‑aligned benchmark"
+        }
+      ],
+      "claims_checked": 3,
+      "claims_supported": 3
+    }
+  ],
+  "left_out": []
+}
