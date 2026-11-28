@@ -81,11 +81,11 @@ jobs:
             printf 'GMAIL_APP_PASSWORD=%s\n' "$(printf '%s' "$GMAIL_APP_PASSWORD" | tr -d '[:space:]')"
             printf 'DESK_DB_KEY=%s\n' "$DESK_DB_KEY"
           } > "$keys"
-          supabase secrets set --project-ref "$PROJECT_REF" --env-file "$keys"
+          supabase secrets set --project-ref "$PROJECT_REF" --env-file "$keys" --yes   # --yes: the CLI asks before changing anything, and a CI run cannot answer
           rm -f "$keys"
 
       - name: Deploy
         if: steps.ready.outputs.go == 'true'
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: supabase functions deploy desk --project-ref "$PROJECT_REF" --no-verify-jwt --use-api
+        run: supabase functions deploy desk --project-ref "$PROJECT_REF" --no-verify-jwt --use-api --yes
