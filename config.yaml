@@ -200,9 +200,9 @@ site:
   supabase_key: "sb_publishable_i_rqph_yh30-q9mMNSViPQ_WE41UiHu"
 
   # Subscribe form and the claim checker run on a Supabase Edge Function ("desk").
-  # Keep these false until the function is deployed (see SETUP.md), then switch them on.
-  subscribe: false
-  checker: false
+  # Switched on 28 Nov 2026, after the function was deployed (see SETUP.md).
+  subscribe: true
+  checker: true
 
 # Claim checker (supabase/functions/desk). Daily caps keep it inside the free Groq and Gemini limits.
 checker:
