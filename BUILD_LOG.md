@@ -15,10 +15,16 @@ How it works: arXiv and Hugging Face-keep the papers on my 6 topics-Gemini picks
 - [x] README and share picture
 - [x] Starts on time at 6:17 AM
 - [x] Six topics
-- [ ] Subscribe form and Examiner go live (built, I'll switch them on after my exams)
+- [x] Subscribe form and Examiner are live
 - [ ] Launch
 
 ## Log
+
+### Day 8 · 28 Nov
+- Built: I made the Supabase tables for subscribers and Examiner results, gave GitHub the two keys it needed, and deployed the function. The subscribe form and the Examiner are now live on the website. I tested both myself: I signed up, confirmed from my inbox and checked a post.
+- Broke: The first deploy stopped halfway. The new Supabase tool asks "are you sure?" before it changes anything, and a GitHub run can't answer, so I told it yes in advance with --yes. Supabase tokens also work differently now: you pick exactly what each token can do.
+- Decided: The deploy token can only deploy the function and set its keys, nothing else in my account. My own address is skipped in the subscriber list, so I never get the same email twice.
+- Numbers: From 14 to 28 Nov the desk started at 6:17 AM on all 15 mornings and never failed. 12 emails went out (3 days had no new papers). It read 11,988 papers and picked 63. 168 of 188 lines were proven, and 2 papers stayed out because none of their lines could be proven.
 
 ### Day 7 · 13 Nov
 - Built: I added four new topics (health, education, trust and safety, business and money). The desk now covers six and picks about one paper for each. I also built two new things. One is a form where people can subscribe and choose their topics. The other is the Examiner: you paste a LinkedIn post about a paper, and it checks each claim against the paper's abstract. Both run on a small Supabase function. They're ready, but I'm keeping them off until my exams are over.

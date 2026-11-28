@@ -4,9 +4,11 @@ The library reads itself. You just build.
 
 Every morning a small robot reads the new AI papers on arXiv and Hugging Face, keeps the ones on six topics (no-code AI, AI agents at work, health, education, trust and safety, business and money), picks about one paper per topic, and explains each one in plain words with a project you can build over a weekend. Every sentence it writes has to be proven by a quote from the paper's own abstract. If it can't be proven, it gets cut before anyone reads it.
 
+Anyone can subscribe and get only the topics they want. And the Examiner checks LinkedIn posts about AI papers against the paper itself.
+
 It runs on free tiers and costs ₹0 a day.
 
-[Open the website](https://hixyt.github.io/scholars-desk/) · [Read the build log](BUILD_LOG.md)
+[Open the website](https://hixyt.github.io/scholars-desk/) · [Check a post with the Examiner](https://hixyt.github.io/scholars-desk/check.html) · [Read the build log](BUILD_LOG.md)
 
 ![The website: a wax seal with today's papers orbiting it as books](assets/readme/hero.jpg)
 
@@ -56,6 +58,25 @@ A dark, bookish email with a picture of the day's papers drawn as books on a des
 
 <img src="assets/readme/email.jpg" alt="The morning email" width="420">
 
+## Subscribe and pick your topics
+
+The website has a form (Chapter V, By Post) where anyone can get the morning email. You pick the topics you care about and confirm your address from your inbox. From the next morning you get only the papers on those topics. Every email has a link to change topics or unsubscribe, and Gmail's own unsubscribe button works too. Sign-ups that are never confirmed get deleted after a week.
+
+## The Examiner
+
+People post about AI papers on LinkedIn all the time, and the claims tend to grow on the way. The Examiner checks them. Paste a post, add the paper's arXiv link, and it pulls out up to six claims and stamps each one:
+
+- In the paper
+- Stretched
+- Paper says otherwise
+- Not in the abstract
+
+Each stamp comes with the line from the abstract that backs it. The Examiner uses the same quote test as the fact-checker, so it can't show a quote the abstract doesn't have. A claim with a number that isn't in the abstract can't get "In the paper" either. Every check gets a share link, so you can drop the result under the post.
+
+[Try the Examiner](https://hixyt.github.io/scholars-desk/check.html)
+
+One person can check 8 posts a day, and everyone together 120, so it stays inside the free plans. Visitors are counted with a scrambled id, never their IP address.
+
 ## Stack
 
 | Part | What I used |
@@ -66,6 +87,7 @@ A dark, bookish email with a picture of the day's papers drawn as books on a des
 | Email | Gmail SMTP with an App Password, banner drawn with Pillow |
 | Website | GitHub Pages, Three.js for the 3D hero and bookcase |
 | Schedule | GitHub Actions, started by Supabase pg_cron |
+| Subscribe form and Examiner | A Supabase Edge Function in TypeScript, tested and deployed by GitHub Actions |
 | Seal Book | A Supabase table that visitors can only add to and read |
 
 ## Run it yourself
@@ -90,7 +112,7 @@ python send_email.py
 python build_site.py
 ```
 
-To run it every day on GitHub: fork the repo, add `GEMINI_API_KEY`, `GROQ_API_KEY`, `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` as Actions secrets (`EMAIL_TO` is optional), turn on GitHub Pages for the main branch, and press Run workflow once. Change the topics and keywords in `config.yaml`, and empty the two values under `site:` there (or put in your own Supabase project), so your copy doesn't write to my Seal Book.
+To run it every day on GitHub: fork the repo, add `GEMINI_API_KEY`, `GROQ_API_KEY`, `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` as Actions secrets (`EMAIL_TO` is optional), turn on GitHub Pages for the main branch, and press Run workflow once. Change the topics and keywords in `config.yaml`, and empty the two values under `site:` there (or put in your own Supabase project), so your copy doesn't write to my Seal Book. The subscribe form and the Examiner are optional; [SETUP.md](SETUP.md) has the steps.
 
 ## What's in the repo
 
@@ -104,7 +126,10 @@ To run it every day on GitHub: fork the repo, add `GEMINI_API_KEY`, `GROQ_API_KE
 | `common.py` | Shared helpers: config, keys, the Groq call, text cleanup |
 | `config.yaml` | Topics, keywords, models and settings |
 | `data/` | One folder per morning: fetched papers, the draft, the checked digest, the counts |
+| `supabase/` | The function behind the subscribe form and the Examiner, its tables and its tests |
 | `.github/workflows/morning-digest.yml` | The daily run |
+| `.github/workflows/deploy-function.yml` | Tests the function and puts it on Supabase |
+| `SETUP.md` | How to switch on the subscribe form and the Examiner |
 | `BUILD_LOG.md` | What I built, what broke and what I decided, day by day |
 
 The fonts in `assets/fonts` are Playfair Display, Cinzel and Spectral, used under the SIL Open Font License (the license files are next to them).
