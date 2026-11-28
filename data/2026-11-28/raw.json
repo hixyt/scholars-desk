@@ -1,0 +1,203 @@
+[
+  {
+    "id": "2611.31491",
+    "title": "Pretrained Tabular Features and the Measurement of Financial Proximity",
+    "abstract": "Spatial arbitrage pricing theory (S-APT) extends factor models to allow returns to spill over between connected firms, beyond what common risk factors explain. In recent years, tabular foundation models (TFMs) have matched or outperformed tuned gradient-boosted and bagged ensembles on small and medium-sized tabular benchmarks. Although their predictive performance is strong, these models reveal little about what they have learned, which limits their use in regulated financial applications that require explanation. Internal representations are widely used to probe what neural networks learn and to measure similarity. In this paper, we use the frozen representations of four TFMs as a measure of financial dissimilarity in a spatial asset-pricing model of US equities from 2011 to 2025, and find that their estimated gains over a direct distance between the same disclosures become consistently positive once broad SEC filing data are included. This reframes tabular foundation models from black-box predictors into instruments for measuring economic structure, with immediate applications to peer selection, risk attribution and network-based asset pricing. More broadly, our findings suggest that the internal representations of foundation models, not only their predictions, deserve study as economic objects, opening a new line of research on what pretrained models know about firms.",
+    "authors": [
+      "Marcus Gawronsky"
+    ],
+    "published": "2026-11-23T00:00:00.000Z",
+    "url": "https://arxiv.org/abs/2611.31491",
+    "pdf_url": "https://arxiv.org/pdf/2611.31491.pdf",
+    "categories": [],
+    "primary_category": "cs.AI",
+    "sources": [
+      "huggingface"
+    ],
+    "huggingface": {
+      "upvotes": 1,
+      "num_comments": 1,
+      "discussion_id": "6b092f2f51a3cf3678af396a"
+    },
+    "matched_topics": [
+      "AI for business and money"
+    ],
+    "matched_keywords": [
+      "financial",
+      "economic"
+    ]
+  },
+  {
+    "id": "2611.30483",
+    "title": "When an AI agent makes a mistake in a database, what decides the damage?",
+    "abstract": "AI agents now run statements against production databases, and several of the incidents that followed deleted production data, which came back only through backups or the provider's help. We ask what decides the damage when such an agent makes a mistake: the model, a guard layer in front of the database, or the database engine itself. The study has two preregistered layers. In Layer A, a frozen library of 22 canonical mistakes is applied by script, with no model involved, to four relational engines under five permission arms and two recovery arms, followed by an engine-native recovery drill (792 cells; 874 drill runs including 10-minute repeats). In Layer B, a minimal tool-calling agent driven by six small open-weight models (4B to 12B parameters, plus one 35B mixture-of-experts model with about 3B active, served locally) works on tasks that contain hazards across nine engines: PostgreSQL, MySQL, SQLite, ClickHouse, Apache Cassandra, MongoDB, Valkey, Apache Kafka and OpenSearch (9,468 trials). A secondary run added MariaDB, Redis and Elasticsearch (2,916 trials); each behaved like its closest core engine. Out of the box, the engines differ less in what a mistake destroys than in what they let you undo. Three of the seven preregistered hypotheses met their decision rule: H2 (for one of nine damage classes) and H3 largely by construction of the arms, and H4 only under its original measure. Four did not; one of them (H5) was uninformative, because in its task the agents never found the credential. The post-hoc analyses (S1-S13) are exploratory and uncorrected for multiple comparisons; on PostgreSQL, MySQL, OpenSearch and ClickHouse the preregistered outcome and original-row loss disagree about G1. We report all of them, with every deviation from the preregistration and its timing.",
+    "authors": [
+      "Abdullah Kaya",
+      "Cevheri Bozoglan",
+      "Yusuf Gundogdu"
+    ],
+    "published": "2026-11-23T00:00:00.000Z",
+    "url": "https://arxiv.org/abs/2611.30483",
+    "pdf_url": "https://arxiv.org/pdf/2611.30483.pdf",
+    "categories": [],
+    "primary_category": "cs.AI",
+    "sources": [
+      "huggingface"
+    ],
+    "huggingface": {
+      "upvotes": 4,
+      "num_comments": 3,
+      "discussion_id": "6b08369d67e0f9f483b61e21"
+    },
+    "matched_topics": [
+      "LLM agents for everyday work"
+    ],
+    "matched_keywords": [
+      "ai agent",
+      "ai agents"
+    ]
+  },
+  {
+    "id": "2611.34232",
+    "title": "OS-Omni: Benchmarking Generalist Computer-Using Agents on Long-Horizon Workflows Across Platforms",
+    "abstract": "Computer-using agents are increasingly expected to complete realistic user goals rather than isolated GUI actions. However, existing benchmarks typically isolate web, mobile, or desktop environments, leaving it unclear whether a single generalist agent can execute long-horizon workflows that span multiple operating systems and persistent application states. We introduce OS-Omni, a live cross-platform benchmark and execution environment for evaluating computer-using agents across Windows, Ubuntu, macOS, iOS, Android, and Web environments. OS-Omni is released in versioned waves of 300 tasks each; this paper focuses on the first release, v1, which contains 48 tasks per platform and 12 cross-platform workflows that pair a desktop with an Android phone. OS-Omni provides reproducible initialization, platform-specific adapters, trajectory logging, and executable final-state evaluators, and includes controlled service-backed applications for workflows involving account, cart, budget, calendar, message, and other persistent state. Human studies show that OS-Omni tasks require 67.54 interaction steps, substantially exceeding OSWorld references of 15.0 steps. On v1, the strongest evaluated agent, Claude Opus 5.5, reaches 68.5% average success, trailing the 77.3% human reference by 8.8 points; the gap is uneven across platforms, with frontier models exceeding humans on Linux but trailing them by more than 25 points on iOS and macOS. These results indicate that current agents remain far from platform-robust, long-horizon computer use, especially when success requires sustained state tracking and durable final-state changes.",
+    "authors": [
+      "Hui Shen",
+      "Yunta Hsieh",
+      "Jianing Ma",
+      "Zhuoran Yin",
+      "Zhuhan Bao",
+      "Ziyuan Liu",
+      "Qi Han",
+      "Xiuqi Xu",
+      "Xianbang Wang",
+      "Wenhao Chai",
+      "Sihan Xu",
+      "Chenyang Zhao",
+      "Yanheng Shang",
+      "Dongfu Jiang",
+      "Rui Sun",
+      "Xingzhi Li",
+      "Chenqi Yin",
+      "Zesen Zhao",
+      "Boyuan Zheng",
+      "Jisen Li",
+      "Xiaoxia Wu",
+      "Ruoyan Zhang",
+      "Ruiyao Liu",
+      "Jing Xiong",
+      "He Xiao",
+      "Nan Zheng",
+      "Hangxiang Chen",
+      "Shengyang Tao",
+      "Deyang Luorong",
+      "Yifeng Liu",
+      "Jingxuan Zhang",
+      "Chaofan Tao",
+      "Yuren Wang",
+      "Jiaqi Mo",
+      "Rui Hu",
+      "Xing Wei",
+      "Xiaofeng Liu",
+      "Xin Xu",
+      "Han Wu",
+      "Mengyao Wen",
+      "Guobin Zhang",
+      "Shatong Zhu",
+      "Hei Ting Una Chan",
+      "Sicheng Chen",
+      "Kai Zhang",
+      "Mengkang Hu",
+      "Zhongwei Wan",
+      "Xin Wang",
+      "Chuanyang Zheng",
+      "Ziheng Zhang",
+      "Hengyuan Zhang",
+      "Zunhai Su",
+      "Kanzhi Cheng",
+      "Dehan Kong",
+      "Yian Wang",
+      "Hanrong Zhang",
+      "Jiawei Lu",
+      "Yifan Zhang",
+      "Junnan Li",
+      "Changyi Yang",
+      "Jintao Qu",
+      "Wenyao Gao",
+      "Jiaxuan Luo",
+      "Jiaxin Deng",
+      "Yuhao Chen",
+      "Xuesong Ye",
+      "Jingwen Gu",
+      "Yichi Zhang",
+      "Qun Lou",
+      "Shen Yan",
+      "Ben Athiwaratkun",
+      "Qiushi Sun",
+      "Mi Zhang",
+      "Ping Luo",
+      "Wenhu Chen",
+      "Ngai Wong"
+    ],
+    "published": "2026-11-25T00:00:00.000Z",
+    "url": "https://arxiv.org/abs/2611.34232",
+    "pdf_url": "https://arxiv.org/pdf/2611.34232.pdf",
+    "categories": [],
+    "primary_category": "cs.AI",
+    "sources": [
+      "huggingface"
+    ],
+    "huggingface": {
+      "upvotes": 103,
+      "num_comments": 2,
+      "discussion_id": "6b08faa851a3cf3678af38fe"
+    },
+    "matched_topics": [
+      "AI tools for non-programmers"
+    ],
+    "matched_keywords": [
+      "gui"
+    ]
+  },
+  {
+    "id": "2611.32993",
+    "title": "Decision-Native Multimodal Clinical Modeling via Anatomical Grounding and Confidence Calibration",
+    "abstract": "Structured clinical decisions from volumetric computed tomography (CT) require anatomically grounded predictions and calibrated confidence estimates. However, existing 3D medical multimodal models often suffer from uncalibrated autoregressive decoding and shortcut reliance on irrelevant anatomical regions. We introduce Radev, a decision-native multimodal model that integrates anatomy-guided visual compression, direct candidate prediction, and counterfactual confidence supervision. To bridge global context with fine-grained slice details, a frozen 3D encoder extracts reusable organ-level features, which are dynamically selected by the query to attend to 2D slice features within predicted anatomical bounds. The resulting compact visual tokens enable the language backbone to estimate candidate probabilities in a single forward pass without autoregressive decoding. We further propose Counterfactual-Calibrated Training (CCT) to compare predictions under intact and intervened organ representations. CCT encourages confidence to decrease when removing target-organ evidence degrades decision quality, while penalizing excessive confidence drops under unrelated-organ removal. To facilitate rigorous evaluation, we construct CT-Verdict, a comprehensive benchmark spanning binary finding presence, multiple-choice questions, and ordinal severity assessment across both in-distribution and external cohorts. Extensive experiments demonstrate that Radev significantly outperforms state-of-the-art methods in both decision accuracy and confidence calibration, while generalizing robustly under distribution shifts. Project page at https://juntaojianggavin.github.io/projects/Radev/",
+    "authors": [
+      "Juntao Jiang",
+      "Wenqi Zhong",
+      "Guangyu Guo",
+      "Dexia Chen",
+      "Yilong Hu",
+      "Yunhao Bai",
+      "Zhenyu Yi",
+      "Jianwei Xu",
+      "Tony C. W. Mok",
+      "Muxuan Gao",
+      "Ling Zhang",
+      "Yong Liu",
+      "Jiangning Zhang",
+      "Zhongwei Qiu"
+    ],
+    "published": "2026-11-24T00:00:00.000Z",
+    "url": "https://arxiv.org/abs/2611.32993",
+    "pdf_url": "https://arxiv.org/pdf/2611.32993.pdf",
+    "categories": [],
+    "primary_category": "cs.AI",
+    "sources": [
+      "huggingface"
+    ],
+    "huggingface": {
+      "upvotes": 3,
+      "num_comments": 1,
+      "discussion_id": "6b067048ea91637d11fceca8"
+    },
+    "matched_topics": [
+      "AI in health"
+    ],
+    "matched_keywords": [
+      "clinical",
+      "medical"
+    ]
+  }
+]
